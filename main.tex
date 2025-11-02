@@ -169,16 +169,14 @@ V pričujočem zaključnem delu so uporabljene naslednje kratice:
 \begin{center}
     \begin{tabular}{c c} \hline
         Kratica & Pomen \\ \hline
-        SVM     & angl. Support Vector Machine \\
-        CNN     & angl. Convolutional Neural Network \\ 
-        DNN     & angl. Deep Neural Networks \\
-        SOTA    & angl. State of the Art \\
-        PTQ     & angl. Post-Training Quantization \\
-        QAT     & angl. Quantization-Aware Training \\
-        FOMO    & angl. Faster Objects, More Objects \\
-        SAM     & angl. Segment Anything Model \\
-        IoU     & angl. Intersection over Union \\
-        mIoU    & angl. Mean Intersection over Union \\
+        SVM     & Metoda podpornih vektorjev (angl. Support Vector Machine) \\
+        CNN     & Konvolucijske nevronske mreže (angl. Convolutional Neural Networks) \\ 
+        DNN     & Globoke nevronske mreže (angl. Deep Neural Networks) \\
+        SOTA    & Vodilni pristop (angl. State of the Art) \\
+        PTQ     & Kvantizacija po učenju (angl. Post-Training Quantization) \\
+        QAT     & Ozaveščeno učenje (angl. Quantization-Aware Training) \\
+        IoU     & Jaccardov indeks oz. presečišče nad unijo (angl. Intersection over Union) \\
+        mIoU    & Srednji Jaccardov indeks (angl. Mean Intersection over Union) \\
         \hline
     \end{tabular}
 \end{center}
@@ -191,13 +189,33 @@ V pričujočem zaključnem delu so uporabljene naslednje kratice:
     % ingredient-based detection is the design goal from the start, not because of the easier feasibility and deployment, but because its already trivial to solve the current bio24 dataset with a classifier. We want ingredient-based detection in order to be able to detect complex dishes, such as different types of pizzas, based on the topping. This might also help with generalization to new dishes.
 
 
-    % Razpoznavanje sestavin hrane na robnih napravah je pomembno za [industrijski postopek/uporabo], kjer sta ključni [robustnost/latenca/poraba energije]. Robne platforme, kot je STM32, omogočajo [prednosti], a hkrati uvajajo stroge omejitve [pomnilnik, procesorska moč, …]. V tem kontekstu obravnavamo problem [kratek opis naloge] in preverimo izvedljivost na zahtevnih podatkih.
     % Zakaj je hrana pomembna
-    
-    Tekom zgodovine je bila glavna skrb povezana s hrano predvsem količina; priprava in uživanje hrane sta vsakodnevni dejavnosti in del kulture, kjer iz osnovnih sestavin z različnimi postopki ustvarimo jedi. V preteklosti je bil temeljni poudarek, da postopki hrano naredijo lažje prebavljivo in varno za uživanje; danes, v obdobju izobilja, pa se težišče pogosteje premakne k okusu, konsistenci, ponovljivosti in preprostosti priprave. V tem okviru se vse pogosteje pojavlja tudi vidik zdrave priprave: izbira tehnik, ki ohranijo hranila in zmanjšajo nepotrebne dodatke.
-    
+    % Tekom zgodovine je bila glavna skrb povezana s hrano predvsem količina; priprava in uživanje hrane sta vsakodnevni dejavnosti in del kulture, kjer iz osnovnih sestavin z različnimi postopki ustvarimo jedi. V preteklosti je bil temeljni poudarek, da postopki hrano naredijo lažje prebavljivo in varno za uživanje; danes, v obdobju izobilja, pa se težišče pogosteje premakne k okusu, konsistenci, ponovljivosti in preprostosti priprave. V tem okviru se vse pogosteje pojavlja tudi vidik zdrave priprave: izbira tehnik, ki ohranijo hranila in zmanjšajo nepotrebne dodatke.
+
+    % %- Hrana kot vsakdan in kultura
+    % Priprava in uživanje hrane sta vsakodnevni dejavnosti ljudi in velik del kulture.
+    % %- Zgodovinski fokus
+    % Tekom zgodovine je bila glavna skrb povezana s hrano predvsem s količino ter da hrano naredi lažje prebavljivo in varno za uživanje.
+    % %- Današnji fokus v izobilju - industrijska revolucija, napredki na področju pasterizacije, masovne proizvodnje in razumevanja kemijskih procesov med pripravo
+    % To se močno spremeni tekom zgodovine, z razlogi kot je industrijska revolucija in s tem povezan razvoj masovne proizvodnje, napredki na področju pasterizacije in razumevanje kemijskih procesov med pripravo hrane.
+    % Danes so tako glavni poudarki pogosteje na okusu, konsistenci, ponovljivosti in preprostosti priprave \cite{src:mcgee2004mcgee}.
+    % %- Zdrava priprava kot pragmatična izbira
+    % V tem okviru se vse pogosteje pojavlja tudi vidik zdrave priprave: izbira tehnik, ki ohranijo hranila in zmanjšajo nepotrebne dodatke. % To je narobe
+    % %- Most do tehnologije
+
+    % - priprava hrane na splošno?
+        Kuhanje je staro skoraj toliko kot človeška civilizacija - po arheoloških ocenah so zgodnji ljudje že pred približno 1,5 milijona let obvladali rabo ognja in ga začeli uporabljati pri pripravi hrane \cite{src:myhrvold_cooking_2025}.
+    %- zakaj je pomembna - mogoče s tem naredimo hrano lažje prebavljivo in bolj varno?
+        Toplotna obdelava živil praviloma poveča njihovo prebavljivost in s tem olajša izrabo energije ter nekaterih hranil. Posledično je kuhanje našim zgodnjim prednikom omogočilo izkoriščanje širšega nabora prehranskih virov in iz njih pridobiti več hranilne vrednosti \cite{src:myhrvold_cooking_2025}.
+        Živila kot mleko, govedina in jajca se pred uživanjem toplotno obdelajo, da se uničijo patogeni mikroorganizmi in izboljša okus, tekstura in podobno. Tehnološki postopki predelave spremenijo mikrostrukturo živil, bogatih z beljakovinami, s čimer spremenijo postopek prebave in absorpcije beljakovin v želodcu in tankem črevesu \cite{src:Loveday_2023}.
+
+    % Povezava z zdravjem in okoljem
+        Prehrana tako močno vpliva na zdravje, hkrati pa je pomemben faktor za zmanjšanje vpliva na okolje \cite{src:eat2019food}.
+    % Povezava s tehnologijo.
+        Pametni kuhinjski aparati lahko optimizirajo našo prehrano in omogočijo večjo natančnost ter ponovljivost pri kuhanju, medtem ko pametni hladilniki z upravljanjem zalog zmanjšajo količino zavržene hrane \cite{src:GOLSHANY2025116557}. Nekatere raziskave kažejo, da lahko pametne kuhinje prinesejo tudi do 15 \% prihranka električne energije.
+
     % Zakaj je razpoznavanje hrane pomembno (zdravje debelost, ostalo zdravje, tut ostali izdelki kot kuhinjski aparati)
-    Nove tehnologije – zlasti računalniški vid na robnih napravah – lahko ta proces standardizirajo in olajšajo: zmanjšajo napake, skrajšajo čas ter razbremenijo uporabnika pri načrtovanju in izvedbi korakov. Že zgodnji poskusi nadzora peke so uporabili optične sisteme z obdelavo slik v pečici za spremljanje vizualnih značilnosti (barvni ton, teksturo, obliko) in s tem postavili temelje za samodejno vodenje procesa \cite{src:paquet2012monitoring}. V zadnjih letih so se metode globokega učenja uveljavile pri razpoznavi jedi in ocenjevanju količin, kar poganja razcvet aplikacij, ki pripravo deloma avtomatizirajo ali vsaj poenostavijo \cite{src:SEDEJ_2023, src:Nikodinovska_2024}. Razpoznava jedi je zato ključen gradnik: sistemu omogoči, da v realnem času razume, katera jed je prisotna, in na tej osnovi prilagodi naslednje korake ter pripravo naredi bolj zanesljivo in enostavno.
+    Nove tehnologije – zlasti računalniški vid na robnih napravah – lahko proces priprave hrane standardizirajo in olajšajo: zmanjšajo napake, skrajšajo čas ter razbremenijo uporabnika pri načrtovanju in izvedbi korakov. Že zgodnji poskusi nadzora peke so vključevali optične sisteme z obdelavo slik v pečici za spremljanje vizualnih značilnosti (barvni ton, teksturo, obliko) in s tem postavili temelje za samodejno vodenje procesa \cite{src:paquet2012monitoring}. V zadnjih letih so se metode globokega učenja uveljavile pri razpoznavi jedi in ocenjevanju količin, kar poganja razcvet aplikacij, ki pripravo deloma avtomatizirajo ali vsaj poenostavijo \cite{src:SEDEJ_2023, src:Nikodinovska_2024}. Razpoznava jedi je zato ključen gradnik: sistemu omogoči, da v realnem času razume, katera jed je prisotna, in na tej osnovi prilagodi naslednje korake ter pripravo naredi bolj zanesljivo in enostavno.
     
     % Zakaj je razpoznavanje sestavin hrane pomembno (bolj univerzalen pristop, ne bi rabli za dodajanje nove jedi nujno delat novega dataseta. Temu smo rekli razpoznavanje kompleksnih jedi).
     Identifikacija celotnih jedi je v literaturi precej pogosto obravnavana naloga \cite{src:vlachopoulou2023food, src:mohanty2022food, src:bolanos2017food, src:hassannejad2016food, src:martinel2018wide, src:tan2019efficientnet} na raznih podatkovnih zbirkah \cite{src:bossard2014food, src:matsuda2012recognition, src:kawano2014automatic, src:chen2016deep}, vendar te tipično predpostavljajo zaprt, vnaprej določen seznam jedi.
@@ -208,7 +226,7 @@ V pričujočem zaključnem delu so uporabljene naslednje kratice:
     
     % Kaj je robna naprava, povej o pomembnosti edge devicov, FOMO, argumentiraj in na hitro opiši.
     Robna naprava (angl. \textit{edge device}) je lokalna strojna enota na robu omrežja - od naprav Raspberry Pi in pametnih telefonov vse do mikrokrmilnikov - ki podatke praviloma zajame in vsaj del obdelave izvede lokalno; zaradi strogih omejitev pomnilnika, računske moči in porabe energije uporaba globokih modelov zahteva ciljno optimizacijo, kar je danes zelo aktivno področje raziskav in razvoja \cite{src:abadade2023comprehensive, src:moosmann2024ultra_tinyissimoyolo, src:boyle2024dsort, src:lin2021memory, src:hymel2022edgeimpulse}.
-    V tem delu uporabimo model FOMO platforme Edge Impulse \cite{src:announcingfomo}, detekcijski pristop za mikrokrmilnike, ki se izogne klasični strukturi detektorjev in na izhodu ustvari grobo segmentacijsko masko; to se običajno naknadno obdela (npr. z združevanjem/rojenjem), da dobimo lokacije objektov. Ker nas v kontekstu tega dela zanima prisotnost sestavin, postopek priredimo tako, da informacijo o lokalizaciji opustimo in  gledamo zgolj zadostno prisotnost sestavin na maski. Model je zelo učinkovit na omejenih virih, tekom dela pa se pokažejo tudi slabosti majhnega receptivnega polja in omejene kapacitete modela, kar omeji končno uspešnost pristopa \cite{src:boyle2024dsort}.
+    V tem delu uporabimo model FOMO (angl. Faster Objects, More Objects) platforme Edge Impulse \cite{src:announcingfomo}, detekcijski pristop za mikrokrmilnike, ki se izogne klasični strukturi detektorjev in na izhodu ustvari grobo segmentacijsko masko; to se običajno naknadno obdela (npr. z združevanjem/rojenjem), da dobimo lokacije objektov. Ker nas v kontekstu tega dela zanima prisotnost sestavin, postopek priredimo tako, da informacijo o lokalizaciji opustimo in  gledamo zgolj zadostno prisotnost sestavin na maski. Model je zelo učinkovit na omejenih virih, tekom dela pa se pokažejo tudi slabosti majhnega receptivnega polja in omejene kapacitete modela, kar omeji končno uspešnost pristopa \cite{src:boyle2024dsort}.
 
     % Omejitev strojne opreme in izbor platforme STM32
     V nadaljevanju se v skladu z željeno izvedbo na robnih napravah v grobem omejimo tudi na strojno opremo: kot platformo izberemo mikrokrmilnike STM32 s tipičnimi omejitvami pomnilnika in shranjevalnega prostora do nekaj MB. Čeprav so te zahteve stroge, so se v preteklosti že izkazale za izvedljive \cite{src:Nikodinovska_2024}. Pristop dodatno podpira orodje X-CUBE-AI za izvajanje modelov \cite{src:stxcubeai-docs} ter nabor referenčnih modelov, dokumentiranih in pripravljenih za izvajanje na izbrani platformi \cite{src:stm32modelzoo}.
@@ -334,7 +352,7 @@ V pričujočem zaključnem delu so uporabljene naslednje kratice:
             V \cite{src:javadi2024smart} predstavijo pametni skener hrane, ki z združevanjem senzorjev (kamera, tehtnica), Mask R-CNN za segmentacijo \cite{src:he2017mask} in klasifikacijo sestavin ter globinsko oceno za volumen omogoča samodejno določanje mase sestavin in izračun hranilnih vrednosti. Zajem in predobdelava potekata na robni napravi, računsko zahtevni modeli pa v oblaku. 
             %Na zbirki FoodSeg103 doseže do 70,9 \% v F1 klasifikacijski metriki in 50,3 \% v mIoU segmentacijski metriki. % Dosežejo predobre rezultate za navaden Mask-RCNN, tudi za deeplabv3+ poročajo 64.8% IOU, medtem ko so avtorji FoodSeg103 v isti situaciji dobil komaj 35%. ???
             % FoodSAM
-            Med novejšimi pristopi je FoodSAM avtorjev Lan \textit{et al.} \cite{src:lan2023foodsam}. Osnovan je na Segment Anything modelih \cite{src:kirillov2023segment}, ki lahko izvedejo segmentacijo kateregakoli objekta, brez da bi ga bilo potrebno imeti v učni množici (angl. zero-shot segmentation), vendar pa mu ne pripišejo kategorije oz. razreda. Rezultat takšnih modelov je zgolj segmentacijska maska. FoodSAM tako vsebuje SAM enkoder, s katerim generira kvalitetne segmentacijske maske brez oznak razredov. Hkrati vsebuje tudi običajen model za semantično segmentacijo, avtorji so uporabili SeTR \cite{src:zheng2021rethinking} na FoodSeg103, s katerim generirajo grobe segmentacijske maske z oznakami razredov. Rezultate obeh enkoderjev združijo prek mehanizma za glasovanje. S tem pristopom dosežejo 46,4 \% mIoU na FoodSeg103 in 66,1 \% na UECFoodPix Complete, po navedbah avtorjev SOTA za dani segmentacijski podatkovni zbirki.
+            Med novejšimi pristopi je FoodSAM avtorjev Lan \textit{et al.} \cite{src:lan2023foodsam}. Osnovan je na Segment Anything modelih (SAM) \cite{src:kirillov2023segment}, ki lahko izvedejo segmentacijo kateregakoli objekta, brez da bi ga bilo potrebno imeti v učni množici (angl. zero-shot segmentation), vendar pa mu ne pripišejo kategorije oz. razreda. Rezultat takšnih modelov je zgolj segmentacijska maska. FoodSAM tako vsebuje SAM enkoder, s katerim generira kvalitetne segmentacijske maske brez oznak razredov. Hkrati vsebuje tudi običajen model za semantično segmentacijo, avtorji so uporabili SeTR \cite{src:zheng2021rethinking} na FoodSeg103, s katerim generirajo grobe segmentacijske maske z oznakami razredov. Rezultate obeh enkoderjev združijo prek mehanizma za glasovanje. S tem pristopom dosežejo 46,4 \% mIoU na FoodSeg103 in 66,1 \% na UECFoodPix Complete, po navedbah avtorjev SOTA za dani segmentacijski podatkovni zbirki.
 
     \section{Izvajanje na robnih napravah}
 
