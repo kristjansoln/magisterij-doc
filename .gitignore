@@ -1,0 +1,64 @@
+# =========================
+# LaTeX build artifacts
+# =========================
+*.aux
+*.log
+*.bbl
+*.blg
+*.toc
+*.out
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+*.nav
+*.snm
+*.vrb
+*.ilg
+*.ind
+*.idx
+*.glo
+*.glg
+*.gls
+*.ist
+*.acn
+*.acr
+*.alg
+*.xmpdata
+*.xmpi
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
+*.dvi
+*.ps
+
+# Editor-specific junk
+*~
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# =========================
+# Project-specific
+# =========================
+# Ignore compiled PDFs (keep only sources in git)
+*.pdf
+
+## But explicitly keep color profile files
+#!sRGBIEC1966-2.1.icm
+#!sRGB_IEC61966-2-1_black_scaled.icc
+
+## Keep your main source + style + bib + bst
+#!*.tex
+#!*.sty
+#!*.bib
+#!*.bst
+
+# Keep figures directory (images, etc.)
+#!figures/
+
