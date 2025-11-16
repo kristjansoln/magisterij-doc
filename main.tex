@@ -41,6 +41,7 @@
 %\usepackage{longtable}      % večstranske tabele
 %\usepackage{caption}        % dodatne možnosti označevanja objektov
 \usepackage{rotating}       % vrtenje objektov, strani, ipd.
+\usepackage{booktabs}
 
 % Matematična orodja
 \usepackage{mathtools} % http://mirrors.ctan.org/macros/LaTeX/contrib/mathtools/mathtools.pdf
@@ -373,7 +374,7 @@ V pričujočem zaključnem delu so uporabljene naslednje kratice:
             % Pfisterer 2019 - segmentation and volume estimation
             Pfisterer~\textit{et al.}~\cite{src:pfisterer2019segmentation} se ukvarjajo s predvidevanjem količine zaužite hrane na podlagi slike krožnika. Najprej izvedejo segmentacijo, nato pa še predvidevanje volumna hrane na sliki. Za segmentacijo uporabijo prilagojeno enkoder-dekoder struturo, prednaučeno na zbirki UNIMIB2016~\cite{src:ciocca2016food}, nato pa jo doučijo še na lastni podatkovni zbirki. Slednja je zajeta na precej nadzorovan način, kar načeloma poenostavi njihov problem.
             % Shimoda 2020 - class activation mapping
-            Shimoda~\textit{et al.}~\cite{src:shimoda2020weakly} so predstavili šibko nadzorovano metodo za segmentacijo krožnika na sliki. Vhod v model je RGB slika hrane, izhod pa segmentacijska maska s kategorijami hrana, krožnik in ozadje. Pri učenju so uporabili preslikavo aktivacij razredov (angl. Class Activation Mapping, CAM), ki se tipično uporablja za vizualizacijo aktivacij v CNN modelih. V nadaljevanju so njihov model uporabili pri regularizaciji modela za semantično segmentacijo hrane in s tem izboljšali njihovo delovanje. Na zbirki UEC-Food100~\cite{src:matsuda2012recognition} so metriko mIoU izboljšali za 5{,}7~\%, tako so dosegli 55,4.
+            Shimoda~\textit{et al.}~\cite{src:shimoda2020weakly} so predstavili šibko nadzorovano metodo za segmentacijo krožnika na sliki. Vhod v model je RGB slika hrane, izhod pa segmentacijska maska s kategorijami hrana, krožnik in ozadje. Pri učenju so uporabili preslikavo aktivacij razredov (angl. Class Activation Mapping, CAM), ki se tipično uporablja za vizualizacijo aktivacij v CNN modelih. V nadaljevanju so njihov model uporabili pri regularizaciji modela za semantično segmentacijo hrane in s tem izboljšali njihovo delovanje. Na zbirki UEC-Food100~\cite{src:matsuda2012recognition} so metriko mIoU izboljšali za 5{,}7~\%, tako so dosegli 55{,}4~\%.
             % Okamoto 2021 - DeepLabV3+, uvedli FoodPix Complete
             Okamoto~\textit{et al.}~\cite{src:okamoto2021uec} so predstavili zbirko UEC FoodPix Complete in jo evalvirali z DeepLab V3+~\cite{src:chen2017deeplab}. Dosegli so 55{,}5~\% po metriki mIoU.
             % Poply - something something instance segmentation
