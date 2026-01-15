@@ -82,6 +82,8 @@
 }
 
 % Force no hyphenation or specific hypenation points
+% TODO: Debug this
+% TODO: verify whether this still works with stripped trailing numbers
 \hyphenation{GoogleNet CNN}
 \hyphenation{TinyML}
 \hyphenation{AlexNet}
@@ -216,90 +218,88 @@ V pričujočem zaključnem delu so uporabljene naslednje kratice:
 %******************************* UVOD ******************************************
 \chapter{Uvod} \label{sct:uvod}
 
-    % ingredient-based detection is the design goal from the start, not because of the easier feasibility and deployment, but because its already trivial to solve the current bio24 dataset with a classifier. We want ingredient-based detection in order to be able to detect complex dishes, such as different types of pizzas, based on the topping. This might also help with generalization to new dishes.
-
 
     % Zakaj je hrana pomembna
     % Tekom zgodovine je bila glavna skrb povezana s hrano predvsem količina; priprava in uživanje hrane sta vsakodnevni dejavnosti in del kulture, kjer iz osnovnih sestavin z različnimi postopki ustvarimo jedi. V preteklosti je bil temeljni poudarek, da postopki hrano naredijo lažje prebavljivo in varno za uživanje; danes, v obdobju izobilja, pa se težišče pogosteje premakne k okusu, konsistenci, ponovljivosti in preprostosti priprave. V tem okviru se vse pogosteje pojavlja tudi vidik zdrave priprave: izbira tehnik, ki ohranijo hranila in zmanjšajo nepotrebne dodatke.
 
-    % %- Hrana kot vsakdan in kultura
-    % Priprava in uživanje hrane sta vsakodnevni dejavnosti ljudi in velik del kulture.
-    % %- Zgodovinski fokus
-    % Tekom zgodovine je bila glavna skrb povezana s hrano predvsem s količino ter da hrano naredi lažje prebavljivo in varno za uživanje.
-    % %- Današnji fokus v izobilju - industrijska revolucija, napredki na področju pasterizacije, masovne proizvodnje in razumevanja kemijskih procesov med pripravo
-    % To se močno spremeni tekom zgodovine, z razlogi kot je industrijska revolucija in s tem povezan razvoj masovne proizvodnje, napredki na področju pasterizacije in razumevanje kemijskih procesov med pripravo hrane.
-    % Danes so tako glavni poudarki pogosteje na okusu, konsistenci, ponovljivosti in preprostosti priprave~\cite{src:mcgee2004mcgee}.
-    % %- Zdrava priprava kot pragmatična izbira
-    % V tem okviru se vse pogosteje pojavlja tudi vidik zdrave priprave: izbira tehnik, ki ohranijo hranila in zmanjšajo nepotrebne dodatke. % To je narobe
-    % %- Most do tehnologije
-
-    % - priprava hrane na splošno?
+    % - peka/priprava hrane na splošno
     Kuhanje je staro skoraj toliko kot človeška civilizacija - po arheoloških ocenah so zgodnji ljudje že pred približno 1,5 milijona let obvladali rabo ognja in ga začeli uporabljati pri pripravi hrane~\cite{src:myhrvold_cooking_2025}.
     %- zakaj je pomembna - mogoče s tem naredimo hrano lažje prebavljivo in bolj varno?
-    Toplotna obdelava živil praviloma poveča njihovo prebavljivost in s tem olajša izrabo energije ter nekaterih hranil. Posledično je kuhanje našim zgodnjim prednikom omogočilo izkoriščanje širšega nabora prehranskih virov in iz njih pridobiti več hranilne vrednosti~\cite{src:myhrvold_cooking_2025}.
+    Toplotna obdelava živil praviloma poveča njihovo prebavljivost in s tem olajša izrabo energije ter nekaterih hranil. Tako je kuhanje našim zgodnjim prednikom omogočilo izkoriščanje širšega nabora prehranskih virov in iz njih pridobiti več hranilne vrednosti~\cite{src:myhrvold_cooking_2025}.
     Živila kot mleko, govedina in jajca se pred uživanjem toplotno obdelajo, da se uničijo patogeni mikroorganizmi in izboljša okus, tekstura in podobno. Tehnološki postopki predelave spremenijo mikrostrukturo živil, bogatih z beljakovinami, s čimer spremenijo postopek prebave in absorpcije beljakovin v želodcu in tankem črevesu~\cite{src:Loveday_2023}.
 
-    % Povezava z zdravjem in okoljem
-    Prehrana tako močno vpliva na zdravje, hkrati pa je pomemben faktor za zmanjšanje vpliva na okolje~\cite{src:eat2019food}.
+    % Povezava z zdravjem in okoljem, avtomatizacijo
+    Prehrana močno vpliva na zdravje, hkrati pa je pomemben faktor za zmanjšanje vpliva na okolje~\cite{src:eat2019food}.
     % Povezava s tehnologijo.
     Pametni kuhinjski aparati lahko optimizirajo našo prehrano in omogočijo večjo natančnost ter ponovljivost pri kuhanju, medtem ko pametni hladilniki z upravljanjem zalog zmanjšajo količino zavržene hrane~\cite{src:GOLSHANY2025116557}. Nekatere raziskave kažejo, da lahko pametne kuhinje prinesejo tudi do 15~\% prihranka električne energije.
 
     % Zakaj je razpoznavanje hrane pomembno (zdravje debelost, ostalo zdravje, tut ostali izdelki kot kuhinjski aparati)
-    Nove tehnologije – zlasti računalniški vid na robnih napravah – lahko proces priprave hrane standardizirajo in olajšajo: zmanjšajo napake, skrajšajo čas ter razbremenijo uporabnika pri načrtovanju in izvedbi korakov. Že zgodnji poskusi nadzora peke so vključevali optične sisteme z obdelavo slik v pečici za spremljanje vizualnih značilnosti (barvni ton, teksturo, obliko) in s tem postavili temelje za samodejno vodenje procesa~\cite{src:paquet2012monitoring}.V zadnjih letih so se metode globokega učenja uveljavile na področju razpoznave jedi in ocenjevanja količin, kar je spodbudilo razvoj aplikacij, ki proces priprave deloma avtomatizirajo ali vsaj poenostavijo~\cite{src:SEDEJ_2023, src:Nikodinovska_2024}.
-    Razpoznava jedi je zato ključen gradnik, s katerim sistemom omogočimo, da v realnem času določijo, katera jed je prisotna, na tej osnovi prilagodijo naslednje korake in tako naredijo pripravo bolj zanesljivo in enostavno.
+    Nove tehnologije – zlasti računalniški vid na napravah z omejenimi viri – lahko proces priprave hrane standardizirajo in olajšajo: zmanjšajo napake, skrajšajo čas ter razbremenijo uporabnika pri načrtovanju in izvedbi korakov. Že zgodnji poskusi nadzora peke so vključevali optične sisteme z obdelavo slik v pečici za spremljanje vizualnih značilnosti (barvni ton, teksturo, obliko) in s tem postavili temelje za samodejno vodenje procesa~\cite{src:paquet2012monitoring}.V zadnjih letih so se metode globokega učenja uveljavile tudi na področju razpoznave jedi in ocenjevanja količin, kar je spodbudilo razvoj aplikacij, ki proces priprave poenostavijo ali deloma avtomatizirajo~\cite{src:SEDEJ_2023, src:Nikodinovska_2024}.
+    Razpoznava jedi je tako ključen gradnik, s katerim sistemom omogočimo, da v realnem času določijo, katera jed je prisotna na sliki, na tej osnovi prilagodijo naslednje korake in tako naredijo pripravo bolj zanesljivo in enostavno.
 
-    % Zakaj je razpoznavanje sestavin hrane pomembno (bolj univerzalen pristop, ne bi rabli za dodajanje nove jedi nujno delat novega dataseta. Temu smo rekli razpoznavanje kompleksnih jedi).
-    Identifikacija jedi je v literaturi precej pogosto obravnavana naloga~\cite{src:vlachopoulou2023food, src:mohanty2022food, src:bolanos2017food, src:hassannejad2016food, src:martinel2018wide, src:tan2019efficientnet} na raznih podatkovnih zbirkah~\cite{src:bossard2014food, src:matsuda2012recognition, src:kawano2014automatic, src:chen2016deep}. Pri tem večina pristopov tipično predpostavlja zaprt, vnaprej določen seznam jedi. Pri tem večina pristopov tipično predpostavlja zaprt, vnaprej določen seznam jedi. Takšna predpostavka pogosto vodi v slabšo fleksibilnost sistema, saj brez dodatnega učenja težko spreminjamo izbran nabor jedi.
-
-    Nasprotno pa razpoznavanje sestavin omogoči, da tip jedi določimo na podlagi zaznanih komponent: nove jedi lahko dodajamo kot kombinacije sestavin (npr. z enostavno preslikavo med kombinacijami in jedmi), brez širjenja podatkovne zbirke ali ponovnega učenja modela.
+    % Zakaj je razpoznavanje sestavin hrane (ne samo celih jedi) pomembno
+    Identifikacija jedi je v literaturi precej pogosto obravnavana naloga~\cite{src:vlachopoulou2023food, src:mohanty2022food, src:bolanos2017food, src:hassannejad2016food, src:martinel2018wide, src:tan2019efficientnet} na raznih podatkovnih zbirkah~\cite{src:bossard2014food, src:matsuda2012recognition, src:kawano2014automatic, src:chen2016deep}. Pri tem večina pristopov tipično predpostavlja zaprt, vnaprej določen seznam jedi. Takšna predpostavka pogosto vodi v slabšo fleksibilnost sistema, saj brez dodatnega učenja težko spreminjamo izbran nabor jedi.
+    Nasprotno pa razpoznavanje samih sestavin omogoči, da tip jedi določimo na podlagi zaznanih komponent: nove jedi lahko dodajamo kot kombinacije sestavin (npr. z enostavno preslikavo med kombinacijami in jedmi), brez širjenja podatkovne zbirke ali ponovnega učenja modela.
     S takim pristopom bolje prenašamo visoko vizualno varianco in omogočamo razpoznavanje kompleksnih jedi z več komponentami, kjer se izgled med primeri močno razlikuje.
     S tem hkrati bistveno zmanjšamo prostor label, saj lahko iz manjšega nabora sestavin tvorimo veliko število jedi~\cite{src:bolanos2017food}.
     Zato je pristop s sestavinami bolj univerzalen od neposredne klasifikacije jedi, še posebej ko moramo sistem enostavno širiti in prilagajati.
 
-    % Povej da se novejši pristopi tipično lotijo segmentacije sestavin hrane
-    Raziskovalci se danes razpoznavanja sestavin lotijo kot segmentacijski problem~\cite{src:wu2021large, src:lan2023foodsam, src:bolanos2016simultaneous, src:pfisterer2019segmentation, src:poply2021refined}. Pri tem pogosto uporabijo zbirke, kot je FoodSeg103~\cite{src:wu2021large}.
+    % Novejši pristopi se tipično lotijo segmentacije sestavin hrane
+    Raziskovalci se danes razpoznavanja sestavin pogosto lotijo kot segmentacijski problem~\cite{src:wu2021large, src:lan2023foodsam, src:bolanos2016simultaneous, src:pfisterer2019segmentation, src:poply2021refined}. Pri tem pogosto uporabijo zbirke, kot je FoodSeg103~\cite{src:wu2021large}.
     % TODO: Pikselno natančne maske - prevod
-    Segmentacija (semantična ali instančna) deluje na podlagi pikselno natančnih mask, s čimer lahko dosežemo tudi ocenjevanje količin ter hranilnih vrednosti. Pripadajoče arhitekture so načeloma računsko in pomnilniško zahtevne, zato jih težje uporabljamo na realnih primerih.
-    Z izvajanjem v oblaku se lahko izognemo navedenim težavam, vendar s tem vnesemo dodatne probleme v povezavi z latenco, stroški, povezljivostjo naprav ter zasebnostjo. Trend v praksi je zato optimizacija in izvajanje neposredno na robnih napravah~\cite{src:abadade2023comprehensive}.
-    Za robne naprave z omejeno zmogljivostjo to pomeni iskanje kompromisov med natančnostjo in kompleksnostjo, dobro pa je premisliti tudi, če lahko polno segmentacijo nadomestimo s preprostejšim pristopom.
-    
-    % Kaj je robna naprava, povej o pomembnosti edge devicov, FOMO, argumentiraj in na hitro opiši.
-    Robna naprava (angl. \textit{edge device}) je lokalna strojna enota na robu omrežja~-~od naprav Raspberry Pi in pametnih telefonov vse do mikrokrmilnikov - ki podatke praviloma zajame in vsaj del obdelave izvede lokalno~\cite{src:abadade2023comprehensive, src:moosmann2024ultra_tinyissimoyolo, src:boyle2024dsort, src:lin2021memory, src:hymel2022edgeimpulse}.
-    Zaradi strogih omejitev pomnilnika, računske moči in porabe energije moramo globoke modele primerno optimizirati, kar je danes aktivno področje raziskav in razvoja.
-    V tem delu uporabimo model Faster Objects, More Objects (FOMO) platforme Edge Impulse~\cite{src:announcingfomo}, detekcijski pristop za mikrokrmilnike, ki se izogne klasični strukturi detektorjev in na izhodu ustvari grobo segmentacijsko masko. Slednja se običajno naknadno obdela (npr. z združevanjem/rojenjem), da na izhodu dobimo lokacije objektov.
+    Segmentacija (semantična ali instančna) deluje na podlagi pikselno natančnih mask, s čimer lahko dosežemo tudi ocenjevanje količin ter hranilnih vrednosti. Pripadajoče arhitekture so načeloma računsko in pomnilniško zahtevne, zato jih težje uporabljamo na napravah z omejenimi viri.
 
-    V kontekstu tega dela nas zanima prisotnost sestavin, zato smo postopek priredili tako, da smo informacijo o lokalizaciji opustili in gledali zgolj zadostno prisotnost sestavin na maski. Z eksperimenti smo ugotovili, da je model učinkovit na robnih napravah z omejeno zmogljivostjo, vendar se je izkazalo, da ima tudi določene slabosti. Med njih sodijo majhno receptivno polje in omejena kapaciteta modela, kar omeji končno uspešnost pristopa~\cite{src:boyle2024dsort}.
+    % Primerjava izvajanja v oblaku in na robnih napravah
+    V kolikor ciljna naprava ni dovolj zmogljiva za izvajanje modela, je pogosta rešitev izvajanje modela v oblaku. S tem zagotovimo ustrezno strojno opremo za izvajanje modela, vendar hkrati vnesemo dodatne probleme v povezavi z latenco, stroški, povezljivostjo naprav ter zasebnostjo. Trend v praksi je zato optimizacija in izvajanje neposredno na t.i. robnih napravah~\cite{src:abadade2023comprehensive}.
+    % Kaj je robna naprava
+    Robna naprava (angl. \textit{edge device}) je lokalna strojna enota na robu omrežja~-~od naprav Raspberry Pi in pametnih telefonov vse do mikrokrmilnikov - ki podatke praviloma zajame in vsaj del obdelave izvede lokalno~\cite{src:abadade2023comprehensive, src:moosmann2024ultra_tinyissimoyolo, src:boyle2024dsort, src:lin2021memory, src:hymel2022edgeimpulse}. Za robne naprave z omejeno zmogljivostjo to pomeni iskanje kompromisov med natančnostjo in kompleksnostjo algoritmov, dobro pa je premisliti tudi, če lahko zahtevne algoritme, kot recimo segmentacijski algoritmi, nadomestimo s preprostejšimi pristopi.
 
-    % Omejitev strojne opreme in izbor platforme STM32
-    Omejili smo se na naslednjo strojno opremo: kot platformo izberemo mikrokrmilnike~STM32, ki imajo pomnilnik in shranjevalni prostor omejen na do nekaj megabajtov. Četudi so te omejitve stroge, so drugi pokazali, da je sorodne modele možno uporabljati tudi na takšnih napravah~\cite{src:Nikodinovska_2024}. Pristop dodatno podpira orodje X-CUBE-AI za izvajanje modelov~\cite{src:stxcubeai-docs} ter nabor referenčnih modelov, dokumentiranih in pripravljenih za izvajanje na izbrani platformi~\cite{src:stm32modelzoo}.
+    % PROBLEMATIKA NA TEM PODROČJU
 
-    % Namen tega dela. Kratek opis problema, justify the problem we are trying to solve, and justify the way we are trying to solve. 
-    Namen te naloge je torej eksperimentalno preveriti izvedljivost razpoznave sestavin hrane na izbranih robnih napravah z izbranim pristopom FOMO, pri čemer uporabimo podatkovno zbirko FoodSeg103. Iz ugotovitev želimo izpeljati praktične smernice za praktično in industrijsko rabo, kjer so ključne omejitve strojna oprema in robustnost v realnih pogojih. Problema se lotimo kot razpoznave sestavin hrane, ki predstavlja osnovo za nadaljnje delo, z vizijo kot razpoznavo kompleksnih jedi na osnovi sestavin. Uporabimo alternativen pristop razpoznave sestavin namesto klasičnih segmentacijskih modelov, da je izvedba na ciljni strojni opremi lažja.
-    Izbran pristop želimo ovrednotiti na FoodSeg103 in analizirati njegove omejitve. Prikazati želimo vpliv priprave modela za robno izvajanje, kar zajema predvsem vpliv kvantizacije na velikost in uspešnost modela. Preučiti želimo tudi poenostavitve podatkovne zbirke, da lahko problem zastavimo drugače (npr. kot detekcijski problem). Na koncu na podlagi ugotovitev oblikujemo jasne smernice in predloge za nadaljnje delo.
-
+    % Opredeli problem na tem področju - segmentacijski algoritmi so računsko zahtevni in robne naprave imajo določene omejitve, in ker je razpoznavanje sestavin je ekstra zahtevno področje.
     % Omejitve in izzivi
-    Zastavljen problem je zahteven zaradi odprtosti okolja, tipične neenakomerne porazdelitve razredov v podatkovnih zbirkah sestavin, prekrivanj objektov na sliki, visoke znotrajrazredne variabilnosti ter nizke medrazredne variabilnosti~\cite{src:wu2021large, src:bossard2014food}. Dodatno ga otežujejo omejitve strojne opreme in izbrane platforme, kot so velikost modela ter uporabljen pomnilnik, ki so pogosto omejeni na nekaj megabajtov ali celo kilobajtov. Dodatno omejitev predstavlja podpora izvajalnega okolja, saj izvajalna okolja za robne naprave načeloma podpirajo precej ožji nabor operacij.
+    Zastavljen problem razpoznavanja sestavin hrane je zahteven zaradi odprtosti okolja, tipične neenakomerne porazdelitve razredov v podatkovnih zbirkah sestavin, prekrivanj objektov na sliki, visoke znotrajrazredne variabilnosti ter nizke medrazredne variabilnosti~\cite{src:wu2021large, src:bossard2014food}.
+    Problem dodatno otežuje kompleksnost segmentacijskih algoritmov in omejitve strojne opreme. Izbrane platforme omejuje predvsem pomnilnik, ki je pogosto v rangu nekaj megabajtov ali celo kilobajtov. To neposredno določa največjo velikost modela, ki se še lahko izvaja na napravi. Dodatno omejitev predstavlja podpora izvajalnega okolja, saj ta za robne naprave načeloma podpirajo precej ožji nabor operacij.
     Navedene omejitve uporabo modelov na takšnih napravah bistveno otežijo, še posebej, če želimo ohraniti natančnost, primerljivo z oblačnimi modeli.
     % Glej Mohanty2021 D.5. Negative Results da vidis kak so pocasi zgubljali frnikule in kaj vse so probali, pa ni uspelo.
+    
+    % NAMEN TEGA DELA - segmentacija, ki bi delovala na robnih napravah?
+    
+    % TODO: Koporec pravi da sem sodi: najdimo pristop razpoznavanja sestavin s segmentacijskimi algoritmi, ki bo deloval na robnih napravah.
+    % TODO: Restrukturiraj? - Na kaksen nacin, s kaksnimi nalogami, s kaksnimi opravili smo eksperimentalno preverili izvedljivost razpoznave sestavin
+    Namen te naloge je, da eksperimentalno preverimo izvedljivost razpoznave sestavin hrane na izbranih robnih napravah z izbranim pristopom FOMO, pri čemer uporabimo podatkovno zbirko FoodSeg103. Želeli smo izpeljati smernice za industrijsko rabo, kjer so ključne zahteve strojna oprema in robustnost v realnih pogojih. Problema smo se lotili kot razpoznave sestavin hrane, ki predstavlja osnovo za nadaljnje delo, z vizijo kot razpoznavo kompleksnih jedi na osnovi sestavin. Uporabili smo alternativen pristop razpoznave sestavin namesto klasičnih segmentacijskih modelov, da je izvedba na ciljni strojni opremi lažja. Izbran pristop smo ovrednotili na zbirki FoodSeg103 in analizirati njegove omejitve. Prikazati smo želeli vpliv priprave modela za izvajanje na robnih napravah, kar zajema predvsem vpliv kvantizacije na velikost in uspešnost modela. Preučili smo tudi potencialne poenostavitve podatkovne zbirke, da lahko problem zastavimo drugače (npr. kot detekcijski problem). Na koncu smo na podlagi ugotovitev oblikovali jasne smernice in predloge za nadaljnje delo.
 
-    % Scope of work, povej do kam si šel in česa nisi naredil.
-    %\textbf{Obseg.} Ne obravnavamo [npr. večmodalnih modelov z besedilom/recepti] zaradi [razlog], prav tako ne [npr. kompleksnih segmentacijskih arhitektur], ker [omejitve].
+    % TODO: Opisi svojo resitev
+    % - FOMO
+    % - FoodSeg103
+    % - Analiza poenostavitev, kot detekcijski problem
+    % - ?
+    % Ne obravnavamo [npr. večmodalnih modelov z besedilom/recepti] zaradi [razlog], prav tako ne [npr. kompleksnih segmentacijskih arhitektur], ker [omejitve].
+    %
+    % Omejitev strojne opreme in izbor platforme STM32
+    Omejili smo se na naslednjo strojno opremo: kot platformo izberemo mikrokrmilnike~STM32, ki imajo pomnilnik in shranjevalni prostor omejen na do nekaj megabajtov. Četudi so te omejitve stroge, so drugi pokazali, da je sorodne modele možno uporabljati tudi na takšnih napravah~\cite{src:Nikodinovska_2024}. Pristop dodatno podpira orodje X-CUBE-AI za izvajanje modelov~\cite{src:stxcubeai-docs} ter nabor referenčnih modelov, dokumentiranih in pripravljenih za izvajanje na izbrani platformi~\cite{src:stm32modelzoo}.
+    Zaradi strogih omejitev pomnilnika, računske moči in porabe energije moramo globoke modele primerno optimizirati, kar je danes aktivno področje raziskav in razvoja.
+    V tem delu uporabimo model Faster Objects, More Objects (FOMO) platforme Edge Impulse~\cite{src:announcingfomo}, detekcijski pristop za mikrokrmilnike, ki se izogne klasični strukturi detektorjev in na izhodu ustvari grobo segmentacijsko masko. Slednja se običajno naknadno obdela (npr. z združevanjem/rojenjem), da na izhodu dobimo lokacije objektov.
+    % TODO: Razširi. Povej prednosti in slabosti modela.
+
+    % TODO: Tole verjetno paše kam drugam
+    V kontekstu tega dela nas zanima prisotnost sestavin, zato smo postopek priredili tako, da smo informacijo o lokalizaciji opustili in gledali zgolj zadostno prisotnost sestavin na maski. Z eksperimenti smo ugotovili, da je model učinkovit na robnih napravah z omejeno zmogljivostjo, vendar se je izkazalo, da ima tudi določene slabosti. Med njih sodijo majhno receptivno polje in omejena kapaciteta modela, kar omeji končno uspešnost pristopa~\cite{src:boyle2024dsort}.
+
+    % Kratek opis rezultatov
+    Z izbrano rešitvijo smo dosegli zgolj omejene rezultate. Metoda FOMO je pomanjkljiva in ima težave predvsem z velikostjo receptivnega polja ter zahteva precej naknadne obdelave rezultatov. Težavo je predstavljala tudi odprta narava podatkovne zbirke in neugodna distribucija razredov, tipična za problematiko razpoznavanja sestavin hrane. Pristopi drugih avtorjev na podatkovni zbirki FoodSeg103 se večinoma ukvarjajo s semantično segmentacijo in ne ciljajo na izvajanje na mikrokrmilnikih, zaradi česar so njihove rešitve večinoma neprimerne za naš namen. Ovire, na katere smo naleteli tekom eksperimentov, kažejo, da je razpoznavanje sestavin hrane zahtevno področje, ki v mnogih pogledih še ni zadovoljivo rešeno.
 
     % Struktura dokumenta.
     Delo se začne s pregledom sorodnih del v poglavju~\ref{sct:sorodna-dela}. V poglavju~\ref{sct:metodologija} predstavimo teoretično ozadje izbranih pristopov ter podrobneje opišemo arhitekturo modela FOMO in teoretične osnove pristopov YOLOv11-seg in SAM. V poglavju~\ref{sct:eksperimenti-in-rezultati} opišemo uporabljeno podatkovno zbirko in izvedene eksperimente, v poglavju~\ref{sct:diskusija} pa komentiramo rezultate in iz njih izpeljemo smernice za nadaljnje delo. Delo zaključimo v poglavju~\ref{sct:zakljucek}, kjer povzamemo ključne ugotovitve.
 
 \chapter{Sorodna dela} \label{sct:sorodna-dela}
 
-    % Core questions:
-    %   - what was already discovered
-    %   - Relationship of this problem to other fields
-    %   - Where does previous work fall short and why you need to do this
+    V tem poglavju predstavimo sorodna dela s področja razpoznavanja jedi ter izvajanja modelov globokega učenja na robnih napravah. Razpoznavanje jedi podrobneje obravnavamo v poglavju~\ref{sct:razpoznavanje-jedi-na-vizualnih-vzorcih}, kjer predstavimo zgodnje pristope razpoznavanja jedi, uveljavljene pristope globokega učenja, novejše večmodalne metode, ki upoštevajo dodatne informacije o sestavinah, ter naredimo pregled pristopov za klasifikacijo, detekcijo in segmentacijo jedi ter sestavin. Nato v poglavju~\ref{sct:izvajanje-na-robnih-napravah} podrobneje predstavimo pregled obstoječih pristopov, ki modele globokega učenja izvajajo na robnih napravah ter tam uporabljeno strojno opremo. Poleg tega naredimo pregled najpogostejših optimizacij ter predstavimo obstoječe programske rešitve in razvojna okolja, namenjena razvoju in uporabi takšnih sistemov.
 
-    \section{Razpoznavanje jedi na podlagi slik}
+    \section{Razpoznavanje jedi na vizualnih vzorcih} \label{sct:razpoznavanje-jedi-na-vizualnih-vzorcih}
     
-        Zgodnji pristopi k razpoznavanju na podlagi slik so temeljili na klasičnih metodah računalniškega vida. 
+        Zgodnji pristopi k razpoznavanju na podlagi slik so temeljili na klasičnih metodah računalniškega vida.
         V zgodnjih delih~\cite{src:wang2003assessment, src:segnini1999low} so avtorji na podlagi povprečnih vrednosti pikslov določali lastnosti sira med peko in ocenjevali kvaliteto čipsa.
-         Metode razpoznavanja jedi na sliki lahko v grobem razdelimo na klasifikacijo ter segmentacijo objektov na sliki~\cite{src:konstantakopoulos2023review}.  % Obstajajo pa tudi pristopi, ki zavoljo izboljšanja rezultatov ali pa poenostavitve podatkovne zbirke uporabljajo metode iz obeh področij~\cite{src:zhu2023new, src:konstantakopoulos2023review}.
+        Metode razpoznavanja jedi na sliki lahko v grobem razdelimo na klasifikacijo ter segmentacijo objektov na sliki~\cite{src:konstantakopoulos2023review}.  % Obstajajo pa tudi pristopi, ki zavoljo izboljšanja rezultatov ali pa poenostavitve podatkovne zbirke uporabljajo metode iz obeh področij~\cite{src:zhu2023new, src:konstantakopoulos2023review}.
 
         \subsection{Klasifikacija jedi}
 
@@ -395,7 +395,7 @@ V pričujočem zaključnem delu so uporabljene naslednje kratice:
             % FoodSAM
             Med novejšimi pristopi je FoodSAM avtorjev Lan~\textit{et al.}~\cite{src:lan2023foodsam}. Osnovan je na Segment Anything modelih (SAM)~\cite{src:kirillov2023segment}, ki lahko izvedejo segmentacijo kateregakoli objekta, brez da bi ga bilo potrebno imeti v učni množici (angl. zero-shot segmentation), vendar pa mu ne pripišejo kategorije oz. razreda. Rezultat takšnih modelov je zgolj segmentacijska maska. FoodSAM tako vsebuje SAM enkoder, s katerim generira kvalitetne segmentacijske maske brez oznak razredov. Hkrati vsebuje tudi običajen model za semantično segmentacijo, avtorji so uporabili SeTR~\cite{src:zheng2021rethinking} na FoodSeg103, s katerim generirajo grobe segmentacijske maske z oznakami razredov. Rezultate obeh enkoderjev združijo prek mehanizma za glasovanje. S tem pristopom dosežejo 46{,}4~\% mIoU na FoodSeg103 in 66{,}1~\% na UECFoodPix Complete, po navedbah avtorjev SOTA za dani segmentacijski podatkovni zbirki.
 
-    \section{Izvajanje na robnih napravah}
+    \section{Izvajanje na robnih napravah} \label{sct:izvajanje-na-robnih-napravah}
 
         % Uvod, early efforts
         Izvajanje DNN modelov na robnih napravah je zapleteno zaradi strogih omejitev strojne opreme, v glavnem količine RAM pomnilnika ter Flash spomina. Termin "robna naprava"  načeloma zajema od mobilnih telefonov, zmogljivih namenskih krmilnikov kot Nvidia Jetson~\cite{src:nvidiajetson} in Coral Edge TPU~\cite{src:coraledgetpu}, pa vse do povsem  mikrokrmilnikov brez specializirane strojne opreme. V tem delu se omejujemo na slednje, 
@@ -1720,7 +1720,7 @@ V pričujočem zaključnem delu so uporabljene naslednje kratice:
 \chapter{Zaključek} \label{sct:zakljucek}
 
 V delu smo preverili izvedljivost razpoznave sestavin na robni napravi z lahkim pristopom FOMO na zbirki FoodSeg103. Ugotovili smo, da so doseženi rezultati omejeni: deloma zaradi pomanjkljivosti izbranega pristopa (majhno receptivno polje in obsežna obdelava izhoda modela), deloma zaradi zahtevne, odprte narave in zelo podrobno razdeljenih razredov v podatkovni zbirki. Ker tipični raziskovalni pristopi do zbirke FoodSeg103 temeljijo na semantični segmentaciji in se ne ciljajo na izvajanje na mikrokrmilnikih, niso nujno primerni za našo končno uporabo~\cite{src:wu2021large, src:lan2023foodsam}. Omejitve pristopa in izsledki jasno kažejo, da je razpoznavanje sestavin zahtevno in še ni zadovoljivo rešeno ter da morajo rešitve izhajati iz omejitev robne platforme in industrijskega okolja.
-Regardless of our results, ingredient-supervised dish detection is a likely trend of research and is worth getting into it.
+%Regardless of our results, ingredient-supervised dish detection is a likely trend of research and is worth getting into it.
 
 Za praktično in industrijsko rabo se kot smiselna kažeta standardizacija okolja (nadzor osvetlitve, položaja in skale) in poenostavitev formulacije naloge. Kot obetavna alternativa neposredni segmentaciji je obdelava zaplat (\textit{patch-wise}), pri kateri lahko izkoristimo nekoliko kompleksnejši model z daljšim ekstraktorjem značilk, ki ga strojna oprema še dopušča. Dodatno lahko k robustnosti prispevata prednaučevanje ekstraktorja na domeni bližjih zbirkah (npr. Food-101) ter združevanje razredov v smiselne super-kategorije. Za nadaljevanje dela tako predlagamo pripravo ustrezne, nadzorovane podatkovne zbirke in sistematičen preizkus navedenih poenostavitev ter arhitekturnih sprememb.
 Ne glede na dosežene rezultate je razpoznava jedi na podlagi sestavin verjeten raziskovalni trend, v katerega se je smiselno usmeriti~\cite{src:konstantakopoulos2023review}.
