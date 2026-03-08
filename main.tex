@@ -296,20 +296,20 @@ V pričujočem zaključnem delu so uporabljene naslednje kratice:
 
 \chapter{Sorodna dela} \label{sct:sorodna-dela}
 
-    V tem poglavju predstavimo sorodna dela s področja razpoznavanja jedi ter izvajanja modelov globokega učenja na robnih napravah. Razpoznavanje jedi podrobneje obravnavamo v poglavju~\ref{sct:razpoznavanje-jedi-na-slikah}, kjer predstavimo zgodnje pristope razpoznavanja jedi, uveljavljene pristope globokega učenja, novejše večmodalne metode, ki upoštevajo dodatne informacije o sestavinah, ter naredimo pregled pristopov za klasifikacijo, detekcijo in segmentacijo jedi ter sestavin. Nato v poglavju~\ref{sct:izvajanje-na-robnih-napravah} podrobneje predstavimo pregled obstoječih pristopov, ki modele globokega učenja izvajajo na robnih napravah ter tam uporabljeno strojno opremo. Poleg tega naredimo pregled najpogostejših optimizacij ter predstavimo obstoječe programske rešitve in razvojna okolja, namenjena razvoju in uporabi takšnih sistemov.
+    V tem poglavju predstavimo sorodna dela s področja razpoznavanja jedi ter izvajanja modelov globokega učenja na robnih napravah. Razpoznavanje jedi podrobneje obravnavamo v poglavju~\ref{sct:razpoznavanje-jedi-na-slikah}, kjer predstavimo zgodnje pristope razpoznavanja jedi, uveljavljene pristope globokega učenja, novejše večmodalne metode, ki upoštevajo dodatne informacije o sestavinah, ter naredimo pregled pristopov za klasifikacijo, detekcijo in segmentacijo jedi ter sestavin. Nato v poglavju~\ref{sct:izvajanje-na-robnih-napravah} podrobneje predstavimo pregled obstoječih pristopov, ki modele globokega učenja izvajajo na robnih napravah ter tam uporabljeno strojno opremo.
 
     \section{Razpoznavanje hrane iz slikovnih vzorcev} \label{sct:razpoznavanje-jedi-na-slikah}
 
-        Zgodnji pristopi k razpoznavanju jedi na podlagi slik so temeljili na ročno izluščenih značilnicah, na primer značilnicah HOG (histogram orientiranih gradientov)~\cite{src:dalal2005hog}, SIFT (angl. \emph{Scale-Invariant Feature Transform})~\cite{src:lowe2004sift} in barvnih histogramih~\cite{src:min2019survey}. V nekaterih zgodnjih delih~\cite{src:wang2003assessment, src:segnini1999low} so avtorji povprečili svetlosti slikovnih elementov na sivinskih slikah ter na tej osnovi določali lastnosti sira med peko in ocenjevali kakovost čipsa.
-        V novejših pristopih avtorji pogosto uporabljajo metode globokega učenja, s katerimi dosegajo boljše rezultate~\cite{src:min2019survey, src:kagaya2014food, src:krizhevsky2012imagenet, src:hassannejad2016food, src:martinel2018wide}. V tem odseku jih v grobem razdelimo na klasifikacijske in segmentacijske pristope~\cite{src:konstantakopoulos2023review, src:min2019survey}. Klasifikacijski pristopi v glavnem izvajajo enoznačno ali večznačno klasifikacijo jedi oziroma sestavin na sliki~\cite{src:martinel2018wide, src:tan2019efficientnet, src:bolanos2017food, src:fu2024recognizing}. Segmentacijski pristopi pa skušajo lokalizirati jed ali njeno komponento na sliki, ločiti posamezne komponente od preostalih ter jih potencialno tudi kategorizirati~\cite{src:wu2021large, src:bolanos2016simultaneous, src:poply2021refined, src:konstantakopoulos2023review, src:javadi2024smart}. Obstajajo tudi pristopi, ki zaradi izboljšanja rezultatov ali poenostavitve podatkovne zbirke kombinirajo metode obeh področij~\cite{src:zhu2023new}.
+        Med zgodnjimi pristopi k razpoznavanju jedi iz slik so prevladovale ročno izluščene značilnice, predvsem SIFT (angl. \emph{Scale-Invariant Feature Transform})~\cite{src:lowe2004sift}, HOG (histogram orientiranih gradientov)~\cite{src:dalal2005hog} in barvni histogrami~\cite{src:min2019survey}.
+        V nekaterih zgodnjih delih~\cite{src:wang2003assessment, src:segnini1999low} so avtorji povprečili svetlosti slikovnih elementov na sivinskih slikah ter na tej osnovi določali lastnosti sira med peko in ocenjevali kakovost čipsa.
+        V novejših pristopih avtorji pogosto uporabljajo metode globokega učenja, s katerimi dosegajo boljše rezultate~\cite{src:min2019survey, src:kagaya2014food, src:krizhevsky2012imagenet, src:hassannejad2016food, src:martinel2018wide}.
+        Pristope za razpoznavanje hrane na slikah v grobem delimo na klasifikacijske in segmentacijske~\cite{src:konstantakopoulos2023review, src:min2019survey}. Klasifikacijski izvajajo enoznačno ali večznačno klasifikacijo jedi oziroma sestavin~\cite{src:martinel2018wide, src:tan2019efficientnet, src:bolanos2017food, src:fu2024recognizing}, segmentacijski pa lokalizirajo in razmejujejo posamezne komponente ter jih po potrebi tudi kategorizirajo~\cite{src:wu2021large, src:bolanos2016simultaneous, src:poply2021refined, src:konstantakopoulos2023review, src:javadi2024smart}.
 
         \subsection{Klasifikacija jedi}
 
-            Ena izmed osnovnih nalog pri razpoznavanju hrane je klasifikacija, tj. napoved kategorije jedi oziroma sestavin na podlagi slikovnih podatkov z metodami strojnega učenja~\cite{src:min2019survey}.
-            Klasifikacija slik hrane je zapleten proces, na katerega lahko vpliva več dejavnikov, med drugimi način priprave jedi, prekrivanje posameznih živil, ali so bile slike posnete v nadzorovanem okolju in število različnih kategorij hrane~\cite{src:konstantakopoulos2023review}. Bistven faktor je tudi kvaliteta podatkovne zbirke - objavljeno je bilo precej klasifikacijskih podatkovnih zbirk za različne kulinarike in namene~\cite{src:min2019survey}. Med najpomembnejše sodijo \mbox{Food-101}~\cite{src:bossard2014food}, \mbox{UEC-Food100}~\cite{src:matsuda2012recognition}, \mbox{UEC-Food256}~\cite{src:kawano2014automatic} ter \mbox{Vireo Food-172}~\cite{src:chen2016deep}.
-
+            Med temeljne naloge razpoznavanja hrane sodi klasifikacija, pri kateri z metodami strojnega učenja iz slikovnih podatkov napovemo kategorijo jedi ali posameznih sestavin~\cite{src:min2019survey}.
             % Klasični pristopi, začetki
-            S klasičnimi metodami značilke tipično izluščimo ročno, nato pa jih uporabimo v razvrščevalniku~\cite{src:min2019survey}.
+            V tradicionalnih klasifikacijski pristopih značilke tipično izluščimo ročno, nato pa jih uporabimo v razvrščevalniku~\cite{src:min2019survey}.
             % TODO: Prevedi superpiksle?
             V~\cite{src:bossard2014food} so avtorji uporabili metodo naključnega gozda~(angl. random forest)~\cite{src:breiman2001randomforest} ter metodo superpikslov~\cite{src:ren2003superpixels} za identifikacijo ključnih področij oz. komponent slike jedi. Značilke identificiranih komponent so nato razvrstili z metodo podpornih vektorjev (angl. support vector machine, SVM)~\cite{src:cortes1995svm} in tako določili tipa jedi.
             Podobno so v~\cite{src:yang2010food} avtorji na slikah jedi identificirali lokalne lastnosti slikovnih elementov in njihove soodvisnosti ter jih zajeli v histogramu. Tega so nato uporabili kot vektor značilk v razvrščevalniku SVM~\cite{src:cortes1995svm}.
@@ -320,9 +320,9 @@ V pričujočem zaključnem delu so uporabljene naslednje kratice:
             % Kagaya 2014 - Among the first to try DNN on food datasets.
             V~\cite{src:kagaya2014food} so avtorji primerjali klasične pristope z metodami na podlagi konvolucijskih nevronskih mrež (angl. Convolutional Neural Networks, CNN)~\cite{src:krizhevsky2012imagenet} in s slednjimi dosegli veliko boljše rezultate. Navajajo še, da se je tako naučena mreža med klasifikacijo zanašala predvsem na barvo objektov na sliki.
             % Hassannejad 2016 [90] - Inception V3
-            Hassannejad~\etal~\cite{src:hassannejad2016food} so model Inception~V3~\cite{src:szegedy2016rethinking} doučili na zbirkah UEC-Food100~\cite{src:matsuda2012recognition}, UEC-Food256~\cite{src:kawano2014automatic} in Food-101~\cite{src:bossard2014food}. Na posameznih zbirkah so dosegli natančnosti 81{,}5~\%, 76{,}2~\% ter 88{,}3~\%. Čeprav so dobre rezultate dosegli s precej manj parametri kot konkurenca, njihov pristop še vedno ni bil ustrezen za izvajanje na robnih napravah.
+            Hassannejad~\etal~\cite{src:hassannejad2016food} so model Inception~V3~\cite{src:szegedy2016rethinking} doučili na zbirkah UEC-Food100~\cite{src:matsuda2012recognition}, UEC-Food256~\cite{src:kawano2014automatic} in Food-101~\cite{src:bossard2014food}. Na posameznih zbirkah so dosegli natančnosti 81{,}5~\%, 76{,}2~\% ter 88{,}3~\%. Dobre rezultate so dosegli s precej manj parameteri kot konkurenca, vendar njihov pristop še vedno ni bil primeren za izvajanje na robnih napravah.
             % Matrinel 2018 - WISeR
-            V~\cite{src:martinel2018wide} so avtorji predstavili arhitekturo WISeR, globoki model za klasifikacijo slik hrane, kjer so uporabili novo plast, namenjeno zaznavanju navpičnih struktur v jedeh, kjer se komponente prekrivajo in so naložene vertikalno. Njihov pristop je presegel obstoječe CNN-modele na zbirkah Food-101~\cite{src:bossard2014food} z več kot 90~\% natančnostjo. Kljub visoki natančnosti pa kompleksnost modela omejuje njegovo uporabnost na napravah z omejenimi viri.
+            V~\cite{src:martinel2018wide} so avtorji predstavili arhitekturo WISeR, globoki model za klasifikacijo slik hrane, kjer so uporabili novo plast, namenjeno zaznavanju navpičnih struktur v jedeh, kjer se komponente prekrivajo in so naložene vertikalno. Njihov pristop je presegel obstoječe CNN-modele na zbirkah Food-101~\cite{src:bossard2014food} z več kot 90~\% natančnostjo. Kljub visoki natančnosti kompleksnost modela omejuje njegovo uporabnost na napravah z omejenimi viri.
             % Tan 2019 [91] - EfficientNetB7 - among the best solutions to Food-101 according to the 2024 review
             Tan~\etal~\cite{src:tan2019efficientnet} so uvedli družino modelov EfficientNet, s katerim so dosegli zelo dobre rezultate na več podatkovnih zbirkah. Med drugim so na Food-101~\cite{src:bossard2014food} z EfficientNetB7 dosegli 93~\% natančnost.
             % TODO: Naslednji dve povedi mogoče prestavi v odsek kjer govoriš o izvajanju na robnih napravah.
@@ -332,8 +332,8 @@ V pričujočem zaključnem delu so uporabljene naslednje kratice:
             V~\cite{src:moumane2023food} so avtorji  uporabili MobileNetV2~\cite{src:sandler2018mobilenetv2} za klasifikacijo zbirke Food-101~\cite{src:bossard2014food}. Avtorji so izbran model implementirali v mobilni aplikaciji za izvajanje na pametnih telefonih.
             % Izbran model je zaradi svoje učinkovitosti primeren tudi za izvajanje na robnih napravah.
             % Ta članek izgleda precej nekvaliteten, vendar je eden redkih, ki poskuša uporabiti MobileNetV2 na Food-101 oz. ostalih food-related datasetih. Ne zaupam         % Prav detekcija/klasifikacija sestavin
-            Bolanos~\etal se v delu~\cite{src:bolanos2017food} namesto klasifikacije samih jedi lotijo klasifikacije sestavin, prisotnih na sliki. Uporabili so zbirko Food-101~\cite{src:bossard2014food}, ki sicer vsebuje oznake jedi, a so jih ročno zamenjali z oznakami sestavin. Uporabili so standarden večznačen pristop razvrščanja z InceptionV3~\cite{src:szegedy2016rethinking} % večznačen - multi-label
-            in ResNet50~\cite{src:he2016deep}ter dosegli do 80{,}1~\% natančnosti po metriki razvrščanja F1. Preverili so tudi sposobnost generalizacije modela na nove slike jedi, kjer so na modificirani zbirki Recipes5k~\cite{src:bolanos2017food} dosegli do 47~\% po metriki F1. Slabost njihovega pristopa je, da so vsakemu receptu pripisali množico sestavin, ne glede na to, ali je dana sestavina vidna ali ne.
+            Bolanos~\etal se v delu~\cite{src:bolanos2017food} namesto klasifikacije samih jedi lotijo klasifikacije sestavin, prisotnih na sliki. Uporabili so zbirko Food-101~\cite{src:bossard2014food}, ki sicer vsebuje oznake jedi, a so jih ročno zamenjali z oznakami sestavin. Uporabili so standarden večznačen pristop razvrščanja z InceptionV3~\cite{src:szegedy2016rethinking} in ResNet50~\cite{src:he2016deep}ter dosegli do 80{,}1~\% natančnosti po metriki razvrščanja F1. % večznačen - multi-label
+            Preverili so tudi sposobnost generalizacije modela na nove slike jedi, kjer so na modificirani zbirki Recipes5k~\cite{src:bolanos2017food} dosegli do 47~\% po metriki F1. Slabost njihovega pristopa je, da so vsakemu receptu pripisali množico sestavin, ne glede na to, ali je dana sestavina vidna ali ne.
             V~\cite{src:fu2024recognizing} so avtorji raziskovali uporabo principa drsečega okna (angl. \textit{sliding window}). Klasifikacijo izrezanih delov slike so izvajali s prilagojenim EfficientNetB0~\cite{src:tan2019efficientnet}. Tako so v končnem sistemu z razvrščevalnikom za vsak izrezek predvideli en tip sestavine, nato pa rezultate vseh izrezkov združili po principu glasovanja. Na tak način so rekonstruirali seznam vseh prisotnih sestavin. Učenje so avtorji v~\cite{src:fu2024recognizing} sicer izvajali na zasebni podatkovni zbirki, vendar so evalvacijo izvedli tudi na poenostavljeni zbirki FoodSeg103~\cite{src:wu2021large}. Poenostavitev so izvedli tako, da so med testiranjem upoštevali rezultate le za 35 razredov, ki so se prekrivali z njihovo zasebno podatkovno zbirko.
             % (kjer so dosegli do 53~\% po metriki mAcc) - rezultat ni relevanten, ker ne vem točno kaj so delali z metriko, imajo malo citatov, in uporabljajo poenostavljeno/spremenjeno zbirko.
 
@@ -356,7 +356,7 @@ V pričujočem zaključnem delu so uporabljene naslednje kratice:
         % Weakly supervised ingredient segmentation/detection
             Nekateri pristopi so uporabili tudi t. i. šibko nadzorovano učenje, s katerim so se poskusili izogniti potrebi po segmentacijskih podatkovnih zbirkah, saj so s tem pristopom potrebovali le informacijo o prisotnosti sestavine na sliki (t.i. anotacije na nivoju slike), pri čemer so še vedno skušali v model vključiti vizualne predstave sestavin~\cite{src:zhu2023new}.
             Vlachopoulou~\etal~\cite{src:vlachopoulou2023food} so tako uporabili šibko nadzorovane pristope iz sorodnih področij, med drugim iz medicine, za razpoznavo sestavin jedi: sliko so razbili v posamezne zaplate, za vsako zaplato so z ResNet-34~\cite{src:he2016deep} izračunali značilnice, mehanizem za pozornost (angl. attention mechanism)~\cite{src:ilse2018attention} pa jih je utežil in združil. Tako združen predstavitveni vektor so nato peljali v razvrščevalnik. Modele so učili na FoodSeg101~\cite{src:bossard2014food}, vendar so zbirko močno poenostavili. Poenostavljena zbirka je imela zgolj dve kategoriji (meso in pekovski izdelki), anotacije pa so pretvorili iz nivoja slikovnih elementov na nivo slike. Avtorji~\cite{src:vlachopoulou2023food} so za vsako kategorijo naučili povsem ločen model, da so se čim bolj izognili medsebojnemu vplivu sestavin. Dosegli so uspešnost 71{,}3~\% po metriki razvrščanja F1, vendar rezultati niso neposredno primerljivi z drugimi deli zaradi omenjenih poenostavitev podatkovne zbirke.
-            Sorodno so Zhu~\etal~\cite{src:zhu2023new} predstavili arhitekturo AttNet. Posamezne sestavine so razdelili v štiri nivoje kategorij, AttNet pa je za dano sliko poskušal napovedati vse štiri nivoje. Tako kot v prejšnjem pristopu~/\cite{src:vlachopoulou2023food} so tudi tu za vsako sestavino naučili lasten model. Kasneje so v~/\cite{src:zhu2023new} uporabili značilke iz konvolucijskih plasti v mreži in s filtri ter rojenjem izrazili približek segmentacijske maske. Model se ni neposredno učila ločevanja meje med sestavinami, le ločevanje globalni videz posamezne sestavine. Ker so konvolucijske značilke lokalne, se je ista aktivacija pojavila točno tam, kjer so bili slikovni elementi te sestavine, kar je omogočilo kasnejšo rekonstrukcijo maske. S tako pridobljenimi segmentacijskimi maskami so poročali do 65{,}3~\% mIoU na FoodSeg103~\cite{src:wu2021large}. Njihovi rezultati, čeprav zelo dobri, niso bili neposredno primerljivi z drugimi metodami, saj so avtorji omenjeno zbirko modificirali - ozadje so zamenjali z modro barvo. %Slabosti te metode?
+            Sorodno so Zhu~\etal~\cite{src:zhu2023new} predstavili arhitekturo AttNet. Posamezne sestavine so razdelili v štiri nivoje kategorij, AttNet pa je za dano sliko poskušal napovedati vse štiri nivoje. Tako kot v prejšnjem pristopu~\cite{src:vlachopoulou2023food} so tudi tu za vsako sestavino naučili lasten model. Kasneje so v~\cite{src:zhu2023new} uporabili značilke iz konvolucijskih plasti v mreži in s filtri ter rojenjem izrazili približek segmentacijske maske. Model se ni neposredno učil ločevanja meje med sestavinami, le ločevanje globalnega videza posamezne sestavine. Ker so konvolucijske značilke lokalne, se je ista aktivacija pojavila točno tam, kjer so bili slikovni elementi te sestavine, kar je omogočilo kasnejšo rekonstrukcijo maske. S tako pridobljenimi segmentacijskimi maskami so poročali do 65{,}3~\% mIoU na FoodSeg103~\cite{src:wu2021large}. Njihovi rezultati, čeprav zelo dobri, niso bili neposredno primerljivi z drugimi metodami, saj so avtorji omenjeno zbirko modificirali - ozadje so zamenjali z modro barvo. %Slabosti te metode?
 
         \subsection{Segmentacija jedi}
 
@@ -371,7 +371,7 @@ V pričujočem zaključnem delu so uporabljene naslednje kratice:
             Pouladzadeh~\etal~\cite{src:pouladzadeh2014using} so uporabili t.i. metodo reza v grafu (angl. graph cut)~\cite{src:boykov2001interactive-graphcut} za določanje regij, te pa so razvrstili z metodo SVM~\cite{src:cortes1995svm}.
 
             % Deep learning segmentation - intro
-            Pristopi, ki uporabljajo globoko učenje, dosegajo bistveno boljše rezultate~\cite{src:minaee2021image}.
+            Pristopi, ki uporabljajo globoko učenje, so dosegali bistveno boljše rezultate~\cite{src:minaee2021image}.
             % Bolanos 2016 - deep learning segmentacija
             Bolanos~\etal~\cite{src:bolanos2016simultaneous} so uporabili model GoogleNet~\cite{src:szegedy2015going-googlenet} in rezultate združili v sliko aktivacij (angl. heatmap), nato pa posamezne aktivacije še kategorizirali.
             % Shimoda 2020 - class activation mapping
@@ -394,67 +394,106 @@ V pričujočem zaključnem delu so uporabljene naslednje kratice:
 
     \section{Izvajanje na robnih napravah} \label{sct:izvajanje-na-robnih-napravah}
 
-        % Uvod, early efforts
-        Izvajanje modelov globokega učenja na robnih napravah je zahtevno zaradi strogih omejitev strojne opreme, predvsem razpoložljivega RAM pomnilnika ter Flash (programskega) pomnilnika. Izraz \enquote{robna naprava} zajema širok nabor naprav, od mobilnih telefonov in zmogljivejših namenskih platform, kot sta Nvidia Jetson~\cite{src:nvidiajetson} in Coral Edge TPU (angl. Tensor Processing Unit)~\cite{src:coraledgetpu}, pa vse do mikrokrmilnikov brez specializirane strojne opreme za pospeševanje inferenc. V tem delu se omejujemo na mikrokrmilnike brez specializirane strojne opreme, ker so ti praviloma nizkocenovni in bolj razširjeni~\cite{src:abadade2023comprehensive}.
-
-        Mikrokrmilniki imajo pogosto na voljo do 16~MB Flash pomnilnika in do 8~MB RAM pomnilnika, kar je bistveno manj od običajne strojne opreme za izvajanje modelov globokega učenja~\cite{src:tinymlsurvey}.
-
         % Early efforts
-        Za področje izvajanja modelov na robnih napravah se pogosto uporablja termin TinyML~\cite{src:abadade2023comprehensive}. Med začetke teh pristopov sodijo Kawano~~\etal~\cite{src:kawano2014foodcam} z modelom FoodCam-256, pripravljenim za izvajanje na mobilnih napravah, a uporabljajo tradicionalne pristope za klasifikacijo. Med pomembnejše pristope na tem področju sodita še SqueezeNet~\cite{src:iandola2016squeezenet} ter MobileNetV1~\cite{src:howard2017mobilenets}, ki v primerjavi z AlexNet~\cite{src:krizhevsky2012imagenet} ohranita oz. izboljšata natančnost, hkrati pa močno zmanjšata število parametrov.
+        Za področje izvajanja modelov na robnih napravah se pogosto uporablja termin TinyML~\cite{src:abadade2023comprehensive}. Med začetke teh pristopov sodijo Kawano~~\etal~\cite{src:kawano2014foodcam} z modelom FoodCam-256, ki je bil pripravljen za izvajanje na mobilnih napravah, a je uporabljal tradicionalne pristope za klasifikacijo. Med pomembnejše pristope na tem področju sodita še SqueezeNet~\cite{src:iandola2016squeezenet} ter MobileNetV1~\cite{src:howard2017mobilenets}, ki sta v primerjavi z AlexNet~\cite{src:krizhevsky2012imagenet} ohranila oz. izboljšata natančnost, hkrati pa močno zmanjšala število parametrov.
 
-        % TFLite (LiteRT), TFLite Micro (LiteRT for microcontrollers), ONNX, Edge Impulse thing,  ostali ... CMSIS-NN, CubeX-AI, 
-        % Glej tudi software optimization v surveyu
-        Za izvajanje modelov uporabljamo namenska izvajalna okolja (angl. frameworks). Med najbolj popularne sodita LiteRT (nekdaj TensorFlow Lite oz. TFLite)~\cite{src:litert} in LiteRT for Microcontrollers (nekdaj Tensorflow Lite for Microcontrollers oz. TFLite Micro)~\cite{src:litertmicro, src:david2021tensorflowlitemicro}, vendar poleg njih obstajajo tudi druga.
-        % EON compiler načeloma še zmer uporablja TFLite Micro, ampak je modificiran in ne uporabljajo tflm interpreterja, ampak model direk compilajo.
-        Kot alternativa je na voljo tudi platforma Edge Impulse\footnote{\url{https://www.edgeimpulse.com/}}. Poleg izvajalnega okolja ta ponuja EON Compiler~\cite{src:edgeimpulse_eon}, nadgradnjo okolja TFLite Micro~\cite{src:litertmicro}, ki model prevede v izvorno kodo in se s tem izogne potrebi po sprotnem interpretiranju modela med izvajanjem. To zmanjša količino pomnilnika, potrebnega za izvajanje modela ter okolja~\cite{src:edgeimpulse_eon}.
-        Omenjene rešitve tipično uporabljajo stroge optimizacije in omejen nabor operacij, s čimer skrajšajo čas inference in zmanjšajo potrebno količino pomnilnika~\cite{src:abadade2023comprehensive}. Za optimizirano izvajanje na ARM Cortex-M jedrih pogosto uporabljamo knjižnica CMSIS-NN~\cite{src:lai2018cmsis}.
-        Za optimizirano izvanjanje modelov na STM32 mikrokrmilnikih pogosto uporabljamo izvajalno okolje STM32Cube.AI MCU, ki je del X-CUBE-AI, vmesnika v programskem okolju STM32CubeIDE~\cite{src:stxcubeai-docs}.
-        Ta podpira modele različnih formatov, kot TFLite, ONNX in Keras, ter omogoča preprostejšo implementacijo in evalvacijo modelov na STM32 mikrokrmilnikih.
-        
-        % PTQ, QAT, FQN, kvantizacija samo uteži, pruning, zakaj ne dela, od česa je odvisna količina RAMa in Flasha
-        Pri optimizaciji modelov za izvajanje na robnih napravah se tipično opremo na kvantizacijo ter obrezovanje (angl. pruning).
-        % Kvantizacija
-        Obstajata dva glavna pristopa h kvantizaciji: kvantizacija po učenju (angl. Post-Training Quantization, PTQ) ter ozaveščeno učenje (angl. Quantization-Aware Training, QAT)~\cite{src:jacob2018quantization, src:nagel2021white, src:gholami2022survey}. PTQ je preprostejši pristop, kjer model kvantiziramo po tem, ko je bil naučen. Ločimo dinamično kvantizacijo, kjer kvantiziramo zgolj uteži in prage, ter polno kvantizacijo, kjer kvantiziramo še aktivacijske in vhodno-izhodne medpomnilnike. QAT po drugi strani zahteva, da že med učenjem upoštevamo učinek kvantizacije. PTQ načeloma opazno poslabša delovanje modela, QAT pa ima manj vpliva~\cite{src:Nikodinovska_2024}.
-        % Pruning
-        Poleg kvantizacije lahko model optimiziramo tudi z obrezovanjem. Tipično ga delimo na struturirano in nestrukturirano. Postopek skuša identificirati uteži ali povezave, ki nimajo bistvenega vpliva na izhod modela, ter jih zamenjati z ničlami. Rezultat so t.i. redke matrike (angl. sparse matrices), kar načeloma zmanjša računsko zahtevnost, vendar le v primeru, ko programsko okolje to podpira~\cite{src:Nikodinovska_2024}. %TFLite Micro tega še ne podpira.?
-
-        % Klasifikacija
-        Gutti~\etal~\cite{src:gutti2022real} so izdelali prototip za razvrščanje sadja in zelenjave na podlagi slik na ESP-32 mikrokrmilniku. Izvedli so primerjavo treh modelov - prilagojen CNN, MobileNetV1~\cite{src:howard2017mobilenets} ter MobileNetV2~\cite{src:sandler2018mobilenetv2}. Izmerili so hitrost inference do 51 ms in porabe do 66 kB pomnilnika. Lin~\etal~\cite{src:lin2020mcunet} so predstavili MCUNet, primeren za izvajanje na mikrokrmilnikih. Na ImageNet z njim dosežejo 70{,}7~\% natančnost. MobileNetV2 in MobileNetV2 na isti zbirki dosežeta 72{,}0~\% in 74{,}2~\% natančnost s 3{,}4 in 6{,}9 milijoni parametrov. 
-        % Detekcija
-        % MobileNetV1/2 + SSD
-        % MobileNetV1/2 + SSD FPN Lite na model zoo
-        Izvedbe družine modelov MobileNet s SSD (angl. Single Shot Detection) ter FPN (angl. Feature Pyramid Network)~\cite{src:lin2017feature} omogočajo uporabo izbranih modelov tudi v kontekstu detekcije.
+        Izvedbe družine modelov MobileNet s SSD (angl. Single Shot Detection) ter FPN (angl. Feature Pyramid Network)~\cite{src:lin2017feature} omogočajo uporabo izbranih klasifikacijskih modelov tudi v kontekstu detekcije.
         % ST YOLO X
         Prav tako je možno nekatere bolj znane detekcijske modele, na primer YOLOX~\cite{src:ge2021yolox}, prirediti za izvajanje na mikrokrmilnikih~\cite{src:stm32modelzoo}.
+
         % FOMO
-        Platforma Edge Impulse je predstavila model Faster Objects More Objects (FOMO)~\cite{src:fomodocs}, detekcijski model, namenjen izvajanju na mikrokrmilnikih. Sestavljen je iz začetnih plasti MobileNetV2 modela, glava pa je zgolj konvolucijska plast, kar rezultira v mreži značilk oz. aktivacij za vsako kategorijo. To lahko interpretiramo tudi kot segmentacijsko masko z zelo nizko resolucijo. Na takšnem izhodu se nato izvede algoritem rojenja, kjer vsak roj predstavlja en objekt. Izhod modela so tako središča detektiranih rojev, kar posnema izhode klasičnih detekcijskih modelov. Metoda sicer zahteva zelo malo pomnilnika in ima nizko računsko kompleksnost, slabosti pa se skrivajo v majhnem receptivnem polju (angl. low receptive field), združevanju sosednjih objektov tekom rojenja ter nižji kapaciteti modela~\cite{src:boyle2024dsort}.
+        Platforma Edge Impulse je predstavila model Faster Objects More Objects (FOMO)~\cite{src:fomodocs}, detekcijski model, namenjen izvajanju na mikrokrmilnikih. Sestavljen je iz začetnih plasti modela MobileNetV2~\cite{src:sandler2018mobilenetv2}, glava pa je zgolj konvolucijska plast, kar rezultira v mreži značilk oz. aktivacij za vsako kategorijo. To lahko interpretiramo tudi kot segmentacijsko masko z zelo nizko resolucijo. Na takšnem izhodu so avtorji izvedli algoritem rojenja, kjer je vsak roj predstavljal en objekt. Tako so izhod modela bila središča detektiranih rojev, kar je posnemalo izhode klasičnih detekcijskih modelov. Metoda je sicer zahtevala zelo malo pomnilnika in imela nizko računsko kompleksnost, slabosti pa so se skrivale v majhnem receptivnem polju (angl. low receptive field), združevanju sosednjih objektov tekom rojenja ter nižji kapaciteti modela~\cite{src:boyle2024dsort}.
         % TODO: Edge Impulse se ponaša predvsem s poenostavljanjem postopka zajema in obdelave podatkovne zbirke, učenja modela ter priprave modela za izvajanje na mikrokrmilnikih. Platforma omogoča popolnoma on line workflow, kompleksnost naloge pa zmanjšajo na račun fleksibilnosti pri načrtovanju. Načeloma je možno generirane skripte tudi urejati, kar omogoči boljši nadzor nad workflovom.
  
         % DSORT-MCU
-        Problem združevanja objektov med rojenjem so deloma razrešili Boyle~\etal v DSORT-MCU~\cite{src:boyle2024dsort}, kjer so predstavili adaptivno deljenje slike. Sliko so najprej razdelili na prekrivajoče odseke, nato pa vsak odsek ločeno poslali skozi model FOMO~\cite{src:fomodocs}. Rezultate vseh so nato združili v končni izhod. S tem so izboljšali sposobnost modela FOMO za štetje objektov.
+        Problem združevanja objektov med rojenjem so deloma razrešili Boyle~\etal v DSORT-MCU~\cite{src:boyle2024dsort}, kjer so predstavili adaptivno deljenje slike. Sliko so najprej razdelili na prekrivajoče odseke, nato pa vsak odsek ločeno poslali skozi model FOMO~\cite{src:fomodocs}. Rezultate vseh so nato združili v končni izhod. S tem so izboljšali sposobnost modela FOMO~\cite{src:fomodocs} za štetje objektov.
         
-        % Segemntacija?
-        % Deeplabv3 iz model zoo in YOLO V8 iz stm32 model zoo? Noben prav zares ne paše na naš hardware...
+        Čeprav obstaja precej pristopov za izvajanje na mikrokrmilnikih~\cite{src:abadade2023comprehensive}, je raziskav, ki njihovo uporabo obravnavajo v kontekstu razpoznavanja hrane, razmeroma malo~\cite{src:moumane2023food, src:Nikodinovska_2024}.
+        % Klasifikacija
+        Gutti~\etal~\cite{src:gutti2022real} so izdelali prototip za razvrščanje sadja in zelenjave na podlagi slik na ESP-32 mikrokrmilniku. Izvedli so primerjavo treh modelov - prilagojen CNN, MobileNetV1~\cite{src:howard2017mobilenets} ter MobileNetV2~\cite{src:sandler2018mobilenetv2}. Izmerili so hitrost inference do 51 ms in porabe do 66 kB pomnilnika. Lin~\etal~\cite{src:lin2020mcunet} so predstavili MCUNet, primeren za izvajanje na mikrokrmilnikih. Na ImageNet~\cite{src:russakovsky2015imagenet} so z njim dosegli 70{,}7~\% natančnost. Modela MobileNetV1~\cite{src:howard2017mobilenets} in MobileNetV2~\cite{src:sandler2018mobilenetv2} sta na isti zbirki dosegla 72{,}0~\% in 74{,}2~\% natančnost s 3{,}4 in 6{,}9 milijoni parametrov. 
 
         % Razpoznava hrane
-        % TODO: To bi bilo verjetno treba še malo razširiti s kakšnim člankom?
-        % TODO: S tem bi moral začet sorodna dela robne naprave.
-        Število raziskav, ki se ukvarja neposredno z razpoznavo hrane in izvajanjem na mikrokrmilnikih, je malo~\cite{src:moumane2023food, src:Nikodinovska_2024}.
         % Tipično avtorji ciljajo vsaj mobilne telefone.
         % Klasifikacija
-        V STM32 Model Zoo~\cite{src:stm32modelzoo} na zbirki \mbox{Food-101} navajajo do 77{,}1~\% natančnost z MobileNetV1 ter do 80{,}38~\% natančnost z MobileNetV2. V realnosti je natančnost tipično nižja, saj je potrebno zmanjšati velikost modela glede na izbrano strojno opremo.
+        V STM32 Model Zoo~\cite{src:stm32modelzoo} na zbirki \mbox{Food-101}~\cite{src:bossard2014food} navajajo do 77{,}1~\% natančnost z MobileNetV1 ter do 80{,}38~\% natančnost z MobileNetV2. V realnosti je natančnost tipično nižja, saj je potrebno zmanjšati velikost modela glede na izbrano strojno opremo.
         Nikodinovska~\cite{src:Nikodinovska_2024} je na STM32 platformi implementirala model za klasifikacijo zapečenosti piškotov. 
         % Detekcija in segmentacija?
         Prednosti izvedbe na robnih napravah so jasne - hitrejši in preprostejši modeli, cenejša izvedba, naprav pa ni potrebno povezovati v oblak.
 
         % TODO: Po napisanem uvodu tu argumentiraj kaj ostalim pristopom manjka v primerjavi s tvojo idejo. Na objektiven način skritiziraj dela (uporabi to kar si že napisal). Lahko tut iz obeh podpoglavij v sorodnih delih. Nej bo to mini mini diskusija sorodnih del.
 
-        % TODO: Vsak model in zbirka rabi citat, vsaj v related work poglavju. Popravi za nazaj.
-        % TODO: Piši v pretekliku
-
 \chapter{Teoretično ozadje} \label{sct:teoreticno-ozadje}
 
-% Sem spravi teorijo iz sorodnih del
+    V tem poglavju predstavimo teoretično ozadje pristopov, ki jih obravnavamo v tem delu. V odsekih \ref{sct:teorija-klasifikacija} in \ref{sct:teorija-segmentacija} podamo osnovne pojme klasifikacije in segmentacije na podlagi slikovnih vzorcev, najprej splošno, nato pa še v kontekstu razpoznavanja jedi.
+V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov globokega učenja na robnih napravah, naredimo pregled najpogostejših pristopov k optimizaciji ter predstavimo obstoječe programske rešitve in razvojna okolja, namenjena razvoju in uporabi takšnih sistemov.
+
+    \section{Razpoznavanje na podlagi slikovnih vzorcev} 
+
+            Zgodnji pristopi k razpoznavanju jedi na podlagi slik so temeljili na ročno izluščenih značilnicah, na primer značilnicah HOG (histogram orientiranih gradientov)~\cite{src:dalal2005hog}, SIFT (angl. \emph{Scale-Invariant Feature Transform})~\cite{src:lowe2004sift} in barvnih histogramih~\cite{src:min2019survey}.
+            V sodobnejših pristopih k razpoznavanju jedi prevladujejo metode globokega učenja, ki praviloma dosegajo boljše rezultate~\cite{src:min2019survey, src:kagaya2014food, src:krizhevsky2012imagenet, src:hassannejad2016food, src:martinel2018wide}.
+            V tem odseku jih v grobem razdelimo na klasifikacijske in segmentacijske pristope~\cite{src:konstantakopoulos2023review, src:min2019survey}. Klasifikacijski pristopi v glavnem izvajajo enoznačno ali večznačno klasifikacijo jedi oziroma sestavin na sliki~\cite{src:martinel2018wide, src:tan2019efficientnet, src:bolanos2017food, src:fu2024recognizing}. Segmentacijski pristopi pa skušajo lokalizirati jed ali njeno komponento na sliki, ločiti posamezne komponente od preostalih ter jih potencialno tudi kategorizirati~\cite{src:wu2021large, src:bolanos2016simultaneous, src:poply2021refined, src:konstantakopoulos2023review, src:javadi2024smart}. Obstajajo tudi pristopi, ki zaradi izboljšanja rezultatov ali poenostavitve podatkovne zbirke kombinirajo metode obeh področij~\cite{src:zhu2023new}.
+
+        \subsection{Klasifikacija jedi}\label{sct:teorija-klasifikacija}
+
+            %kaj je to klasifikacija, kako se to v splosnem dela
+            Ena izmed osnovnih nalog pri razpoznavanju hrane je klasifikacija, tj. napoved kategorije jedi oziroma sestavin na podlagi slikovnih podatkov z metodami strojnega učenja~\cite{src:min2019survey}.
+            Klasifikacija slik hrane je zapleten proces, na katerega lahko vpliva več dejavnikov, med drugimi način priprave jedi, prekrivanje posameznih živil, ali so bile slike posnete v nadzorovanem okolju in število različnih kategorij hrane~\cite{src:konstantakopoulos2023review}. Bistven faktor je tudi kvaliteta podatkovne zbirke - objavljeno je bilo precej klasifikacijskih podatkovnih zbirk za različne kulinarike in namene~\cite{src:min2019survey}. Med najpomembnejše sodijo \mbox{Food-101}~\cite{src:bossard2014food}, \mbox{UEC-Food100}~\cite{src:matsuda2012recognition}, \mbox{UEC-Food256}~\cite{src:kawano2014automatic} ter \mbox{Vireo Food-172}~\cite{src:chen2016deep}.
+
+            % TODO: Klasicne metode
+            % Razširi. Povej recimo kake pristope za luščenje značilk lahk mamo, kake razvrščevalnike lahk uporabmo ipd.
+            Značilke v tradicionalnih klasifikacijskih pristopih tipično luščimo ročno, nato pa jih uporabimo v razvrščevalniku~\cite{src:min2019survey}.
+
+            % TODO: Moderne metode
+            Pristopi, ki uporabljajo globoko učenje, nam omogočijo precej boljše rezultate.
+            Alternativno tradicionalnim pristopom 
+
+            % Metode s komponentami
+
+            % TODO:Sibko nadzorovane
+            Nekateri izmed pristopov temeljijo na šibkem učenju. Zanj je značilno, da ...
+            Tak pristop omogoča, da se izognemo potrebi po segmentacijskih podatkovnih zbirkah, saj za učenje zadoščajo že anotacije na ravni sliko o prisotnosti sestavin. Model med učenjem nato na podlagi ... sklepa ...
+
+        \subsection{Segmentacija jedi} \label{sct:teorija-segmentacija}
+
+            % TODO: kaj je segmentacija, kako se to v splosnem dela, instancna vs semanticna segmentacija
+
+            % TODO: Tradicitonalni pristopi
+
+            % TODO: Moderni pristopi
+
+            % TODO: Zero shot metode
+
+    \section{Izvajanje na robnih napravah in optimizacija}  \label{sct:teorija-robnenaprave}
+
+        % Uvod, early efforts
+        Izvajanje modelov globokega učenja na robnih napravah je zahtevno zaradi strogih omejitev strojne opreme, predvsem razpoložljivega RAM pomnilnika ter Flash (programskega) pomnilnika. Izraz \enquote{robna naprava} zajema širok nabor naprav, od mobilnih telefonov in zmogljivejših namenskih platform, kot sta Nvidia Jetson~\cite{src:nvidiajetson} in Coral Edge TPU (angl. Tensor Processing Unit)~\cite{src:coraledgetpu}, pa vse do mikrokrmilnikov brez specializirane strojne opreme za pospeševanje inferenc. V tem delu se omejujemo na mikrokrmilnike brez specializirane strojne opreme, ker so ti praviloma nizkocenovni in bolj razširjeni~\cite{src:abadade2023comprehensive}.
+
+        Mikrokrmilniki imajo pogosto na voljo do 16~MB Flash pomnilnika in do 8~MB delovnega (RAM) pomnilnika, kar je bistveno manj od običajne strojne opreme za izvajanje modelov globokega učenja~\cite{src:abadade2023comprehensive}.
+
+        % TFLite (LiteRT), TFLite Micro (LiteRT for microcontrollers), ONNX, Edge Impulse thing,  ostali ... CMSIS-NN, CubeX-AI.
+        % Glej tudi software optimization v surveyu
+        Za izvajanje modelov uporabljamo namenska izvajalna okolja (angl. frameworks). Med najbolj popularne sodita LiteRT (nekdaj TensorFlow Lite oz. TFLite)~\cite{src:litert} in LiteRT for Microcontrollers (nekdaj Tensorflow Lite for Microcontrollers oz. TFLite Micro)~\cite{src:litertmicro, src:david2021tensorflowlitemicro}, vendar poleg njih obstajajo tudi druga.
+        % EON compiler načeloma še zmer uporablja TFLite Micro, ampak je modificiran in ne uporabljajo tflm interpreterja, ampak model direk compilajo.
+        Kot alternativa je na voljo tudi platforma Edge Impulse\footnote{\url{https://www.edgeimpulse.com/}}. Poleg izvajalnega okolja ta ponuja EON Compiler~\cite{src:edgeimpulse_eon}, nadgradnjo okolja TFLite Micro~\cite{src:litertmicro}, ki model prevede v izvorno kodo in se s tem izogne potrebi po sprotnem interpretiranju modela med izvajanjem. To zmanjša količino pomnilnika, potrebnega za izvajanje modela ter okolja~\cite{src:edgeimpulse_eon}.
+        Omenjene rešitve tipično uporabljajo stroge optimizacije in omejen nabor operacij, s čimer skrajšajo čas inference in zmanjšajo potrebno količino pomnilnika~\cite{src:abadade2023comprehensive}. Za optimizirano izvajanje na ARM Cortex-M jedrih je na voljo knjižnica CMSIS-NN~\cite{src:lai2018cmsis}.
+        Za optimizirano izvanjanje modelov na STM32 mikrokrmilnikih je na voljo izvajalno okolje STM32Cube.AI MCU, ki je del X-CUBE-AI, vmesnika v programskem okolju STM32CubeIDE~\cite{src:stxcubeai-docs}.
+        Ta podpira modele različnih formatov, kot TFLite, ONNX in Keras, ter omogoča preprostejšo implementacijo in evalvacijo modelov na STM32 mikrokrmilnikih.
+
+        % PTQ, QAT, FQN, kvantizacija samo uteži, pruning, zakaj ne dela, od česa je odvisna količina RAMa in Flasha
+        Pri optimizaciji modelov za izvajanje na robnih napravah se tipično opremo na kvantizacijo ter obrezovanje (angl. pruning).
+        % Kvantizacija - PTQ & QAT
+        Obstajata dva glavna pristopa h kvantizaciji: kvantizacija po učenju (angl. Post-Training Quantization, PTQ) ter ozaveščeno učenje (angl. Quantization-Aware Training, QAT)~\cite{src:jacob2018quantization, src:nagel2021white, src:gholami2022survey}. PTQ je preprostejši pristop, kjer model kvantiziramo po tem, ko je bil naučen.
+        QAT po drugi strani zahteva, da že med učenjem upoštevamo učinek kvantizacije. PTQ načeloma opazno poslabša delovanje modela, QAT pa ima manj vpliva~\cite{src:Nikodinovska_2024}.
+
+        % Kvantizacija - dynamic & static v literaturi
+        V literaturi najdemo ločevanje tudi med dinamično in statično kvantizacijo. Dinamična kvantizacija praviloma označuje pristop, pri katerem se razpon aktivacij določa sproti med izvajanjem, medtem ko je pri statični kvantizaciji ta razpon določen vnaprej~\cite{src:gholami2022survey, src:jacob2018quantization}. Za določitev razponov pri statični kvantizaciji v kombinaciji s PTQ zato pogosto uporabimo tudi t.~i. reprezentativno podatkovno zbirko, na podlagi katere izvedemo kalibracijo.
+
+        % Kvantizacija - dynamic & full v tflite micro
+        V dokumentaciji orodja LiteRT Micro~\cite{src:litertmicro, src:david2021tensorflowlitemicro} ločimo dinamično in polno kvantizacijo. Dinamična kvantizacija v tem kontekstu predstavlja postopek, pri katerem statično kvantiziramo predvsem uteži in prage, medtem ko se aktivacijski ter vhodno-izhodni medpomnilniki kvantizirajo dinamično oziroma ostanejo v prvotni obliki. Polna kvantizacija pa pomeni, da poleg uteži in pragov statično kvantiziramo tudi aktivacijske ter vhodno-izhodne medpomnilnike.
+        V knjižnici LiteRT Micro so tenzorji uteži in pragov shranjeni kot konstante, zato so na mikrokrmilnikih običajno v pomnilniku Flash/ROM, medtem ko se vmesni rezultati oziroma aktivacije shranjujejo v vnaprej rezerviranem prostoru v RAM-u~\cite{src:litertmicro}. Posledično kvantizacija zgolj uteži in pragov praviloma zmanjša predvsem porabo Flash pomnilnika, medtem ko je prihranek v RAM-u omejen. Pri polni kvantizaciji, kjer se kvantizirajo tudi aktivacije in po potrebi vhodni ter izhodni tenzorji, pa se lahko zmanjša tudi velikost aktivacijskih medpomnilnikov in s tem potrebna količina RAM-a.
+
+        % Pruning
+        Poleg kvantizacije lahko model optimiziramo tudi z obrezovanjem. Tipično ga delimo na struturirano in nestrukturirano. Postopek skuša identificirati uteži ali povezave, ki nimajo bistvenega vpliva na izhod modela, ter jih zamenjati z ničlami. Rezultat so t.i. redke matrike (angl. sparse matrices), kar načeloma zmanjša računsko zahtevnost, vendar le v primeru, ko programsko okolje to podpira~\cite{src:Nikodinovska_2024}. %TFLite Micro tega še ne podpira.?
 
 \chapter{Metodologija} \label{sct:metodologija}
 
@@ -465,10 +504,11 @@ V pričujočem zaključnem delu so uporabljene naslednje kratice:
         % Povem da je open source, pa citiram opise iz dokumentacije in blog posta. Neki, kar bi pisalo v introductionu članka na spletu. Ne bi predolg tu, opiši bistvo. Dodaj tudi kako smo ga modificirali oz. interpretirali mi, high level motivacije.
         % TODO: Morajo biti linki na FOMO dokumentacijo citati ali footnoti? Kaj pa Arduino Nicla link?
 
-        FOMO (Faster Objects, More Objects) je detekcijski model, namenjen realnočasovnemu izvajanju na mikrokrmilnikih. Na voljo je na platformi \mbox{Edge Impulse}~\cite{src:fomodocs, src:announcingfomo}. Zanj je značilna nizka poraba pomnilnika in kratek čas inference - avtorji v demonstraciji prikažejo izvajanje na Cortex M7 jedru razvojnega kompleta Arduino Nicla Vision, kjer dosežejo obdelavo do 28 sličic na sekundo ob porabi zgolj 245 kB pomnilnika~\cite{src:fomodocs}. 
+        FOMO (Faster Objects, More Objects)~\cite{src:announcingfomo, src:fomodocs} je detekcijski model, namenjen realnočasovnemu izvajanju na mikrokrmilnikih. Na voljo je na platformi \mbox{Edge Impulse}~\cite{src:fomodocs}. Zanj je značilna nizka poraba pomnilnika in kratek čas inference - avtorji v demonstraciji prikažejo izvajanje na Cortex M7 jedru razvojnega kompleta Arduino Nicla Vision, kjer dosežejo obdelavo do 28 sličic na sekundo ob porabi zgolj 245 kB pomnilnika~\cite{src:fomodocs}.
         Model je odprtokoden, portal omogoča prenos kode z definicijami modelov ter postopki za učenje. To omogoči prilagajanje arhitekture modela, procesiranja vhodnih in izhodnih podatkov ter postopka učenja glede na naravo danega problema.
 
         \subsection{Arhitektura}
+
             % Network architecture - nismo modificirali originala
             Model je sestavljen iz dveh glavnih delov: ekstraktor značilk (angl. feature extractor), kjer avtorji uporabijo začetne plasti modela MobileNetV2, ter glave modela.
             Tu se FOMO model razlikuje od tipičnih klasifikacijskih modelov, saj namesto polnopovezane plasti uporablja zgolj konvolucijo.
