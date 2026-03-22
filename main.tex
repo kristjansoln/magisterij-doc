@@ -591,7 +591,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             \paragraph{Prilagojen pristop.}
             V našem delu smo uporabili podatkovno zbirko, ki že vsebuje segmentacijske maske na ravni razredov, zato pretvorba iz okvirjev v segmentacijske maske ni bila potrebna. Maske smo neposredno preslikali na mrežo izhodnih celic ob enakem faktorju pomanjšanja, s čimer smo mreži zagotovili natančnejši in manj dvoumen učni signal na robovih objektov ter v primerih delnega prekrivanja. Tak postopek ohrani isti cilj, t. j. klasifikacija po celicah, a izpusti posredni korak izračuna težišč iz okvirjev, kar zmanjša možnost sistematičnih napak in bolje izkoristi podatke.
             
-            V našem pristopu smo ravno tako uporabili križno entropijo, a smo uteževanje posplošili na razredno specifične uteži $w_c$. S tem smo lahko vsakemu razredu pripisali unikatno utež v kriterijski funkciji. Takšno uteževanje je uporabno pri izrazito neuravnoteženih zbirkah - distribucije z dolgim repom so izrazito značilne za podatkovne zbirke jedi ter sestavin~\cite{src:wu2021large}. Uteži smo določili na podlagi statističnih lastnosti izbranih podatkovnih zbirk, ki odražajo neuravnoteženost podatkov.
+            V našem pristopu smo ravno tako uporabili križno entropijo, a smo uteževanje posplošili na razredno specifične uteži $w_c$. S tem smo lahko vsakemu razredu pripisali unikatno utež v kriterijski funkciji. Takšno uteževanje je uporabno pri zelo neuravnoteženih zbirkah, kar tipično velja za podatkovne zbirke jedi ter sestavin~\cite{src:wu2021large}. Uteži smo določili na podlagi statističnih lastnosti izbranih podatkovnih zbirk, ki odražajo neuravnoteženost podatkov.
 
     \section{Model YOLOv11-seg} \label{sct:metodologija-yolov11-seg}
 
@@ -671,10 +671,10 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             \paragraph{FastSAM.}
             Čeprav sta enkoder pozivov in dekoder po številu parametrov majhna, je slikovni enkoder v izvirni implementaciji modela SAM zelo obsežen, tudi do 0{,}6 milijarde parametrov~\cite{src:zhao2023fastsegment_fastsam}. Zaradi želje po večji učinkovitosti so nastale manjše različice. Med njimi je model FastSAM~\cite{src:zhao2023fastsegment_fastsam}, katerega cilj je omogočiti realnočasovno delovanje brez obsežnega ViT-enkoderja. Model FastSAM nalogo razdeli v dva koraka: z obstoječim pristopom YOLOv8-seg~\cite{src:yolov8} generira instančne segmentacijske maske po celotni sliki za vse potencialne objekte~\cite{src:yolov8}, nato pa na podlagi vhodnega poziva oceni in izbere ustrezne maske oziroma regije interesa. Podprte so tri vrste pozivov: \textbf{točke}, kjer lahko model na podlagi več točk izbere eno ali več regij in jih po potrebi združi; \textbf{okvirji}, pri katerih izbere masko z največjim prekrivanjem z danim okvirom; ter \textbf{besedilni pozivi}, ki uporabljajo standardne tekstovne enkoderje~\cite{src:radford2021learning_clip}.
         
-            S tem pristopom dosežejo do $50$-kratno pohitritev delovanja v primerjavi z izvirno implementacijo modela SAM, pri čemer uporabijo približno 68 milijonov parametrov. Podjetje Ultralytics ponuja dve izvedbi: \mbox{\emph{FastSAM-x}} in \mbox{\emph{FastSAM-s}}~\cite{src:fastsam_ultralytics}. \emph{FastSAM-s} ima le 11{,}8 milijona parametrov, kar ustreza približno 23{,}7 MB velikemu modelu~\cite{src:fastsam_ultralytics}. Pripadajoče programsko okolje omogoča preprosto inicializacijo in prilagodljivo inferenco na vhodnih podatkih.
+            S tem pristopom dosežejo do $50$-kratno pohitritev delovanja v primerjavi z izvirno implementacijo modela SAM, pri čemer uporabijo približno 68 milijonov parametrov. Podjetje Ultralytics ponuja dve izvedbi: \mbox{\emph{FastSAM-x}} in \mbox{\emph{FastSAM-s}}~\cite{src:fastsam_ultralytics}. \emph{FastSAM-s} ima le 11{,}8 milijona parametrov, kar ustreza 23{,}7 MB velikemu modelu~\cite{src:fastsam_ultralytics}. Pripadajoče programsko okolje omogoča preprosto inicializacijo in prilagodljivo inferenco na vhodnih podatkih.
             
             \paragraph{MobileSAM.}
-            Še ena različica modela SAM je MobileSAM~\cite{zhang2023faster_mobilesam}. Narejen je bil z namenom izvajanja na zmogljivejših robnih napravah, kot so pametni telefoni. Za učenje uporabijo pristop t. i. destilacije znanja~\cite{src:hinton2015distilling}, kjer večji, že naučeni \mbox{model SAM} deluje kot učitelj in s svojimi izhodi oziroma samodejnimi anotacijami usmerja učenje manjšega modela. Bistvena sprememba v arhitekturi je uporaba manjšega slikovnega enkoderja ViT-Tiny~\cite{src:touvron2021training}, kar močno zmanjša kompleksnost modela. Podprti so isti tipi pozivov, kot jih podpira FastSAM. Avtorji navajajo boljše rezultate v primerjavi s FastSAM in podobne rezultate kot z izvirnim SAM modelom. Ultralytics ponuja izvedbo z 10{,}1 milijona parametrov, kar pomeni približno 40{,}7 MB uteži~\cite{src:mobilesam_ultralytics}.
+            Še ena različica modela SAM je MobileSAM~\cite{zhang2023faster_mobilesam}. Narejen je bil z namenom izvajanja na zmogljivejših robnih napravah, kot so pametni telefoni. Za učenje uporabijo pristop t. i. destilacije znanja~\cite{src:hinton2015distilling}, kjer večji, že naučeni \mbox{model SAM} deluje kot učitelj in s svojimi izhodi oziroma samodejnimi anotacijami usmerja učenje manjšega modela. Bistvena sprememba v arhitekturi je uporaba manjšega slikovnega enkoderja ViT-Tiny~\cite{src:touvron2021training}, kar močno zmanjša kompleksnost modela. Podprti so isti tipi pozivov, kot jih podpira FastSAM. Avtorji navajajo boljše rezultate v primerjavi s FastSAM in podobne rezultate kot z izvirnim SAM modelom. Ultralytics ponuja izvedbo z 10{,}1 milijona parametrov, kar pomeni 40{,}7 MB uteži~\cite{src:mobilesam_ultralytics}.
     
     % Dodatno delo - prediskutiraj, če bo čas
     %   - v FOMO modelu za backbone uporabim mobilenet, prednaučen na Food-101 namesto na imagenet. Imagenet vsebuje verjetno bolj malo hrane, prednaučene uteži pa so koristne le, če so bile učene na relevantni podatkovni bazi.
@@ -683,120 +683,120 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
     
 \chapter{Eksperimenti in rezultati} \label{sct:eksperimenti-in-rezultati}
 
-    \section{Podatkovna zbirka}
+    V tem poglavju predstavimo eksperimentalni del in dosežene rezultate. Najprej v odseku \ref{sct:rezultati-podatkovnazbirka} opišemo podatkovno zbirko FoodSeg103 ter postopek njene poenostavitve za potrebe nadaljnjih eksperimentov. V odseku \ref{sct:rezultati-fomo} predstavimo rezultate modela FOMO pri reševanju zbirke FoodSeg103, pri čemer obravnavamo vpliv različnih nastavitev modela, strategij učenja in kvantizacije. V odseku \ref{sct:rezultati-yolov11} nato opišemo rezultate modela YOLOv11-seg na zbirki FoodSeg103, ki ga uporabimo kot referenčni segmentacijski pristop za primerjavo z modelom FOMO. V odseku \ref{sct:rezultati-sam} na koncu predstavimo še eksperimente z modeli FastSAM in MobileSAM, s katerimi preverimo možnosti pretvorbe semantičnih segmentacijskih anotacij v instančne maske in detekcijske okvirje.
+
+    \section{Podatkovna zbirka} \label{sct:rezultati-podatkovnazbirka}
 
         % Splošno
         V tem delu uporabljamo podatkovno zbirko FoodSeg103~\cite{src:wu2021large}, veliko zbirko za semantično segmentacijo hrane na ravni sestavin. Zbirka pokriva predvsem zahodno kulinariko. Avtorji predstavijo tudi razširitev FoodSeg154, ki vključuje azijsko kulinariko, vendar zaradi avtorskih pravic ni javno dostopna.
 
-        \subsection{Splošno}
+        % Delitev, obseg
+        Zbirka FoodSeg103~\cite{src:wu2021large} obsega 7118 slik in 103 razrede sestavin. Slike izhajajo iz podatkovne zbirke Recipe1M~\cite{src:marin2021recipe1m+,src:salvador2017learning}, ki vsebuje 900 tisoč slik jedi z recepti in naborom potrebnih sestavinami. Izbrane slike, ki so ustrezale kriterijem, so avtorji ročno anotirali na ravni pikslov. Primeri vzorcev so prikazani na sliki~\ref{fig:foodseg103vzorci}.
+        Avtorji so zbirko naključno razdelili na učno in testno množico v razmerju 7:3. V naših eksperimentih smo nato 20~\% učne množice dodatno namenili za validacijo med učenjem. S tem smo dobili končno delitev na 56~\% učnih, 15~\% validacijskih in 30~\% testnih vzorcev, kar pomeni 3986 slik v učni, 997 v validacijski in 2135 v testni množici.
             
-            % Delitev, obseg
-            Zbirka FoodSeg103~\cite{src:wu2021large} obsega 7118 slik in 103 razrede sestavin. Slike izhajajo iz podatkovne zbirke Recipe1M~\cite{src:marin2021recipe1m+,src:salvador2017learning}, ki vsebuje približno 900 tisoč slik jedi z recepti in naborom potrebnih sestavinami. Izbrane slike, ki so ustrezale kriterijem, so avtorji ročno anotirali na ravni pikslov.
-            Zbirka je naključno razdeljena na učno in testno množico v razmerju 7:3. Primeri vzorcev so prikazani na sliki~\ref{fig:foodseg103vzorci}.
-            % TODO: Dodaj številke
-            Med učenjem učno množico dodatno razdelimo in oblikujemo validacijsko množico. Končne velikosti so naslednje: učna množica vsebuje \textit{TODO} vzorcev, validacijska \textit{TODO} vzorcev, testna pa \textit{TODO} vzorcev.
-            
-            % Primeri iz dataseta (mogoče screenshoti iz Fiftyone)
-            \begin{figure}[t]
-              \centering
-              \setlength{\tabcolsep}{2pt} % space between columns
-              \renewcommand{\arraystretch}{1} % no extra row padding
-              \begin{tabular}{@{}cccc@{}}
-                \includegraphics[width=0.24\linewidth]{figures/FoodSeg103_examples/img1.jpg} &
-                \includegraphics[trim={12.5cm 0cm 12.5cm 0cm},clip, width=0.24\linewidth]{figures/FoodSeg103_examples/img2.jpg} &
-                \includegraphics[trim={4.2cm 0cm 4.2cm 0cm},clip, width=0.24\linewidth]{figures/FoodSeg103_examples/img3.jpg} &
-                \includegraphics[trim={1.7cm 0cm 1.7cm 0cm},clip, width=0.24\linewidth]{figures/FoodSeg103_examples/img4.jpg} \\
-                \includegraphics[width=0.24\linewidth]{figures/FoodSeg103_examples/img1_mask.jpg} &
-                \includegraphics[trim={12.5cm 0cm 12.5cm 0cm},clip, width=0.24\linewidth]{figures/FoodSeg103_examples/img2_mask.jpg} &
-                \includegraphics[trim={4.2cm 0cm 4.2cm 0cm},clip, width=0.24\linewidth]{figures/FoodSeg103_examples/img3_mask.jpg} &
-                \includegraphics[trim={1.7cm 0cm 1.7cm 0cm},clip, width=0.24\linewidth]{figures/FoodSeg103_examples/img4_mask.jpg} \\
-                \includegraphics[width=0.24\linewidth]{figures/FoodSeg103_examples/img5.jpg} &
-                \includegraphics[width=0.24\linewidth]{figures/FoodSeg103_examples/img6.jpg} &
-                \includegraphics[trim={1.3cm 0cm 1.3cm 0cm},clip, width=0.24\linewidth]{figures/FoodSeg103_examples/img7.jpg} &
-                \includegraphics[width=0.24\linewidth]{figures/FoodSeg103_examples/img8.jpg} \\
-                \includegraphics[width=0.24\linewidth]{figures/FoodSeg103_examples/img5_mask.jpg} &
-                \includegraphics[width=0.24\linewidth]{figures/FoodSeg103_examples/img6_mask.jpg} &
-                \includegraphics[trim={1.3cm 0cm 1.3cm 0cm},clip, width=0.24\linewidth]{figures/FoodSeg103_examples/img7_mask.jpg} &
-                \includegraphics[width=0.24\linewidth]{figures/FoodSeg103_examples/img8_mask.jpg} \\
-              \end{tabular}
-              % TODO: Ni jasno katera maska pripada kateri sliki
-              \caption{Primeri vzorcev in pripadajočih segmentacijskih mask iz podatkovne zbirke FoodSeg103~\cite{src:wu2021large}. Na maskah sivinska vrednost piksla predstavlja indeks razreda, ki mu piksel pripada.}
-              \label{fig:foodseg103vzorci}
-            \end{figure}
+        % Primeri iz dataseta (mogoče screenshoti iz Fiftyone)
+        \begin{figure}[t]
+            \centering
+            \setlength{\tabcolsep}{2pt} % space between columns
+            \renewcommand{\arraystretch}{1} % no extra row padding
+            \begin{tabular}{@{}cccc@{}}
+            \includegraphics[width=0.24\linewidth]{figures/FoodSeg103_examples/img1.jpg} &
+            \includegraphics[trim={12.5cm 0cm 12.5cm 0cm},clip, width=0.24\linewidth]{figures/FoodSeg103_examples/img2.jpg} &
+            \includegraphics[trim={4.2cm 0cm 4.2cm 0cm},clip, width=0.24\linewidth]{figures/FoodSeg103_examples/img3.jpg} &
+            \includegraphics[trim={1.7cm 0cm 1.7cm 0cm},clip, width=0.24\linewidth]{figures/FoodSeg103_examples/img4.jpg} \\
+            \includegraphics[width=0.24\linewidth]{figures/FoodSeg103_examples/img1_mask.jpg} &
+            \includegraphics[trim={12.5cm 0cm 12.5cm 0cm},clip, width=0.24\linewidth]{figures/FoodSeg103_examples/img2_mask.jpg} &
+            \includegraphics[trim={4.2cm 0cm 4.2cm 0cm},clip, width=0.24\linewidth]{figures/FoodSeg103_examples/img3_mask.jpg} &
+            \includegraphics[trim={1.7cm 0cm 1.7cm 0cm},clip, width=0.24\linewidth]{figures/FoodSeg103_examples/img4_mask.jpg} \\
+            \includegraphics[width=0.24\linewidth]{figures/FoodSeg103_examples/img5.jpg} &
+            \includegraphics[width=0.24\linewidth]{figures/FoodSeg103_examples/img6.jpg} &
+            \includegraphics[trim={1.3cm 0cm 1.3cm 0cm},clip, width=0.24\linewidth]{figures/FoodSeg103_examples/img7.jpg} &
+            \includegraphics[width=0.24\linewidth]{figures/FoodSeg103_examples/img8.jpg} \\
+            \includegraphics[width=0.24\linewidth]{figures/FoodSeg103_examples/img5_mask.jpg} &
+            \includegraphics[width=0.24\linewidth]{figures/FoodSeg103_examples/img6_mask.jpg} &
+            \includegraphics[trim={1.3cm 0cm 1.3cm 0cm},clip, width=0.24\linewidth]{figures/FoodSeg103_examples/img7_mask.jpg} &
+            \includegraphics[width=0.24\linewidth]{figures/FoodSeg103_examples/img8_mask.jpg} \\
+            \end{tabular}
+            % TODO: Ni jasno katera maska pripada kateri sliki
+            \caption{Primeri vzorcev in pripadajočih segmentacijskih mask iz podatkovne zbirke FoodSeg103~\cite{src:wu2021large}. Na maskah sivinska vrednost piksla predstavlja indeks razreda, ki mu piksel pripada.}
+            \label{fig:foodseg103vzorci}
+        \end{figure}
+
+        % Statistične lastnosti, porazdelitev
+        Zbirke slik hrane so praviloma močno neuravnotežene. Posamezni razredi sestavin oziroma jedi so bistveno pogostejši od drugih, na porazdelitev pa vplivajo tudi pristranskosti pri sestavljanju podatkovnih zbirk~\cite{src:wu2021large}. Tudi FoodSeg103 izkazuje izrazito nesimetrično porazdelitev v desno (angl. \textit{long-tailed distribution}). Najmanj pogosti razredi se pojavijo le na nekaj deset slikah, najpogostejši pa na več kot 2000 slikah, tj. skoraj tretjini zbirke. Izvorna porazdelitev je prikazana v prilogi~\ref{sct:appendixA}. Na razred je v povprečju na voljo zgolj $252$ slik. Najpogostejši razred (\emph{kruh}) se pojavi v 1402 vzorcih, najredkejši (\emph{alge}, angl. \textit{kelp}) pa v zgolj 74 vzorcih.
+        Na posamezni sliki je v povprečju prisotnih $4{,}7$ razredov, porazdelitev števila razredov pa je prikazana na sliki~\ref{fig:foodseg103_orig_num_classes_per_image}.
+        
+        \begin{figure*}[h]
+            \centering
+            \includegraphics[width=\linewidth]{figures/num_classes_per_image.pdf}
+            % TODO: preveri odmik med opisom in sliko
+            \caption{Prikaz števila razredov na posamezno sliko v izvorni FoodSeg103 zbirki.}
+            \label{fig:foodseg103_orig_num_classes_per_image}
+        \end{figure*}
     
-            % Statistične lastnosti, porazdelitev
-            Zbirke slik hrane so praviloma močno neuravnotežene. Posamezni razredi sestavin oziroma jedi so bistveno pogostejši od drugih, na porazdelitev pa vplivajo tudi pristranskosti pri sestavljanju podatkovnih zbirk~\cite{src:wu2021large}. Tudi FoodSeg103 izkazuje izrazit \enquote{dolgi rep} (angl. \textit{long-tailed distribution}). Najmanj pogosti razredi se pojavijo le na nekaj deset slikah, najpogostejši pa na več kot 2000 slikah, tj. skoraj tretjini zbirke. Izvorna porazdelitev je prikazana v prilogi~\ref{sct:appendixA}. Povprečno število slik na razred znaša $252 \pm 333$. Najpogostejši razred (\emph{kruh}) se pojavi v 1402 vzorcih, najredkejši (\emph{alge}, angl. \textit{kelp}) pa v zgolj 74 vzorcih.
-            Na posamezni sliki je v povprečju prisotnih $4{,}7 \pm 1{,}4$ razredov; podrobnejša statistika je prikazana na sliki~\ref{fig:foodseg103_orig_num_classes_per_image}.
+        % TODO: Ekstra statistika?
+
+        % Težavnost, izhodiščni rezultati
+        Avtorji na FoodSeg103 z modelom DeepLabV3+~\cite{src:chen2017deeplab} dosegajo uspešnost do 34{,}2~\% po metriki mIoU. Na zbirkah UECFoodPix~\cite{src:ege2019new} in UECFoodPix Complete~\cite{src:okamoto2021uec} isti model doseže $41{,}6\,\%$ oziroma $55{,}5\,\%$ po metriki mIoU, na zbirki Cityscapes~\cite{src:cordts2016cityscapes} pa 79{,}0~\% po metriki mIoU.
+        Avtorji so na FoodSeg103 učili tudi druge modele, s katerimi so dosegli do 43{,}9~\% po metriki mIoU.
+        V kasnejših delih, ki se ukvarjajo s FoodSeg103, poročajo o nekoliko višjih vrednostih, na primer 46{,}4~\%~\cite{src:lan2023foodsam} z modelom FoodSAM in 48{,}7~\%~\cite{src:chen2024ingredsam} z modelom IngredSAM.
+        Navedeni rezultati nakazujejo, da je FoodSeg103 zahtevna zbirka.
+        K težavnosti prispevata neuravnoteženost razredov in velika znotrajrazredna varianca zaradi različnih načinov priprave hrane. Dodatno so razredi med seboj pogosto vizualno podobni, zato je medrazredna varianca nižja. To je tipična lastnost podatkovnih zbirk hrane in sestavin~\cite{src:wu2021large}.
+
+        % Na kak način smo jo poenostavili
+        \subsection{Poenostavitev} \label{sct:foodseg103-poenostavitev}
+
+            % 1. splošno zmanjšanje kompleksnosti
+            Zaradi zahtevnosti zbirke smo želeli kompleksnost zbirke zmanjšati. Poenostavitev je možno uvesti na več ravneh.
+            \begin{itemize}
+                \item Na ravni mask bi lahko dvignili prag za zelo majhne regije in premajhne segmente ignorirali. Uvedli bi lahko tudi morfološke operacije (odpiranje, zapiranje), ki bi zgladile meje in zmanjšale šum.
+                \item Na ravni slik bi lahko omejili izbiro na primere z manjšim številom hkrati prisotnih razredov. S tem bi zmanjšali prekrivanja in olajšali nalogo modela.
+                \item Na ravni oznak bi lahko združili razdrobljene kategorije v širše nadrazrede na podlagi videza in funkcionalnih lastnosti. Primer bi bili razredi \emph{piščanec}, \emph{svinjina}, \emph{govedina} in \emph{riba}, ki bi jih združili v \emph{meso}. Alternativna možnost bi bila, da ohranimo le najpogostejše razrede, zelo redke (npr. \emph{alge}, \emph{bambusovi kalčki}) pa odstranimo iz učenja in evalvacije.
+            \end{itemize}
+
+            Združevanje v širše kategorije je smiselno, saj pri tem ne zmanjšamo velikosti podatkovne zbirke, vendar je potrebno jasno določiti, katere kategorije so si po lastnostih dovolj podobne, da jih lahko združimo.
+            % 2. Zmanjšanje števila razredov
+            Zaradi enostavnosti smo zato raje izbrali zadnjo možnost, torej poenostavitev z ohranitvijo le najpogostejših razredov. Tako skrajšamo rep porazdelitve, zmanjšamo neuravnoteženost in povečamo število učnih primerov za najmanj pogoste izmed ohranjenih razredov. Hkrati zmanjšamo skupno število razredov, kar poenostavi končni model. Kot kriterij smo uporabili prisotnost razredov v podatkovni zbirki (glej prilogo~\ref{sct:appendixA}).
+            
+            % 3. Odstranjevanje razredov
+            Izbrane razrede lahko odstranimo na več načinov, saj je na večini slik prisotnih več razredov hkrati. Ena možnost je, da maske neželenih razredov prepišemo v ozadje. Druga možnost je, da odstranimo vse slike, ki vsebujejo katerikoli neželeni razred. Preizkusili smo oba pristopa in izbrali drugega, ker bolje ohrani kakovost anotacij. % TODO: Smo tu naredili kak eksperiment?
+            
+            % 4. Koliko razredov odstranimo
+            Kje v distribuciji zbirke naredimo rez? Če ohranimo 30 razredov, ohranimo 29~\% vseh razredov, velikost podatkovne zbirke pa zmanjša za 60{,}4~\%, na skupno 2815 vzorcev. Število vzorcev na razred zmanjša na v povprečju $323 \pm 189$ vzorcev. Iz distribucije na sliki~\ref{fig:class_freq_30} je razvidno, da je najslabše reprezentiran razred prisoten na 79 slikah, najbolje reprezentiran razred pa na 705 slikah.
+            V kolikor ohranimo le 20 razredov, torej 19~\% vseh razredov, velikost zbirke pade za 77~\%, na skupno 1634 vzorcev. Število vzorcev na razred se zmanjša v povprečju  $261 \pm 108$ vzorcev. Iz distribucije na sliki~\ref{fig:class_freq_20} je razvidno, da je najslabše reprezentiran razred prisoten na 122 slikah, najbolje reprezentiran razred pa na 481 slikah.
+            Več kot je razredov, večja je podatkovna zbirka, vendar več razredov pomeni tudi težjo nalogo za izbran model. Za nadaljnje eksperimente zato smo ohranili 30 najbolj pogostih razredov ter tako sestavili poenostavljeno varianto FoodSeg103 podatkovne zbirke.
+            % Tu bi blo verjetno fajn pokazat kak graf je število izbranih razredov povezano z velikostjo dataseta.
+            
+            % TODO: Odstavek se ponovi
+            % 4. Koliko razredov odstranimo
+            Kje v porazdelitvi torej narediti rez? Če ohranimo 30 razredov, to predstavlja 29~\% vseh razredov. Velikost zbirke se zmanjša za 60{,}4~\%, na skupno $2815$ vzorcev. Povprečno število vzorcev na razred postane $323 \pm 189$. Iz porazdelitve na sliki~\ref{fig:class_freq_30} je razvidno, da je najmanj zastopan razred prisoten na $79$ slikah, najbolj zastopan pa na $705$.
+            
+            Če ohranimo zgolj 20 razredov, to je 19~\% vseh razredov, velikost zbirke pade za 77~\% na $1634$ vzorcev. Povprečno število vzorcev na razred tako znaša $261 \pm 108$. Iz porazdelitve na sliki~\ref{fig:class_freq_20} je razvidno, da je najmanj zastopan razred prisoten na $122$ slikah, najbolj zastopan pa na $481$.
+
+            Večje število razredov ohrani večji obseg podatkov, vendar nalogo za model oteži. Kot kompromis smo zato za nadaljnje eksperimente obdržali 30 najpogostejših razredov in tako pripravili poenostavljeno različico zbirke FoodSeg103.
+            % Tu lahko dodamo graf, ki povezuje število izbranih razredov z velikostjo dataseta, in ponazori zakaj smo se odločili za ravno 30 razredov.
+            % Dodatne lastnosti poenostavljene podatkovne zbirke?
             
             \begin{figure*}[h]
                 \centering
-                \includegraphics[width=\linewidth]{figures/num_classes_per_image.pdf}
-                \label{fig:foodseg103_orig_num_classes_per_image}
-                % TODO: preveri odmik med opisom in sliko
-                \caption{Prikaz števila razredov na posamezno sliko v izvorni FoodSeg103 zbirki.}
+                \includegraphics[width=\linewidth]{figures/class_frequency_trimmed_30.pdf}
+                % TODO: Prevelik odmik med opisom in sliko
+                \caption{Distribucija razredov v zbirki FoodSeg103, poenostavljeni na 30 razredov.}
+                \label{fig:class_freq_30}
             \end{figure*}
-    
-            % TODO: Ekstra statistika?
-
-            % Težavnost, izhodiščni rezultati
-            Avtorji na FoodSeg103 z modelom DeepLabV3+~\cite{src:chen2017deeplab} poročajo o 34{,}2~\% po metriki mIoU. Na zbirkah UECFoodPix~\cite{src:ege2019new} in UECFoodPix Complete~\cite{src:okamoto2021uec} isti model doseže $41{,}6\,\%$ oziroma $55{,}5\,\%$ mIoU. Z drugimi metodami na FoodSeg103 dosežejo do 43{,}9~\% mIoU. Kasnejša dela, ki uporabljajo FoodSeg103, poročajo o nekoliko višjih vrednostih, na primer 46{,}4~\%~\cite{src:lan2023foodsam} in 48{,}7~\%~\cite{src:chen2024ingredsam}. Avtorji FoodSeg103 rezultate primerjajo tudi na zbirki Cityscapes~\cite{src:cordts2016cityscapes}, kjer isti modeli dosežejo do 79{,}0~\% mIoU.
-            Navedena dejstva potrjujejo, da je FoodSeg103 zahtevna zbirka.
-            K težavnosti prispevata neuravnoteženost razredov in velika znotrajrazredna varianca zaradi različnih načinov priprave hrane. Dodatno so razredi med seboj pogosto vizualno podobni, zato je medrazredna varianca nižja. To je tipična lastnost podatkovnih zbirk hrane in sestavin~\cite{src:wu2021large}.
-
-            % Na kak način smo jo poenostavili
-            \subsection{Poenostavitev} \label{sct:foodseg103-poenostavitev}
-
-                % 1. splošno zmanjšanje kompleksnosti
-                Zaradi zahtevnosti zbirke smo želeli kompleksnost zbirke zmanjšati. Poenostavitev je možno uvesti na več ravneh.
-                \begin{itemize}
-                    \item Na ravni mask bi lahko dvignili prag za zelo majhne regije in premajhne segmente ignorirali. Uvedli bi lahko tudi morfološke operacije (odpiranje, zapiranje), ki bi zgladile meje in zmanjšale šum.
-                    \item Na ravni slik bi lahko omejili izbiro na primere z manjšim številom hkrati prisotnih razredov. S tem bi zmanjšali prekrivanja in olajšali nalogo modela.
-                    \item Na ravni oznak bi lahko združili razdrobljene kategorije v širše nadrazrede na podlagi videza in funkcionalnih lastnosti. Primer bi bili razredi \emph{piščanec}, \emph{svinjina}, \emph{govedina} in \emph{riba}, ki bi jih združili v \emph{meso}. Alternativna možnost bi bila, da ohranimo le najpogostejše razrede, zelo redke (npr. \emph{alge}, \emph{bambusovi kalčki}) pa odstranimo iz učenja in evalvacije.
-                \end{itemize}
-    
-                Združevanje v širše kategorije je smiselno, saj pri tem ne zmanjšamo velikosti podatkovne zbirke, vendar je potrebno jasno določiti, katere kategorije so si po lastnostih dovolj podobne, da jih lahko združimo.
-                % 2. Zmanjšanje števila razredov
-                Zaradi enostavnosti smo zato raje izbrali zadnjo možnost, torej poenostavitev z ohranitvijo le najpogostejših razredov. Tako skrajšamo rep porazdelitve, zmanjšamo neuravnoteženost in povečamo število učnih primerov za najmanj pogoste izmed ohranjenih razredov. Hkrati zmanjšamo skupno število razredov, kar poenostavi končni model. Kot kriterij smo uporabili prisotnost razredov v podatkovni zbirki (glej prilogo~\ref{sct:appendixA}).
-                
-                % 3. Odstranjevanje razredov
-                Izbrane razrede lahko odstranimo na več načinov, saj je na večini slik prisotnih več razredov hkrati. Ena možnost je, da maske neželenih razredov prepišemo v ozadje. Druga možnost je, da odstranimo vse slike, ki vsebujejo katerikoli neželeni razred. Preizkusili smo oba pristopa in izbrali drugega, ker bolje ohrani kakovost anotacij. % TODO: Smo tu naredili kak eksperiment?
-                
-                % 4. Koliko razredov odstranimo
-                Kje v distribuciji zbirke naredimo rez? Če ohranimo 30 razredov, ohranimo 29~\% vseh razredov, velikost podatkovne zbirke pa zmanjša za 60{,}4~\%, na skupno 2815 vzorcev. Število vzorcev na razred zmanjša na v povprečju $323 \pm 189$ vzorcev. Iz distribucije na sliki~\ref{fig:class_freq_30} je razvidno, da je najslabše reprezentiran razred prisoten na 79 slikah, najbolje reprezentiran razred pa na 705 slikah.
-                V kolikor ohranimo le 20 razredov, torej 19~\% vseh razredov, velikost zbirke pade za 77~\%, na skupno 1634 vzorcev. Število vzorcev na razred se zmanjša v povprečju  $261 \pm 108$ vzorcev. Iz distribucije na sliki~\ref{fig:class_freq_20} je razvidno, da je najslabše reprezentiran razred prisoten na 122 slikah, najbolje reprezentiran razred pa na 481 slikah.
-                Več kot je razredov, večja je podatkovna zbirka, vendar več razredov pomeni tudi težjo nalogo za izbran model. Za nadaljnje eksperimente zato smo ohranili 30 najbolj pogostih razredov ter tako sestavili poenostavljeno varianto FoodSeg103 podatkovne zbirke.
-                % Tu bi blo verjetno fajn pokazat kak graf je število izbranih razredov povezano z velikostjo dataseta.
-                
-                % TODO: Odstavek se ponovi
-                % 4. Koliko razredov odstranimo
-                Kje v porazdelitvi torej narediti rez? Če ohranimo 30 razredov, to predstavlja približno 29~\% vseh razredov. Velikost zbirke se zmanjša za 60{,}4~\%, na skupno $2815$ vzorcev. Povprečno število vzorcev na razred postane $323 \pm 189$. Iz porazdelitve na sliki~\ref{fig:class_freq_30} je razvidno, da je najmanj zastopan razred prisoten na $79$ slikah, najbolj zastopan pa na $705$.
-                
-                Če ohranimo zgolj 20 razredov, to je približno 19~\% vseh razredov, velikost zbirke pade za 77~\% na $1634$ vzorcev. Povprečno število vzorcev na razred tako znaša $261 \pm 108$. Iz porazdelitve na sliki~\ref{fig:class_freq_20} je razvidno, da je najmanj zastopan razred prisoten na $122$ slikah, najbolj zastopan pa na $481$.
-
-                Večje število razredov ohrani večji obseg podatkov, vendar nalogo za model oteži. Kot kompromis smo zato za nadaljnje eksperimente obdržali 30 najpogostejših razredov in tako pripravili poenostavljeno različico zbirke FoodSeg103.
-                % Tu lahko dodamo graf, ki povezuje število izbranih razredov z velikostjo dataseta, in ponazori zakaj smo se odločili za ravno 30 razredov.
-                % Dodatne lastnosti poenostavljene podatkovne zbirke?
-                
-                \begin{figure*}[h]
-                    \centering
-                    \includegraphics[width=\linewidth]{figures/class_frequency_trimmed_30.pdf}
-                    \label{fig:class_freq_30}
-                    % TODO: Prevelik odmik med opisom in sliko
-                    \caption{Distribucija razredov v zbirki FoodSeg103, poenostavljeni na 30 razredov.}
-                \end{figure*}
-                
-                \begin{figure*}[h]
-                    \centering
-                    \includegraphics[width=\linewidth]{figures/class_frequency_trimmed_20.pdf}
-                    \label{fig:class_freq_20}
-                    % TODO: Prevelik odmik med opisom in sliko
-                    \caption{Distribucija razredov v zbirki FoodSeg103, poenostavljeni na 20 razredov.}
-                \end{figure*}
             
-                % TODO: Evalvacija dataseta z neželenimi razredi danimi v ozadje - konkretni rezultati (poberi iz zapiskov eksperimentov)
-                % TODO: Evalvacija dataseta z odstranjenimi vzorci - primerjava različnega števila ohranjenih razredov? Sem sploh naredil te eksperimente? Dam to raje pod FOMO eksperimente?
+            \begin{figure*}[h]
+                \centering
+                \includegraphics[width=\linewidth]{figures/class_frequency_trimmed_20.pdf}
+                % TODO: Prevelik odmik med opisom in sliko
+                \caption{Distribucija razredov v zbirki FoodSeg103, poenostavljeni na 20 razredov.}
+                \label{fig:class_freq_20}
+            \end{figure*}
+        
+            % TODO: Evalvacija dataseta z neželenimi razredi danimi v ozadje - konkretni rezultati (poberi iz zapiskov eksperimentov)
+            % TODO: Evalvacija dataseta z odstranjenimi vzorci - primerjava različnega števila ohranjenih razredov? Sem sploh naredil te eksperimente? Dam to raje pod FOMO eksperimente?
     
-    \section{FOMO}
+    \section{FOMO} \label{sct:rezultati-fomo}
     
         % Izbrane metrike - performance measures. Mogoče lahko omeniš tut originalne metrike (centroid scoring).
         \subsection{Izbrane metrike}
@@ -819,15 +819,15 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             \end{equation}
 
             \subsubsection{Prilagojena implementacija}
-            
+
                 V evalvaciji uporabljamo dve družini metrik na ravni pikslov in na ravni prisotnosti razredov. Razred ozadja je v vseh primerih izključen iz izračunov. V poglavju~\ref{sct:fomo_custom_postprocessing} smo uvedli prag $\tau$, ki ga tudi v spodaj opisanih pristopih uporabimo za uravnavanje razmerja med natančnostjo in priklicem. Višji prag zmanjšuje število lažnih pozitivnih, nižji prag zmanjšuje število spregledanih pozitivnih.
 
                 \paragraph{Metrike na ravni pikslov} \label{sct:fomo-metrics-pixel}
-                
+
                     Prvi pristop izračuna elemente konfuzijske matrike \textbf{na ravni pikslov}. Za vsak piksel v napovedani maski vzamemo predikcije verjetnosti razredov in določimo razred z največjo verjetnostjo. Če noben razred ne preseže praga $\tau$, pikslu pripišemo ozadje. 
                     S primerjanjem istoležnih pikslov med predikcijo in referenčno masko dobimo za vsak razred število pravilnih pozitivnih, napačnih pozitivnih, spregledanih pozitivnih in pravilnih negativnih. Iz teh vrednosti sestavimo polno konfuzijsko matriko velikosti \(n\times n\), kjer \(n\) označuje število obravnavanih razredov brez ozadja. 
                     Na podlagi te matrike izračunamo natančnost $P_p$, priklic $R_p$ in mero $F1_p$ po definicijah~\ref{eq:prec},~\ref{eq:recall} in~\ref{eq:f1}.
-                    
+ 
                     Ta pristop zaradi primerjave istoležnih pikslov mask evalvira tudi lokalizacijsko sposobnost modela. Čeprav je ta informacija za naš končni problem nepomembna, nam nastala konfuzijska matrika omogoča dober vpogled v lastnosti modela in izpostavi tipične napake ter šibkejše razrede.
     
                     % TODO: Slika, ki ponazarja per-pixel postopek. Lahko screenshot iz tensorboarda, urejen v inkscapu. Omeni tudi, da je ground truth downscalan na isto nizko resolucijo, mogoče celo povej katero interpolacijo si uporabil.
@@ -1276,7 +1276,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                 \label{tab:alpha-size-ram}
             \end{table}
 
-    \section{YOLOv11n-seg} \label{sct:yolov11}
+    \section{YOLOv11n-seg} \label{sct:rezultati-yolov11}
 
         Za ocenjevanje uporabljamo metriko mIoU, enako kot pri modelu FOMO v odseku~\ref{sct:fomo-metrics-pixel}. S tem lahko rezultate neposredno primerjamo z ostalimi pristopi, ki uporabljajo isto podatkovno zbirko.
         Uporabimo podatkovno zbirko FoodSeg103, pripravljeno enako kot v eksperimentih z modelom FOMO. Najprej izvedemo poskuse na izvirni zbirki s 103 razredi, nato še na poenostavljeni različici s 30 razredi.
@@ -1472,8 +1472,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             \label{fig:yolo11-bars}
         \end{figure}
 
-    \section{SAM}
-        \label{sct:sam}
+    \section{SAM} \label{sct:rezultati-sam}
         
         V tem odseku preverimo, v kolikšni meri lahko z modeloma FastSAM in MobileSAM olajšamo pretvorbo anotacij iz semantičnih segmentacijskih mask v instančne maske, nato pa v okvirje (\emph{bounding box}), ki bi jih lahko uporabili za učenje standardnih detekcijskih modelov. Namen je oceniti izvedljivost takšnega postopka v praksi.
         
@@ -1714,7 +1713,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
 
     \section{Vloga metod SAM}
     
-        V odseku~\ref{sct:sam} smo predstavili eksperimente z MobileSAM in FastSAM, kjer smo kvalitativno ocenjevali, v kolikšni meri bi lahko s pozivi pretvorili semantične segmentacijske maske najprej v instančne, nato pa še v okvirje za učenje detekcijskih modelov. Preizkusili smo različne oblike pozivov (mreža točk ospredja, mreža točk ospredja in ozadja, ter okvirji) in rezultate primerjali na izbranih primerih.
+        V odseku~\ref{sct:rezultati-sam} smo predstavili eksperimente z MobileSAM in FastSAM, kjer smo kvalitativno ocenjevali, v kolikšni meri bi lahko s pozivi pretvorili semantične segmentacijske maske najprej v instančne, nato pa še v okvirje za učenje detekcijskih modelov. Preizkusili smo različne oblike pozivov (mreža točk ospredja, mreža točk ospredja in ozadja, ter okvirji) in rezultate primerjali na izbranih primerih.
         
         Ugotovitev je, da so metode SAM uporabne predvsem kot generatorji predlogov segmentov, ki lahko pospešijo ročno anotiranje ali popravljanje anotacij. Težko pa iz njih brez dodatnega preverjanja in ročnega posega dobimo konsistentne, kakovostne instančne maske. SAM torej ni \emph{end-to-end} rešitev za našo nalogo, lahko pa poenostavi najzahtevnejši del - risanje mask na objekt.
         
