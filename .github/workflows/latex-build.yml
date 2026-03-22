@@ -1,0 +1,41 @@
+name: Build LaTeX Document
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: latex-build-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Compile thesis PDF
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: main.tex
+          os: debian
+          texlive_version: 2025
+          args: -pdf -bibtex -file-line-error -halt-on-error -interaction=nonstopmode
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: thesis-pdf
+          path: main.pdf
+          if-no-files-found: error
+          retention-days: 30
