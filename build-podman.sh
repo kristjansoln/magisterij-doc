@@ -4,11 +4,11 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_FILE="${1:-main.tex}"
-PODMAN_IMAGE="${LATEX_PODMAN_IMAGE:-ghcr.io/xu-cheng/texlive-debian:latest}"
+PODMAN_IMAGE="${LATEX_PODMAN_IMAGE:-docker.io/texlive/texlive:latest}"
 
 usage() {
     cat <<'EOF'
-Usage: ./latexdockercmd.sh [root-file]
+Usage: ./build-podman.sh [root-file]
 
 Builds the LaTeX document with the same latexmk flow used in CI:
   latexmk -pdf -bibtex -file-line-error -halt-on-error -interaction=nonstopmode
@@ -55,7 +55,7 @@ if ! command -v podman >/dev/null 2>&1; then
 fi
 
 podman run --rm \
-    --user "$(id -u):$(id -g)" \
+    --userns keep-id \
     --volume "${SCRIPT_DIR}:/work" \
     --workdir /work \
     "${PODMAN_IMAGE}" \

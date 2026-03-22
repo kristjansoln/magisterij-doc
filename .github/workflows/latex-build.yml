@@ -28,8 +28,7 @@ jobs:
         uses: xu-cheng/latex-action@v4
         with:
           root_file: main.tex
-          os: debian
-          texlive_version: 2025
+          docker_image: docker.io/texlive/texlive:latest
           args: -pdf -bibtex -file-line-error -halt-on-error -interaction=nonstopmode
 
       - name: Upload PDF artifact
