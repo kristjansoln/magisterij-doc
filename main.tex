@@ -104,6 +104,8 @@
 % Force no hypenation for all-uppercase words
 \uchyph=0
 
+% Barriers for float objects
+\usepackage{placeins}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % DEKLARACIJE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -684,17 +686,40 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
     
 \chapter{Eksperimenti in rezultati} \label{sct:eir}
 
-    % TODO: dodaj povzetek po spremembi strukture!
+    V tem poglavju predstavimo eksperimentalni del naloge in dobljene rezultate. V
+    odseku~\ref{sct:eir-podatkovnazbirka}
+    opišemo uporabljeno podatkovno zbirko
+    FoodSeg103 in njeno poenostavljeno različico, v odseku~\ref{sct:eir-metrike}
+    pa predstavimo izbrane metrike. V
+    odsekih~\ref{sct:eir-eksperimenti}
+    in~\ref{sct:rezultati}
+    nato podamo zasnovo eksperimentov ter rezultate za
+    modele FOMO, YOLOv11-seg in SAM.
 
     \section{Podatkovna zbirka} \label{sct:eir-podatkovnazbirka}
 
         % Splošno
-        V tem delu se osredotočamo na podatkovno zbirko FoodSeg103~\cite{src:wu2021large}, veliko zbirko za semantično segmentacijo hrane na ravni sestavin. Zbirka pokriva predvsem zahodno kulinariko. Avtorji predstavijo tudi razširitev FoodSeg154, ki vključuje azijsko kulinariko, vendar zaradi avtorskih pravic ni javno dostopna.
+        V tem delu se osredotočamo na podatkovno zbirko
+        FoodSeg103~\cite{src:wu2021large}, veliko zbirko za semantično
+        segmentacijo hrane na ravni sestavin. Zbirka pokriva predvsem zahodno
+        kulinariko. Avtorji predstavijo tudi razširitev FoodSeg154, ki
+        vključuje azijsko kulinariko, vendar zaradi avtorskih pravic ni javno
+        dostopna.
 
         % Delitev, obseg
-        Zbirka FoodSeg103~\cite{src:wu2021large} obsega 7118 slik in 103 razrede sestavin. Slike izhajajo iz podatkovne zbirke Recipe1M~\cite{src:marin2021recipe1m+,src:salvador2017learning}, ki vsebuje 900 tisoč slik jedi z recepti in naborom potrebnih sestavinami. Izbrane slike, ki so ustrezale kriterijem, so avtorji ročno anotirali na ravni pikslov. Primeri vzorcev so prikazani na sliki~\ref{fig:foodseg103vzorci}.
-        Avtorji so zbirko naključno razdelili na učno in testno množico v razmerju 7:3. V naših eksperimentih smo nato 20~\% učne množice dodatno namenili za validacijo med učenjem. S tem smo dobili končno delitev na 56~\% učnih, 15~\% validacijskih in 30~\% testnih vzorcev, kar pomeni 3986 slik v učni, 997 v validacijski in 2135 v testni množici.
-            
+        Zbirka FoodSeg103~\cite{src:wu2021large} obsega 7118 slik in 103
+        razrede sestavin. Slike izhajajo iz podatkovne zbirke
+        Recipe1M~\cite{src:marin2021recipe1m+,src:salvador2017learning}, ki
+        vsebuje 900 tisoč slik jedi z recepti in naborom potrebnih sestavin.
+        Izbrane slike, ki so ustrezale kriterijem, so avtorji ročno anotirali
+        na ravni pikslov. Primeri vzorcev so prikazani na
+        sliki~\ref{fig:foodseg103vzorci}.
+        Avtorji so zbirko naključno razdelili na učno in testno množico v
+        razmerju 7:3. V naših eksperimentih smo nato 20~\% učne množice dodatno
+        namenili za validacijo med učenjem. S tem smo dobili končno delitev na
+        56~\% učnih, 15~\% validacijskih in 30~\% testnih vzorcev, kar pomeni
+        3986 slik v učni, 997 v validacijski in 2135 v testni množici.
+
         % Primeri iz dataseta (mogoče screenshoti iz Fiftyone)
         \begin{figure}[t]
             \centering
@@ -731,7 +756,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             \centering
             \includegraphics[width=\linewidth]{figures/num_classes_per_image.pdf}
             % TODO: preveri odmik med opisom in sliko
-            \caption{Prikaz števila razredov na posamezno sliko v izvorni FoodSeg103 zbirki.}
+            \caption{Prikaz števila razredov na posamezni sliki v izvorni zbirki FoodSeg103.}
             \label{fig:foodseg103_orig_num_classes_per_image}
         \end{figure*}
     
@@ -748,7 +773,8 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
         \subsection{Poenostavitev} \label{sct:eir-podatkovnazbirka-poenostavitev}
 
             % 1. splošno zmanjšanje kompleksnosti
-            Zaradi zahtevnosti zbirke smo želeli kompleksnost zbirke zmanjšati. Poenostavitve je možno uvesti na različne načine. V nadaljevanju naštejemo nekatere izmed pristopov na voljo.
+            Zaradi zahtevnosti zbirke smo želeli kompleksnost zbirke zmanjšati.
+            Poenostavitev je mogoče uvesti na različne načine. V nadaljevanju naštejemo nekatere izmed razpoložljivih pristopov.
             \begin{itemize}
                 \item Na ravni mask lahko dvignemo prag za zelo majhne regije in premajhne segmente ignoriramo. Uvedemo lahko tudi morfološke operacije (odpiranje, zapiranje), ki zgladijo meje in zmanjšajo šum.
                 \item Na ravni slik lahko omejimo izbiro na primere z manjšim številom hkrati prisotnih razredov. S tem zmanjšamo prekrivanja in modelu olajšamo nalogo.
@@ -761,16 +787,33 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             Zaradi enostavnosti smo raje izbrali zadnjo možnost, torej poenostavitev z ohranitvijo le najpogostejših razredov. Tako skrajšamo rep porazdelitve, zmanjšamo neuravnoteženost in povečamo število učnih primerov za najmanj pogoste izmed ohranjenih razredov. Hkrati zmanjšamo skupno število razredov, kar poenostavi končni model. Kot kriterij smo uporabili prisotnost razredov v podatkovni zbirki (glej prilogo~\ref{sct:appendixA}).
 
             % 3. Odstranjevanje razredov
-            Na večini slik je prisotnih več razredov hkrati, zato obstaja več pristopov za odstranjevanje izbranih razredov. Ena izmed možnost je, da maske neželenih razredov prepišemo v ozadje. Druga možnost je, da odstranimo vse slike, ki vsebujejo katerikoli neželeni razred.
-            Izbrali smo slednjega, saj bolje ohrani kakovost podatkovne zbirke. % V kolikor maske neželenih razredov prepišemo v ozadje, ...
+            Na večini slik je prisotnih več razredov hkrati, zato smo se morali odločiti tudi za način \textbf{odstranjevanja neželenih razredov} iz podatkovne zbirke. Ena izmed možnosti je, da dele mask z neželenimi razredi pretvorimo v razred ozadja. Alternativno lahko odstranimo vse vzorce, ki vsebujejo vsaj enega izmed neželenih razredov.
+            Prednost prve možnosti je, da ohrani velikost podatkovne zbirke, vendar hkrati poslabša njeno kakovost. Alternativa podatkovno zbirko močno zmanjša, vendar so preostali vzorci kvalitetnejši, ker ne vsebujejo sestavin, označenih kot ozadje, ki bi lahko bili zavajajoči med učenjem.
             % Smo tu naredili kak eksperiment?
+            Izbrali smo to možnost, saj smo želeli čim bolj kakovosten nabor podatkov.
 
             % 4. Koliko razredov odstranimo
-            Kje torej v porazdelitvi izvesti rez? Če ohranimo 30 razredov, kar predstavlja 29~\% vseh razredov, zmanjšamo velikost zbirke za 60{,}4~\%, na skupno $2815$ vzorcev. Povprečno število vzorcev na razred postane $323 \pm 189$. Iz porazdelitve na sliki~\ref{fig:class_freq_30} je razvidno, da je najmanj zastopan razred prisoten na $79$ slikah, najbolj zastopan pa na $705$.
+            V nadaljevanju se je bilo potrebno odločiti, kateri razredi so
+            dovolj pogosti, da jih obdržimo v podatkovni zbirki. Če ohranimo
+            \textbf{30 razredov}, kar predstavlja 29~\% vseh razredov,
+            zmanjšamo velikost zbirke za 60{,}4~\%, na skupno $2815$ vzorcev.
+            Povprečno število vzorcev na razred postane $323 \pm 189$. Iz
+            porazdelitve na sliki~\ref{fig:class_freq_30}
+            je razvidno, da je najmanj
+            zastopan razred prisoten na $79$ vzorcih, najbolj zastopan pa na
+            $705$ vzorcih. Če ohranimo \textbf{20 razredov}, kar predstavlja 19~\% vseh
+            razredov, se velikost zbirke zmanjša za 77~\%, na skupno $1634$
+            vzorcev. Povprečno število vzorcev na razred tako postane $261 \pm
+            108$. Iz porazdelitve na sliki~\ref{fig:class_freq_20}
+            je razvidno, da je najmanj
+            zastopan razred prisoten na $122$ slikah, najbolj zastopan pa na
+            $481$ slikah.
 
-            Če ohranimo zgolj 20 razredov, to je 19~\% vseh razredov, se velikost zbirke zmanjša za 77~\%, na skupno $1634$ vzorcev. Povprečno število vzorcev na razred tako postane $261 \pm 108$. Iz porazdelitve na sliki~\ref{fig:class_freq_20} je razvidno, da je najmanj zastopan razred prisoten na $122$ slikah, najbolj zastopan pa na $481$.
-
-            Večje število ohranjenih razredov pomeni večjo podatkovno zbirko za učenje, hkrati pa tudi zahtevnejšo nalogo za model. Za nadaljnje eksperimente smo zato ohranili 30 najpogostejših razredov in tako oblikovali poenostavljeno različico zbirke FoodSeg103.
+            Večje število ohranjenih razredov pomeni večjo podatkovno zbirko za
+            učenje, hkrati pa tudi zahtevnejšo nalogo za model. Da bi povečali
+            velikost zbirke, smo za nadaljnje eksperimente ohranili 30
+            najpogostejših razredov in tako oblikovali poenostavljeno različico
+            zbirke FoodSeg103.
             % Tu lahko dodamo graf, ki povezuje število izbranih razredov z velikostjo dataseta, in ponazori zakaj smo se odločili za ravno 30 razredov.
             % Dodatne lastnosti poenostavljene podatkovne zbirke?
 
@@ -801,9 +844,19 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
         % - Izvorne metrike, arugment zakaj jih ne uporabljamo
         % - Prilagojena implementacija metrik
         
-        % Opis splošnih metrik, torej P, R, F1, IoU in mIoU. prestavi definicije iz izvorne implementacije.
-        Splošne metrike, ki jih uporabljamo v tem delu, so natančnost (angl. \textit{precision}, enačba~\ref{eq:prec}), ki meri delež pravilnih pozitivnih napovedi med vsemi pozitivnimi napovedmi, priklic (angl. \textit{recall}, enačba~\ref{eq:recall}), ki meri delež pravilno zaznanih pozitivnih primerov med vsemi dejanskimi pozitivnimi, in mera F1 (enačba~\ref{eq:f1}), ki je harmonična sredina natančnosti in priklica.
-        V kontekstu segmentacije uporabljamo še presek nad unijo (angl. \textit{intersection over union}, IoU, enačba~\ref{eq:iou}) kot standardno segmentacijsko metriko.
+        % Opis splošnih metrik, torej P, R, F1, IoU in mIoU. prestavi
+        % definicije iz izvorne implementacije.
+        Splošne metrike, ki jih uporabljamo v tem delu, so natančnost (angl.
+        \textit{precision}, enačba~\ref{eq:prec}), ki meri
+        delež pravilnih pozitivnih napovedi med vsemi pozitivnimi napovedmi,
+        priklic (angl. \textit{recall},
+        enačba~\ref{eq:recall}), ki meri delež pravilno
+        zaznanih pozitivnih primerov med vsemi dejanskimi pozitivnimi, in mera
+        F1 (enačba~\ref{eq:f1}), ki je harmonična sredina
+        natančnosti in priklica. V kontekstu segmentacije uporabljamo še presek
+        nad unijo (angl. \textit{intersection over union}, IoU,
+        enačba~\ref{eq:iou}) kot standardno segmentacijsko
+        metriko.
 
         \begin{equation}
             P = \frac{TP}{TP + FP}
@@ -824,40 +877,73 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
 
         \paragraph{Povprečenje večrazrednih metrik} \label{sct:eir-metrike-povprecenje}
         
-            % Uporabili smo makro povprečenje. Uporabili scikit learn implementacijo, ker keras/tf implementacija ni podpirala izbire načina povprečenja. Dodaj definicije za mikro in makro povprečenje, kaj je namen obeh in zakaj smo izbrali makro.
-            Pri večrazrednih nalogah je več načinov, kako z eno skalarno mero povzeti uspešnost čez vse razrede. V tej nalogi za natančnost, priklic in mero F1 uporabljamo pristop makro povprečenja. Pri tem metriko najprej izračunamo za vsak razred, nato pa vzamemo neuteženo povprečje po razredih, kot je prikazano v enačbah \ref{eq:prec_macro}, \ref{eq:recall_macro} in \ref{eq:f1_macro}.
-            Podobno pri metriki IoU uporabljamo srednjo vrednost preseka nad unijo (angl. mean intersection over union, mIoU). Najprej izračunamo IoU za vsak razred, nato pa vzamemo neuteženo povprečje po razredih.
+            % Uporabili smo makro povprečenje. Uporabili scikit learn
+        % implementacijo, ker keras/tf implementacija ni podpirala izbire
+        % načina povprečenja. Dodaj definicije za mikro in makro povprečenje,
+        % kaj je namen obeh in zakaj smo izbrali makro.
+        Pri večrazrednih nalogah je več načinov, kako z eno skalarno mero
+        povzeti uspešnost čez vse razrede. V tej nalogi za natančnost, priklic
+        in mero F1 uporabljamo pristop makro povprečenja. Pri tem metriko
+        najprej izračunamo za vsak razred, nato pa vzamemo neuteženo povprečje
+        po razredih, kot je prikazano v enačbah
+        \ref{eq:prec_macro}, \ref{eq:recall_macro}
+        in \ref{eq:f1_macro}. Podobno pri
+        metriki IoU uporabljamo srednjo vrednost preseka nad unijo (angl. mean
+        intersection over union, mIoU). Najprej izračunamo IoU za vsak razred,
+        nato pa vzamemo neuteženo povprečje po razredih.
 
-            % Vse v nadaljevanju navedene metrike so povprečene čez vse razrede, razen če je navedeno drugače.
+        % Vse v nadaljevanju navedene metrike so povprečene čez vse razrede, razen če je navedeno drugače.
 
-            \begin{equation}
-                P_{\text{makro}} = \frac{1}{N}\sum_{i=1}^N P_{i}
-                \label{eq:prec_macro}
-            \end{equation}
-            \begin{equation}
-                R_{\text{makro}} = \frac{1}{N}\sum_{i=1}^N R_{i}
-                \label{eq:recall_macro}
-            \end{equation}
-            \begin{equation}
-                F1_{\text{makro}} = \frac{1}{N}\sum_{i=1}^N F1_{i}
-                \label{eq:f1_macro}
-            \end{equation}
+        \begin{equation}
+            P_{\text{makro}} = \frac{1}{N}\sum_{i=1}^N P_{i}
+            \label{eq:prec_macro}
+        \end{equation}
+        \begin{equation}
+            R_{\text{makro}} = \frac{1}{N}\sum_{i=1}^N R_{i}
+            \label{eq:recall_macro}
+        \end{equation}
+        \begin{equation}
+            F1_{\text{makro}} = \frac{1}{N}\sum_{i=1}^N F1_{i}
+            \label{eq:f1_macro}
+        \end{equation}
 
         % Originalne FOMO metrike (centroid scoring)
         \subsection{Izvorna implementacija} \label{sct:eir-metrike-izvorna}
 
-            V nadaljevanju povzamemo, kako so avtorji FOMO izvorno implementirali metrike, v naslednjem poglavju pa opišemo še spremembe, ki smo jih uvedli v kontekstu tega dela.
+            V nadaljevanju povzamemo, kako so avtorji FOMO izvorno
+            implementirali metrike, v naslednjem poglavju pa opišemo še
+            spremembe, ki smo jih uvedli v kontekstu tega dela.
 
-            % To sem dal na začetek pod splošen opis
-            % Med učenjem se na validacijskem naboru poročajo natančnost (angl. \textit{precision}, enačba~\ref{eq:prec}), ki meri delež pravilnih pozitivnih napovedi med vsemi pozitivnimi napovedmi, priklic (angl. \textit{recall}, enačba~\ref{eq:recall}), ki meri delež pravilno zaznanih pozitivnih primerov med vsemi dejanskimi pozitivnimi, in mera F1 (enačba~\ref{eq:f1}), ki je harmonična sredina natančnosti in priklica.
-            Kot je opisano v poglavju~\ref{sct:fomo_orig_postprocessing}, je obdelan izhod izvorne implementacije modela nabor središč razpoznanih rojev, vsakemu središču pa je pripisan razpoznan razred.
-            Avtorji za izračun metrik podatkovno zbirko obdelajo tako, da vsakemu prisotnemu objektu določijo njegovo referenčno središče. Nato za vsako središče, ki ga je napovedal model, najdejo najbližje referenčno središče in ju primerjajo. V kolikor je razdalja med njima manjša od izbrane mejne vrednosti in se predviden razred roja ujema z referenčnim, se objekt smatra za pravilno razpoznan.
+            % To sem dal na začetek pod splošen opis Med učenjem se na
+            % validacijskem naboru poročajo natančnost (angl.
+            % \textit{precision}, enačba~\ref{eq:prec}), ki meri delež
+            % pravilnih pozitivnih napovedi med vsemi pozitivnimi napovedmi,
+            % priklic (angl. \textit{recall}, enačba~\ref{eq:recall}), ki meri
+            % delež pravilno zaznanih pozitivnih primerov med vsemi dejanskimi
+            % pozitivnimi, in mera F1 (enačba~\ref{eq:f1}), ki je harmonična
+            % sredina natančnosti in priklica.
+            Kot je opisano v
+            poglavju~\ref{sct:fomo_orig_postprocessing},
+            je obdelan izhod izvorne implementacije modela nabor središč
+            razpoznanih rojev, vsakemu središču pa je pripisan razpoznan
+            razred. Avtorji za izračun metrik podatkovno zbirko obdelajo tako,
+            da vsakemu prisotnemu objektu določijo njegovo referenčno središče.
+            Nato za vsako središče, ki ga je napovedal model, najdejo najbližje
+            referenčno središče in ju primerjajo. V kolikor je razdalja med
+            njima manjša od izbrane mejne vrednosti in se predviden razred roja
+            ujema z referenčnim, se objekt smatra za pravilno razpoznan.
 
-            Iz teh ujemanj za posamezen razred oblikujejo konfuzijsko matriko ter izpeljejo vrednosti TP, FP, TN in FN, na podlagi teh pa izračunajo končne metrike natančnosti, priklica in F1. \mbox{Razred ozadja}, tipično označen z indeksom 0, je izločen iz metrik. Ker v tem delu ne uporabljamo pristopa s središči, smo postopek izračuna metrik prilagodili in vrednosti v konfuzijski matriki izračunali brez uporabe središč rojev.
+            Iz teh ujemanj za posamezen razred oblikujejo konfuzijsko matriko
+            ter izpeljejo vrednosti TP, FP, TN in FN, na podlagi teh pa
+            izračunajo končne metrike natančnosti, priklica in F1. \mbox{Razred
+            ozadja}, tipično označen z indeksom 0, je izločen iz metrik. Ker v
+            tem delu ne uporabljamo pristopa s središči, smo postopek izračuna
+            metrik prilagodili in vrednosti v konfuzijski matriki izračunali
+            brez uporabe središč rojev.
 
         \subsection{Prilagojena implementacija} \label{sct:eir-metrike-prilagojena}
 
-            V nadaljnih eksperimentih smo izbrali dva pristopa k implementaciji
+            V nadaljnjih eksperimentih smo izbrali dva pristopa k implementaciji
             metrik: \textbf{metrike na ravni pikslov} in \textbf{metrike na
             ravni prisotnosti razredov}. Razred ozadja je v vseh primerih
             izključen iz izračunov. V
@@ -888,7 +974,9 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             natančnost $P_r$, priklic $R_r$ in mero $F1_r$ po
             definicijah~\ref{eq:prec},~\ref{eq:recall}
             in~\ref{eq:f1}.
-            Tak pristop meri uspešnost v obliki, ki jo zahteva naš problem, torej prisotnost sestavine na sliki brez upoštevanja lokacije.
+            Tak pristop meri uspešnost v obliki, ki ustreza našemu problemu,
+            torej kot prisotnost sestavine na sliki brez upoštevanja njene
+            lokacije.
             % TODO: To bi verjetn moglo it v diskusijo...
             % Ker je rezultat razdeljen na več konfuzijskih matrik, je manj neposredno viden vzorec zamenjav med razredi.
             
@@ -897,13 +985,22 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
 
             \paragraph{Metrike na ravni pikslov.} \label{sct:eir-metrike-pixel}
 
-            Ta pristop izračuna elemente konfuzijske matrike na ravni
-            slikovnih elementov.
+            Ta pristop izračuna elemente konfuzijske matrike na ravni slikovnih
+            elementov.
             % Navezi se na naknadno obdelavo
-            %Za vsak slikovni element v napovedani maski vzamemo predikcije verjetnosti razredov in določimo razred z največjo verjetnostjo. Če noben razred ne preseže praga $\tau$, pikslu pripišemo ozadje.
-            Uporabimo nizkoločjivostno segmentacijsko masko, ki je rezultat 2. koraka v modificirani naknadni obdelavi, opisani v \ref{sct:fomo_custom_postprocessing}.
-            S primerjanjem istoležnih celic med predikcijo in referenčno masko dobimo za vsak razred število pravilnih pozitivnih, napačnih pozitivnih, spregledanih pozitivnih in pravilnih negativnih predikcij.
-            Iz teh vrednosti sestavimo konfuzijsko matriko velikosti \(n\times n\), kjer \(n\) označuje število obravnavanih razredov brez ozadja. Na podlagi te matrike nato izračunamo natančnost $P_p$, priklic $R_p$ in mero $F1_p$.
+            %Za vsak slikovni element v napovedani maski vzamemo predikcije
+            %verjetnosti razredov in določimo razred z največjo verjetnostjo.
+            %Če noben razred ne preseže praga $\tau$, pikslu pripišemo ozadje.
+            Uporabimo nizkoločljivostno segmentacijsko masko, ki je rezultat 2.
+            koraka v modificirani naknadni obdelavi, opisani v
+            \ref{sct:fomo_custom_postprocessing}.
+            S primerjanjem istoležnih celic med predikcijo in referenčno masko
+            dobimo za vsak razred število pravilnih pozitivnih, napačnih
+            pozitivnih, spregledanih pozitivnih in pravilnih negativnih
+            predikcij. Iz teh vrednosti sestavimo konfuzijsko matriko velikosti
+            \(n\times n\), kjer \(n\) označuje število obravnavanih razredov
+            brez ozadja. Na podlagi te matrike nato izračunamo natančnost
+            $P_p$, priklic $R_p$ in mero $F1_p$.
 
             % Motivacija, zakaj bi to hotel
             Ta pristop zaradi primerjave istoležnih pikslov mask evalvira tudi
@@ -929,7 +1026,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             %kot standardno segmentacijsko metriko.
             Poleg izračuna metrik $P_p$, $R_p$ in $F1_p$ lahko s primerjanjem
             predikcijske in referenčne maske izračunamo metriko IoU.
-            Uporaba te metrike nam omogoči neposredno primerjavo z rezultati,
+            Uporaba te metrike omogoča neposredno primerjavo z rezultati,
             ki so jih druge študije dosegle na isti podatkovni zbirki, vendar
             je uporaba pri grobi segmentacijski maski problematična za manjše
             objekte. FOMO vrača nizkoločljivostne izhode, tipično \(8\times 8\)
@@ -940,425 +1037,958 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             ali $1{,}0$, kar je izrazito nezvezno.
 
     \section{Eksperimenti} \label{sct:eir-eksperimenti}
-    
-        % TODO: kratek opis kaj imamo v tem poglavju
-        
+
+        V tem poglavju predstavimo eksperimentalni del naloge. Najprej opišemo
+        eksperimente z modelom FOMO, kjer med drugimi preverimo pravilnost učnega
+        okolja, strategije učenja in pristope h kvantizaciji. Nato predstavimo še
+        eksperimente z modelom YOLOv11-seg, na koncu pa še z modelom SAM pri
+        pretvorbi anotacij.
+
         \subsection{Model FOMO} \label{sct:eksperimenti-fomo}
-            
+
             % TODO: kratek opis kaj imamo v tem poglavju
-        
+
             \paragraph{Validacija okolja z namernim prenaučenjem} \label{sct:eir-eksperimenti-validacija}
                 % Single batch overfit eksperiment
-                
-                Kot začetni preizkus korektnosti učnega okolja izvedemo namerno prenaučenje na zelo majhnem naboru podatkov~\cite{src:karpathy2019recipe}. Mreža se uči in evalvira na zelo majhnem naboru vzorcev, iste podatke uporabimo v vseh epohah. Pričakovani izid je, da se učna izguba približa ničli, napovedi pa se poravnajo z oznakami. Evalvacija in testiranje v tem preizkusu potekata nad istimi vzorci kot učenje, saj preverjamo delovanje podatkovnega cevovoda in učnega okolja. Tak pregled hitro razkrije skrite napake in potrdi, da model in učno okolje lahko sploh učinkovito učita.
 
-                Med tem eksperimentom začasno onemogočimo močne augmentacije ter regularizacijo, nato pa učimo na zelo omejenem naboru podatkov, dokler vrednost kriterijske funkcije ne pade na 0. Če do minimizacije izgube ne pride, to pogosto nakazuje na napako v pripravi podatkov, definiciji izgube ali posodabljanju uteži, zato napako odpravimo pred nadaljnjimi eksperimenti.
+            Kot začetni preizkus pravilnosti učnega okolja smo izvedli namerno
+            prenaučenje na zelo majhnem naboru
+            podatkov~\cite{src:karpathy2019recipe}. Mreža se uči in
+            evalvira na zelo majhnem naboru vzorcev, kjer smo iste podatke uporabili
+            v vseh epohah. Pričakovani izid takega eksperimenta je, da se učna izguba približa
+            ničli, napovedi pa se poravnajo z oznakami. Evalvacija in
+            testiranje v tem preizkusu potekata nad istimi vzorci kot
+            učenje, saj preverjamo delovanje podatkovnega cevovoda in
+            učnega okolja. Tak pregled hitro razkrije skrite napake in
+            potrdi, da model in učno okolje lahko sploh učinkovito učita.
 
-                Rezultati na~\ref{fig:overfit_one_batch_plots} in~\ref{fig:overfit_one_batch_example} nakazujejo, da učno okolje uspešno reši majhen nabor podatkov.
+            Med tem eksperimentom smo začasno onemogočili močne augmentacije
+            ter regularizacijo in model učili na zelo omejenem naboru podatkov,
+            dokler se vrednost kriterijske funkcije ni približala ničli. Če do
+            minimizacije izgube ne pride, to pogosto nakazuje na napako v
+            pripravi podatkov, definiciji kriterijske funkcije ali
+            posodabljanju uteži.
 
-                \begin{figure}[t]
-                  \centering
-                  \setlength{\tabcolsep}{2pt} % space between columns
-                  \renewcommand{\arraystretch}{1} % no extra row padding
-                  \begin{tabular}{@{}cc@{}}
-                  
-                        \begin{tikzpicture}
-                            \begin{axis}[
-                              width=0.5\linewidth,
-                              height=0.5\linewidth,
-                              xlabel=Epohe,
-                              ylabel=Krit. funkcija,
-                              grid=both,
-                              ymin=0,
-                              %legend pos=north east,
-                              %legend style={draw=none, fill=none, font=\small}
-                              legend style={font=\small}
-                            ]
-                                \addplot+[thick, mark=none] table [x=Step, y=Value, col sep=comma] {figures/single_batch_test/loss_train_alpha_1.0.csv};
-                                \addplot+[thick, mark=none] table [x=Step, y=Value, col sep=comma] {figures/single_batch_test/loss_val_alpha_1.0.csv};
-                            \end{axis}
-                        \end{tikzpicture}
-                  
-                        \begin{tikzpicture}
-                            \begin{axis}[
-                              width=0.5\linewidth,
-                              height=0.5\linewidth,
-                              xlabel=Epohe,
-                              ylabel=F1,
-                              grid=both,
-                              ymin=0,
-                              legend pos=south east,
-                              %legend style={draw=none, fill=none, font=\small}
-                              legend style={font=\small}
-                            ]
-                                \addplot+[thick, mark=none] table [x=Step, y=Value, col sep=comma] {figures/single_batch_test/f1_train_alpha_1.0.csv};
-                                \addlegendentry{Učna};
-                                \addplot+[thick, mark=none] table [x=Step, y=Value, col sep=comma] {figures/single_batch_test/f1_val_alpha_1.0.csv};
-                                \addlegendentry{Validacijska};
-                            \end{axis}
-                        \end{tikzpicture}
-                        
-                  \end{tabular}
-                  % TODO: vsak graf na sliki mora biti enoznačno označen kot npr. (a) (b). Oznake moraš potem uporabiti v opisu slike.
-                  \caption{Potek kriterijske funkcije in metrike $F1_r$ skozi namerno prenaučenje z namenom validacije učnega okolja.}
-                  \label{fig:overfit_one_batch_plots}
-                \end{figure}
-
-                \begin{figure}[h]
-                    \centering
-                    \includegraphics[width=\linewidth]{figures/single_batch_test/overfit_one_batch_example.png}
-                    % TODO: preveri odmik med opisom in sliko
-                    % TODO: vsak graf na sliki mora biti enoznačno označen kot npr. (a) (b). Oznake moraš potem uporabiti v opisu slike.
-                    \caption{Primer inference na modelu, namenjenemu validaciji okolja z namernim prenaučenjem. Od leve proti desni: vhodna slika, izhod modela in referenčna maska.}
-                    \label{fig:overfit_one_batch_example}
-                \end{figure}
-            
             \paragraph{Določanje optimalnih vrednosti za stopnjo učenja} \label{sct:eir-eksperimenti-dolocanje-learning-rate}
 
-                Za določanje stopnje učenja (\textit{learning rate}) uporabimo pristop iz~\cite{src:smith2017cyclical}. V kratkem preizkusu stopnjo učenja enakomerno povečujemo po korakih, od zelo nizke do visoke vrednosti, ter sproti beležimo vrednost kriterijske funkcije. Na dobljenem grafu poiščemo območje največjega izboljševanja, torej točko z najstrmejšim upadom izgube. To točko uporabimo kot začetno stopnjo učenja. V nadaljevanju uporabljamo običajen razpored zniževanja stopnje učenja (npr. zniževanje ob platoju \footnote{Primer takšnega orodja: \url{https://keras.io/api/callbacks/reduce_lr_on_plateau/}}), ki stopnjo postopoma zmanjšuje proti območju, kjer se izboljševanje upočasni. 
+            Za določanje stopnje učenja (\textit{learning rate}) smo uporabili
+            pristop iz~\cite{src:smith2017cyclical}. V kratkem preizkusu
+            smo stopnjo učenja enakomerno povečevali po korakih, od zelo nizkih do
+            visokih vrednosti, ter sproti beležili vrednost kriterijske
+            funkcije. Na dobljenem grafu smo nato poiskali območje z najstrmejšim upadom
+            kriterijske funkcije. Manjše vrednosti s tega območja so tako še
+            vedno dovolj velike za učenje, medtem ko so največje vrednosti na
+            tem območju dovolj nizke, da model še vedno
+            konvergira~\cite{src:smith2017cyclical}.
 
-                Tak preizkus bistveno zmanjša ugibanje pri izbiri hiperparametra in pogosto skrajša čas učenja. Priporočljivo ga je ponoviti ob vsaki spremembi podatkovne zbirke, arhitekture, velikosti paketa ali kriterijske funkcije. Alternativno lahko dobljeni spodnjo in zgornjo mejo uporabimo tudi pri cikličnem razporedu stopenj učenja~\cite{src:smith2017cyclical}.
+            Največjo vrednost na identificiranem območju tako lahko uporabimo na začetku
+            učenja, kar pospeši začetni del učenja, nato pa stopnjo učenja
+            postopoma zmanjšujemo do najnižje vrednosti na identificiranem
+            območju. V nadaljnjih eksperimentih smo uporabili običajen razpored
+            zniževanja stopnje učenja (npr. zniževanje ob platoju\footnote{Primer takšnega orodja:
+            \url{https://keras.io/api/callbacks/reduce_lr_on_plateau/}}), ki
+            stopnjo postopoma zmanjšuje proti območju, kjer se izboljševanje
+            upočasni.
 
-                Na sliki~\ref{fig:lr_finder_plots} sta prikazana takšna eksperimenta, prvi za $\alpha=0.35$, drugi pa za $\alpha=1.0$. Oba modela uporabljata izhodno plast za 30 razredov sestavin. Vidimo, da je  najbolj ustrezna začetna stopnja učenja $\eta_0$ v razponu okrog $[5\cdot10^{-4},\,\ 10^{-2}]$, za končno pa je ustrezna okrog $\eta_k = 10^{-5}$. Razvidno je še, da parameter $\alpha$ v razponu $[0.35, 1.0]$ ne vpliva bistveno na primerno vrednost $\eta$.
+            Tak pristop bistveno zmanjša ugibanje pri izbiri hiperparametra
+            stopnje učenja in pogosto skrajša čas
+            učenja~\cite{src:smith2017cyclical}. Priporočljivo ga je ponoviti
+            ob vsaki spremembi podatkovne zbirke, arhitekture, kriterijske
+            funkcije in drugih hiperparametrov. Alternativno lahko dobljeni
+            spodnjo in zgornjo mejo uporabimo tudi pri cikličnem razporedu
+            stopenj učenja~\cite{src:smith2017cyclical}.
 
-                \begin{figure}[t]
-                  \centering
-                  \setlength{\tabcolsep}{2pt} % space between columns
-                  \renewcommand{\arraystretch}{1} % no extra row padding
-                  \begin{tabular}{@{}cc@{}}
-                  
-                        \begin{tikzpicture}
-                            \begin{axis}[
-                              width=0.9\linewidth,
-                              height=0.7\linewidth,
-                              xlabel=$\eta$,
-                              ylabel=Krit. funkcija,
-                              grid=both,
-                              xmode=log,
-                              legend pos=north east,
-                              %legend style={draw=none, fill=none, font=\small}
-                              legend style={font=\small}
-                            ]
-                                \addplot+[thick, mark=none] table [x=lrs, y=losses, col sep=comma] {figures/lr_finder/alpha_0.35.csv};
-                                \addlegendentry{$\alpha=0.35$}
-                                \addplot+[thick, mark=none] table [x=lrs, y=losses, col sep=comma] {figures/lr_finder/alpha_1.0.csv};
-                                \addlegendentry{$\alpha=1.0$}
-                            \end{axis}
-                        \end{tikzpicture}
-                        
-                  \end{tabular}
-                  \caption{Potek kriterijske funkcije skozi spreminjajoč se faktor učenja $\eta$. Iz slike je razvidno, da se model najbolje uči pri faktorju $\eta_0$ okrog $10^{-3}$.}
-                  \label{fig:lr_finder_plots}
-                \end{figure}
+            \paragraph{Učenje na izvirni zbirki} \label{sct:eir-ucenje-na-izvirnem-datasetu}
+
+            V tem eksperimentu smo ocenili delovanje modela na izvorni,
+            nepoenostavljeni podatkovni zbirki FoodSeg103. Namen eksperimenta
+            je bil določiti izhodiščne vrednosti metrik F1 in IoU na izvorni
+            podatkovni zbirki ter oceniti vpliv različnih pristopov uteževanja
+            pri izrazito neuravnoteženi porazdelitvi razredov. Pri tem
+            smo preizkusili dva načina uteževanja. Prvi je bil enakomerno uteževanje
+            razredov s faktorjem \(100\), kot ga predlagajo avtorji modela
+            FOMO~\cite{src:fomodocs}, razred ozadja pa je utežen s faktorjem
+            \(1\). Drugi pristop je temeljil na frekvenci razredov v zbirki: za
+            vsak razred smo določili relativno frekvenco \(f_i\) in vzeli njen
+            inverz kot utež \(w_i=\tfrac{1}{f_i}\).
+            %Na primer, če je \(f_i=0{,}227\), potem je
+            %\(w_i=\tfrac{1}{0{,}227}=4{,}405\). 
+            Ker je ozadje prisotno na vseh vzorcih, je bila utež razreda ozadje enaka
+            \(w_{\mathrm{bg}}=1{,}0\).
+
+            Za večjo kapaciteto modela smo nastavili parameter \(\alpha\) na
+            \(1{,}0\), prag \(\tau\) nastavili na \(0{,}2\), prag \(\nu\) pa na
+            \(3\). Vhodno ločljivost smo nastavili na \(128 \times 128\) pikslov,
+            izhodno masko pa pomanjšali za faktor $16$, kar pomeni ločljivost
+            \(8 \times 8\) pikslov. V predprocesiranju smo uporabili knjižnico
+            Albumentations\footnote{\url{https://explore.albumentations.ai/}}
+            za augmentacije naključnega obrezovanja (\emph{random resized
+            crop}), naključno vodoravno in navpično zrcaljenje, naključno
+            rotacijo do \(15^{\circ}\) ter naključno spremembo svetlosti in
+            kontrasta. Model smo učili v celoti po vseh plasteh (angl.
+            \emph{end-to-end}).
+
+            \paragraph{Učenje na poenostavljeni zbirki}
+
+            % TODO: Mogoče tu manjka motivacija za eksperimentom?
+            % Ta eksperiment smo naredili, ker smo pri izvirni zbirki imeli
+            % zelo slabe rezultate.
+            % Želeli smo preveriti, če poenostavitev problema sploh lahko izboljša
+            % uspešnost modela. (zbirka je zelo zahtevna. Poskusili smo bolje razumeti, če je za slabe rezultate kriva zahtevnost zbirke ali sam model.)
+            %
+            % Zbirka FoodSeg103 praviloma sodi med zahtevnejše podatkovne zbirke~\cite{src:wu2021large}. S tem eksperimentom smo želeli bolje razumeti, če je za slabe rezultate kriva zahtevnost zbirke ali sam model.
+            Zaradi slabih rezultatov smo poskusili nalogo modela poenostaviti.
+            V nadaljnjih eksperimentih smo uporabili poenostavljeno podatkovno
+            zbirko in znova preizkusili dva načina uteževanja razredov. Zbirko
+            smo zmanjšali na 30 razredov, kot je opisano v
+            poglavju~\ref{sct:eir-podatkovnazbirka-poenostavitev}.
+            Konfiguracija parametrov v tem eksperimentu je bila enaka kot pri
+            prejšnjem eksperimentu z nepoenostavljeno zbirko FoodSeg103:
+            %odseku~\ref{sct:eir-ucenje-na-izvirnem-datasetu}:
+            \(\alpha=1{,}0\), \(\tau=0{,}2\) in \(\nu=3\). Uporabili smo isto
+            ločljivost vhodne in izhodne maske  kot pri prejšnjem eksperimentu,
+            to je \(128 \times 128\) ter \(8 \times 8\) pikslov. V
+            predprocesiranju smo uporabili isti nabor augmentacij kot pri
+            prejšnjem eksperimentu.
+
+            \paragraph{Primerjava različnih kombinacij resolucij}
                 
+            V nadaljevanju smo želeli ugotoviti, kako vhodna ločljivost in
+            faktor zmanjšanja ločljivosti modela vplivata na dosežene metrike.
+            Kot je bilo omenjeno v
+            poglavju~\ref{sct:glava_modela},
+            ima glava modela FOMO prilagodljivo velikost konvolucijskega jedra
+            in koraka, kar določa skupni faktor zmanjšanja ločljivosti na
+            izhodu. V tem eksperimentu smo preizkusili dve izvedbi glave: prva
+            je uporabljala faktor zmanjšanja \(8\), druga pa faktor \(16\).
+            Vsako izvedbo smo preizkusili v kombinaciji s tremi različnimi
+            vhodnimi ločljivostmi: $96 \times 96$, $128 \times 128$ in $224
+            \times 224$. S tem smo želeli oceniti vpliv različnih vhodnih
+            ločljivosti in vpliv faktorja zmanjšanja ločljivosti na uspešnost
+            modela.
+
+            Preostala konfiguracija učenja je bila enaka kot v prejšnjem
+            eksperimentu: uporabili smo enake augmentacije in preostale
+            hiperparametre. Za učenje smo uporabili poenostavljeno
+            podatkovno zbirko FoodSeg103, vzorce pa smo utežili po frekvenci
+            razredov.
             
-            \paragraph{Učenje na izvirni FoodSeg103 zbirki} \label{sct:eir-ucenje-na-izvirnem-datasetu}
+            \paragraph{Primerjava različnih strategij učenja}
 
-                V tem eksperimentu ocenimo delovanje modela na izvorni, nepoenostavljeni podatkovni zbirki. Preizkusimo dva načina uteževanja. Prvi je enakomerno uteževanje razredov s faktorjem \(100\), kot ga predlagajo avtorji~\cite{src:fomodocs}, pri čemer je ozadje uteženo s faktorjem \(1\). Drugi pristop temelji na frekvenci razredov v zbirki: za vsak razred določimo relativno frekvenco \(f_i\) in vzamemo njen inverz kot utež, tj.\ \(w_i=\tfrac{1}{f_i}\). Na primer, če je \(f_i=0{,}227\), potem je \(w_i=\tfrac{1}{0{,}227}=4{,}405\). Ker je ozadje prisotno na vseh vzorcih, je njegova utež \(w_{\mathrm{bg}}=1{,}0\).
 
-                Za večjo kapaciteto modela nastavimo parameter \(\alpha\) na \(1{,}0\). Prag \(\tau\) nastavimo na \(0{,}2\), prag \(\nu\) pa na \(3\). Vhodno ločljivost nastavimo na \(128 \times 128\) pikslov, izhodno masko pa pomanjšamo za faktor $16$, kar pomeni ločljivost \(8 \times 8\) pikslov. V predprocesiranju uporabimo knjižnico Albumentations\footnote{\url{https://explore.albumentations.ai/}} za augmentacije naključnega obrezovanja (\emph{random resized crop}), naključno vodoravno in navpično zrcaljenje, naključno rotacijo do \(15^{\circ}\) ter naključno spremembo svetlosti in kontrasta. Model učimo v celoti po vseh plasteh (angl. \emph{end-to-end}).
+            V tem odseku primerjamo dve strategiji učenja: učenje po celotnem
+            modelu in učenje z zamrznjenim izluščevalnikom značilk. Obe izvedbi
+            inicializiramo z utežmi, prednaučenimi na ImageNet. Namen tega
+            eksperimenta je ugotoviti, v kolikšni meri lahko izvedemo prenos
+            znanja. Ker ta zbirka le omejeno pokriva živila in sestavine, je
+            vprašanje tudi, kolikšen del prenesenega znanja je v tej domeni
+            dejansko uporaben.
 
-                % Grafi kriterijske funkcije
-                \begin{figure}[t]
-                  \centering
-                  \setlength{\tabcolsep}{2pt} % space between columns
-                  \renewcommand{\arraystretch}{1} % no extra row padding
-                  \begin{tabular}{@{}cc@{}}
-                  
-                        \begin{tikzpicture}
-                            \begin{axis}[
-                              width=0.5\linewidth,
-                              height=0.5\linewidth,
-                              xlabel=Epohe,
-                              ylabel=Krit. funkcija,
-                              grid=both,
-                              ymin=0,
-                              %legend pos=north east,
-                              %legend style={draw=none, fill=none, font=\small}
-                              legend style={font=\small}
-                            ]
-                                \addplot+[thick, mark=none] table [x=Step, y=Value, col sep=comma] {figures/full_foodseg103_dataset/uniform_weights/loss_train.csv};
-                                \addplot+[thick, mark=none] table [x=Step, y=Value, col sep=comma] {figures/full_foodseg103_dataset/uniform_weights/loss_val.csv};
-                            \end{axis}
-                        \end{tikzpicture}
-                  
-                        \begin{tikzpicture}
-                            \begin{axis}[
-                              width=0.5\linewidth,
-                              height=0.5\linewidth,
-                              xlabel=Epohe,
-                              % ylabel=Krit. funkcija,
-                              grid=both,
-                              ymin=0,
-                              legend pos=south east,
-                              %legend style={draw=none, fill=none, font=\small}
-                              legend style={font=\small}
-                            ]
-                                \addplot+[thick, mark=none] table [x=Step, y=Value, col sep=comma] {figures/full_foodseg103_dataset/weights_from_stats/loss_train.csv};
-                                \addlegendentry{Učna};
-                                \addplot+[thick, mark=none] table [x=Step, y=Value, col sep=comma] {figures/full_foodseg103_dataset/weights_from_stats/loss_val.csv};
-                                \addlegendentry{Validacijska};
-                            \end{axis}
-                        \end{tikzpicture}
-                        
-                  \end{tabular}
-                  \caption{Spreminjanje kriterijske funkcije tekom učenja na izvirni, nepoenostavljeni zbirki FoodSeg103. Levo je izvedba z uniformno uteženimi razredi, desno pa z utežmi na podlagi frekvence razredov.}
-                  \label{fig:experiment_full_foodseg103_dataset_loss}
-                \end{figure}
-
-                % Kvalitativno
-                \begin{figure*}[h!]
-                    \centering
-                    \includegraphics[width=0.8\linewidth]{figures/full_foodseg103_dataset/uniform_weights/example1.png}
-                    \includegraphics[width=0.8\linewidth]{figures/full_foodseg103_dataset/uniform_weights/example2.png}
-                    \includegraphics[width=0.8\linewidth]{figures/full_foodseg103_dataset/weights_from_stats/example1.png}
-                    \includegraphics[width=0.8\linewidth]{figures/full_foodseg103_dataset/weights_from_stats/example2.png}
-                    % TODO: Manjkajo reference posamezne grafike, uporabi a b c d
-                    \caption{Kvalitativni rezultati na izvirni, nepoenostavljeni zbirki FoodSeg103. Od leve proti desni: vhodna slika, referenčna maska, predikcija modela. Zgornji dve sliki sta rezultat izvedbe z uniformnimi utežmi, spodnji dve pa rezultat izvedbe na podlagi frekvence razredov.}
-                    \label{fig:experiment_full_foodseg103_dataset_qualitative}
-                \end{figure*}
-                
-                % Tabela rezultatov (f1 class presence, f1 per pixel, iou)
-                \begin{table}[t]
-                    \centering
-                    \begin{tabular}{lccc}
-                        \toprule
-                        \textbf{Izvedba uteži $w$} & \textbf{F1$_r$} & \textbf{F1$_p$} & \textbf{IoU} \\
-                        \midrule
-                        Uniformno          & 13{,}8 & 9{,}8 & 6{,}0 \\
-                        Frekvenca razredov & 11{,}4 & 7{,}6 & 4{,}3 \\
-                        \bottomrule
-                    \end{tabular}
-                    \caption{Rezultati učenja na polni FoodSeg103 zbirki.}
-                    \label{tab:experiment_full_foodseg103_dataset_table}
-                \end{table}
-                % TODO: Tabela je takoj za sliko
-
-                Namen eksperimenta je določiti izhodiščne vrednosti mer F1 in IoU na izvorni podatkovni zbirki ter oceniti vpliv različnih pristopov uteževanja pri izrazito neuravnoteženi porazdelitvi razredov. Rezultati so prikazani na sliki~\ref{fig:experiment_full_foodseg103_dataset_loss} in v tabeli~\ref{tab:experiment_full_foodseg103_dataset_table}.
-                Obe izvedbi izkazujeta slabe rezultate. Pri izvedbi z uteževanjem glede na frekvenco razredov se prenaučenje pojavi bistveno prej, hkrati pa so rezultati na testni množici slabši.
-                Kvalitativne vizualizacije na sliki~\ref{fig:experiment_full_foodseg103_dataset_qualitative} so skladne s številčnimi izidi. Izvedba z uteževanjem po frekvenci v večini primerov napove zgolj ozadje, medtem ko enakomerno utežena izvedba da vsaj nekaj napovedi, čeprav so te večinoma nepravilne.
-
-                
-            \paragraph{Učenje na poenostavljeni zbirki in primerjava pristopov uteževanja} \label{sct:eir-fomo-simplified-experiments}
-
-                V nadaljnjih eksperimentih uporabimo poenostavljeno podatkovno zbirko in znova preizkusimo dva načina uteževanja razredov. Konfiguracija parametrov ostane podobna kot v odseku~\ref{sct:ucenje-na-izvirnem-datasetu}: \(\alpha=1{,}0\), \(\tau=0{,}2\) in \(\nu=3\). Vhodna ločljivost je \(128 \times 128\) pikslov, izhodna maska pa ima ločljivost \(8 \times 8\) pikslov. V predprocesiranju uporabimo isti nabor augmentacij kot v navedenem odseku.
-
-                % Namen eksperimenta + opis rezultatov objektivno
-                Rezultati so prikazani na sliki~\ref{fig:experiment_simplified_foodseg103_dataset_loss} in v tabeli~\ref{tab:experiment_simplified_foodseg103_dataset_table}. V primerjavi z rezultati v poglavju~\ref{sct:ucenje-na-izvirnem-datasetu} doseže ta eksperiment izrazito boljše rezultate, različna uteževanja pa na pridobljene rezultate nimajo izrazitega vpliva.
-
-                % Grafi kriterijske funkcije
-                \begin{figure*}[t]
-                  \centering
-                  \setlength{\tabcolsep}{2pt} % space between columns
-                  \renewcommand{\arraystretch}{1} % no extra row padding
-                  \begin{tabular}{@{}cc@{}}
-                  
-                        \begin{tikzpicture}
-                            \begin{axis}[
-                              width=0.5\linewidth,
-                              height=0.5\linewidth,
-                              xlabel=Epohe,
-                              ylabel=Krit. funkcija,
-                              grid=both,
-                              ymin=0,
-                              %legend pos=north east,
-                              %legend style={draw=none, fill=none, font=\small}
-                              legend style={font=\small}
-                            ]
-                                \addplot+[thick, mark=none] table [x=Step, y=Value, col sep=comma] {figures/simplified_foodseg103_dataset/uniform_weights/loss_train.csv};
-                                %\addlegendentry{Učna};
-                                \addplot+[thick, mark=none] table [x=Step, y=Value, col sep=comma] {figures/simplified_foodseg103_dataset/uniform_weights/loss_val.csv};
-                                %\addlegendentry{Validacijska};
-                            \end{axis}
-                        \end{tikzpicture}
-                  
-                        \begin{tikzpicture}
-                            \begin{axis}[
-                              width=0.5\linewidth,
-                              height=0.5\linewidth,
-                              xlabel=Epohe,
-                              % ylabel=Krit. funkcija,
-                              grid=both,
-                              ymin=0,
-                              legend pos=north east,
-                              %legend style={draw=none, fill=none, font=\small}
-                              legend style={font=\small}
-                            ]
-                                \addplot+[thick, mark=none] table [x=Step, y=Value, col sep=comma] {figures/simplified_foodseg103_dataset/weights_from_stats/loss_train.csv};
-                                \addlegendentry{Učna};
-                                \addplot+[thick, mark=none] table [x=Step, y=Value, col sep=comma] {figures/simplified_foodseg103_dataset/weights_from_stats/loss_val.csv};
-                                \addlegendentry{Validacijska};
-                            \end{axis}
-                        \end{tikzpicture}
-
-                  \end{tabular}
-                  % TODO: Manjkajo reference na posamezno sliko. Verjetno lahko uporabis abcd oznake
-                  \caption{Spreminjanje kriterijske funkcije tekom učenja modela FOMO na poenostavljeni zbirki FoodSeg103. Levo je izvedba z uniformno uteženimi razredi, desno pa z utežmi na podlagi frekvence razredov.}
-                  \label{fig:experiment_simplified_foodseg103_dataset_loss}
-                \end{figure*}
-
-                % Tabela rezultatov (f1 class presence, f1 per pixel, iou)
-                \begin{table}[t]
-                    \centering
-                    \begin{tabular}{lccc}
-                        \toprule
-                        \textbf{Izvedba uteži $w$} & \textbf{F1$_r$} & \textbf{F1$_p$} & \textbf{IoU} \\
-                        \midrule
-                        Uniformno          & 38{,}1 & 27{,}7  & 17{,}6  \\
-                        Frekvenca razredov & 37{,}1 & 28{,}3  & 18{,}0  \\
-                        \bottomrule
-                    \end{tabular}
-                    \caption{Rezultati učenja na poenostavljeni FoodSeg103 zbirki.}
-                    \label{tab:experiment_simplified_foodseg103_dataset_table}
-                \end{table}
-                % TODO: Tabela je takoj za sliko
-
-                
+            Prva strategija je učenje celotnega modela (\emph{end-to-end}),
+            kjer vse plasti fino prilagodimo na ciljni podatkovni zbirki. Druga
+            strategija je učenje z zamrznjenim izluščevalnikom značilk, pri
+            čemer učimo samo glavo modela, izluščevalnik značilk pa ohranimo
+            nespremenjen (angl. \textit{transfer learning}). Slednji pristop
+            praviloma bolje ohrani prednaučeno znanje.
             
-            \paragraph{Primerjava različnih kombinacij resolucij} \label{sct:eir-primerjava-resolucij}
-                
-                V odseku~\ref{sct:glava_modela} smo navedli, da ima glava modela prilagodljivo velikost jedra in koraka, kar določa skupni faktor zmanjšanja prostorske ločljivosti na izhodu. Definirali smo dve izvedbi glave s faktorjema zmanjšanja \(8\) in \(16\).
-                V tem odseku ocenimo vpliv različnih vhodnih ločljivosti v kombinaciji s tema faktorjema. Konfiguracija učenja sledi odseku~\ref{sct:fomo-simplified-experiments}: ohranimo enak podatkovni cevovod, enake hiperparametre in uteževanje po frekvenci razredov. Namen primerjave je ugotoviti, ali povečanje vhodne ločljivosti in/ali izbira manjšega faktorja zmanjšanja prinese občutno izboljšanje metrik glede na dodatno računsko zahtevnost.
-                
-                Izbrane kombinacije ločljivosti in pripadajoči rezultati so zbrani v tabeli~\ref{tab:res-combos}. 
-                
-                \begin{table}[t]
-                    \centering
-                    \begin{tabular}{lccccc}
-                        \toprule
-                        \textbf{Vhod} & \textbf{Izhod} & \textbf{Faktor} & \textbf{F1$_r$} & \textbf{F1$_p$} & \textbf{IoU} \\
-                        \midrule
-                        96x96   & 12x12 & 8   &  \textbf{38{,}0} & 29{,}2 & 18{,}6 \\
-                        96x96   & 6x6   & 16  &  29{,}4 & 22{,}7 & 13{,}8 \\
-                        128x128 & 16x16 & 8   &  37{,}5 & \textbf{31{,}0} & \textbf{20{,}1} \\
-                        128x128 & 8x8   & 16  &  37{,}1 & 28{,}3 & 18{,}0 \\
-                        224x224 & 28x28 & 8   &  31{,}7 & 30{,}5 & 19{,}8 \\
-                        224x224 & 14x14 & 16  &  34{,}2 & 27{,}9 & 17{,}7 \\
-                        \bottomrule
-                    \end{tabular}
-                    \caption{Primerjava različnih kombinacij vhodne ločljivosti in faktorja zmanjšanja v glavi modela.}
-                    \label{tab:res-combos}
-                \end{table}
+            %V tem eksperimentu uporabimo FOMO model iz
+            %odseka~\ref{sct:eir-fomo-simplified-experiments} s parametrom
+            %\(\alpha=1{,}0\) in uteževanjem na podlagi frekvence razredov. V
+            %obeh strategijah uporabimo enak podatkovni cevovod, enake
+            %augmentacije in enake evalvacijske metrike.
+            Konfiguracija učenja je bila enaka kot v prejšnjem eksperimentu:
+            uporabili smo enake augmentacije in preostale hiperparametre,
+            $\alpha$ pa smo postavili na $1{,}0$. Za učenje smo uporabili
+            poenostavljeno podatkovno zbirko FoodSeg103, vzorce pa smo utežili
+            po frekvenci razredov.
 
-            \paragraph{Primerjava različnih strategij učenja} \label{sct:eir-primerjava-strategij-ucenja}
+            \paragraph{Specializirani modeli po posameznih razredih}
+
+            %Namen in zasnova
+            Namen tega eksperimenta je preveriti, ali pristop s
+            specializiranimi modeli po posameznih razredih (angl. \emph{mixture
+            of experts})~\cite{src:jacobs1991adaptive-mixture-of-experts}
+            izboljša delovanje v primerjavi z referenčno izvedbo, ki hkrati
+            razpoznava več razredov. Izbran je pristop na ravni razredov: za
+            vsak razred v podatkovni zbirki smo naučili specializiran
+            enorazredni FOMO model, ki razlikuje zgolj med ozadjem in tem
+            razredom.
+
+            %\paragraph{Specializirani enorazredni modeli}
+            Za učenje posameznega enorazrednega modela smo morali pripraviti podatkovno zbirko, da je vsebovala zgolj dva razreda - ciljni razred ter razred ozadja.
+            Kot omenjeno v poglavju~\ref{sct:eir-podatkovnazbirka-poenostavitev}, je to mogoče na več načinov. Kot izhodišče smo uporabili poenostavljeno zbirko s 30 razredi. Vsakemu vzorcu smo nato masko priredili tako, 
+            da je vsebovala le ciljni razred, preostali razredi pa so bili označeni kot ozadje.
+            %\paragraph{Referenca}
+            % Za \textbf{referenco} uporabimo standarden FOMO model iz
+            % eksperimentov v odseku~\ref{sct:fomo-simplified-experiments} s
+            % parametrom $\alpha=1{,}0$ in uteževanjem na podlagi frekvence.
+            %
+            Preostala konfiguracija učenja je bila enaka kot v prejšnjih eksperimentih:
+            uporabili smo enake augmentacije in preostale hiperparametre,
+            $\alpha$ pa smo postavili na $1{,}0$.
+
+            Zavoljo poenostavitve smo naučili enorazredne modele za zgolj tri
+            razrede. Izbrali smo razrede z različnimi lastnostmi: razred
+            \emph{broccoli}, ki je praviloma dobro rešen v referenci, razred
+            \emph{chicken duck}, ki je dobro rešen, vendar s pogostimi
+            zamenjavami s sorodnimi razredi, ter razred \emph{cake}, ki je v referenci
+            načeloma slabo rešen.
+            Kot referenco smo uporabili rezultate modela na poenostavljeni
+            zbirki s 30 razredi, kjer smo vzorce utežili na podlagi frekvence
+            razredov in uporabili enako konfiguracijo parametrov kot v prejšnjih
+            eksperimentih. Izmerjenih metrik nismo povprečili kot pri prejšnjih
+            eksperimentih, ker smo želeli primerjati metrike po posameznih
+            razredih, ne pa njihovega makro povprečja.
 
 
-                V tem odseku primerjamo dve strategiji učenja. Obe izvedbi inicializiramo z utežmi, prednaučenimi na ImageNet. Ker ta zbirka le omejeno pokriva živila in sestavine, je odprto vprašanje, kolikšen del prenesenega znanja je v tej domeni dejansko uporaben.
-                Prva strategija je učenje po vseh plasteh (\emph{end-to-end}), kjer celoten model fino prilagodimo na ciljni podatkovni zbirki. Druga strategija je učenje z zamrznjenim izluščevalnikom značilk, pri čemer učimo samo glavo modela, izluščevalnik značilk pa ohranimo nespremenjen (angl. \textit{transfer learning}). Slednji pristop načeloma bolje ohrani prednaučeno znanje.
-                
-                Za \textbf{referenco} vzamemo standardni FOMO model iz odseka~\ref{sct:eir-fomo-simplified-experiments} s parametrom \(\alpha=1{,}0\) in uteževanjem na podlagi frekvence razredov. V obeh strategijah uporabimo enak podatkovni cevovod, enake augmentacije in enake evalvacijske metrike.
+            \paragraph{Kvantizacija modela}
 
-                \begin{table}[t]
-                    \centering
-                    \begin{tabular}{lccc}
-                        \toprule
-                        \textbf{Izvedba}                 & \textbf{F1\textsubscript{r}} & \textbf{F1\textsubscript{p}} & \textbf{IoU} \\
-                        \midrule
-                        Učenje celotnega modela & 37{,}1 & 28{,}3 & 18{,}0 \\
-                        Učenje glave            & 20{,}6 & 12{,}0 &  7{,}0 \\
-                        \bottomrule
-                    \end{tabular}
-                    \caption{Primerjava strategij učenja na poenostavljeni zbirki.}
-                    \label{tab:strategije-ucenja}
-                \end{table}
-                % TODO: Tabela je takoj za tabelo
+            V tem eksperimentu smo model FOMO kvantizirali z metodo
+            kvantizacije po učenju (PTQ) in poročali o končni uspešnosti
+            modela, velikosti modela in njegovi porabi pomnilnika. Rezultate
+            smo predstavili v odvisnosti od faktorja širine mreže $\alpha$.
+            Velikost modela predstavlja velikost na disku oz. pomnilniku Flash,
+            kar tipično zajema tenzorje uteži in pragov~\cite{src:litertmicro}.
+            Poraba pomnilnika RAM je tipično določena z velikostjo
+            medpomnilnika za shranjevanje vmesnih rezultatov oz.
+            aktivacij~\cite{src:litertmicro}.
 
-                Rezultati so prikazani v tabeli~\ref{tab:eir-strategije-ucenja}. Razvidno je, da učenje celotnega modela vrne boljše rezultate v vseh metrikah.
-
-                
-            \paragraph{Specializirani modeli po posameznih razredih} \label{sct:eir-specializirani-modeli}
-
-                %Namen in zasnova
-                Namen tega eksperimenta je preveriti, ali pristop s specializiranimi modeli po posameznih razredih (angl. \emph{mixture of experts}) izboljša delovanje v primerjavi z referenčno izvedbo, ki hkrati razpoznava več razredov. Izbran je pristop na ravni razredov: za vsak izbran razred učimo ločen FOMO model, ki razlikuje zgolj med ozadjem in tem razredom.
-                
-                Zavoljo enostavnosti se omejimo na zgolj tri razrede z različnimi lastnostmi: \emph{broccoli}, ki je načeloma dobro rešen v referenci, \emph{chicken duck}, ki je solidno rešen vendar s pogostimi zamenjavami s sorodnimi razredi, ter \emph{cake}, ki je načeloma slabo rešen v referenci.
-                
-                %\paragraph{Referenca}
-                Za \textbf{referenco} uporabimo standarden FOMO model iz eksperimentov v odseku~\ref{sct:fomo-simplified-experiments} s parametrom $\alpha=1{,}0$ in uteževanjem na podlagi frekvence.
-                
-                %\paragraph{Specializirani enorazredni modeli}
-                Za vsak od treh razredov učimo ločen \textbf{specializiran enorazredni model} na podatkovni množici z dvema razredoma: \textit{background} in ciljni razred.
-                Zbirko lahko obdelamo na več načinov, kakor opisano v odseku~\ref{sct:foodseg103-poenostavitev}. Za ta eksperiment obdržimo vse vzorce, vendar obdržimo maske zgolj željenega razreda, ostale maske pa pretvorimo v ozadje.
-                
-                Rezultati so prikazani v tabeli~\ref{tab:moe-results}. V tem eksperimentu uporabljamo metrike za specifičen razred, ne pa makro povprečja iz odseka~\ref{sct:povprecenje-metrik}. Iz rezultatov je razvidno, da specializirani modeli ne presegajo referenčne izvedbe in ne prinesejo opaznega izboljšanja.
-                
-                \begin{table}[t]
-                    \centering
-                    \begin{tabular}{lcccc}
-                        \toprule
-                        \multirow{2}{*}{\textbf{Razred}} & \multicolumn{2}{c}{\textbf{Referenca (30 razredov)}} & \multicolumn{2}{c}{\textbf{Enorazredni model}} \\
-                         & \textbf{F1\textsubscript{p}} & \textbf{F1\textsubscript{r}} & \textbf{F1\textsubscript{p}} & \textbf{F1\textsubscript{r}} \\
-                        \midrule
-                        Chicken duck & 0{,}21 & 0{,}51 & 0{,}32 & 0{,}46 \\
-                        Broccoli     & 0{,}71 & 0{,}75 & 0{,}73 & 0{,}68 \\
-                        Cake         & 0{,}10 & 0{,}17 & 0{,}08 & 0{,}22 \\
-                        \bottomrule
-                    \end{tabular}
-                    \caption{Primerjava referenčnega modela in specializiranih enorazrednih FOMO modelov po dveh metrikah.}
-                    \label{tab:moe-results}
-                \end{table}
-                
-
-            \paragraph{Kvantizacija modela} \label{sct:eir-kvantizacija}
-
-                V nadaljevanju preverimo vpliv parametra \(\alpha\) na uspešnost modela, nato pa izbrane modele še kvantiziramo z izbrano strategijo in poročamo o končni uspešnosti, velikostih ter porabi pomnilnika. Parameter \(\alpha\) v MobileNetV2 predstavlja faktor širine in določa število kanalov v konvolucijskih plasteh, s čimer neposredno vpliva na velikost modela in zahteve po RAM pomnilniku. V eksperimentih uporabimo vrednosti \(\alpha \in \{0{,}35, 0{,}5, 1{,}0\}\). Na podlagi rezultatov v~\ref{tab:res-combos} uporabimo vhodno ločljivost \(128 \times 128\), izhodno ločljivost \(16 \times 16\), pri uteževanju pa se držimo frekvenčnega pristopa. Višjih vrednosti $\alpha$ ne uporabimo, saj za izbrano ločljivost ni na voljo prednaučenih uteži\footnote{\url{https://github.com/JonathanCMitchell/mobilenet_v2_keras/releases/tag/v1.1}}.
-                
-                Po učenju izvedemo kvantizacijo modela. Uporabimo kvantizacijo po učenju (PTQ): uteži in pragove predstavimo z manjšo bitno širino, pri polni kvantizaciji pa kvantiziramo tudi vmesne medpomnilnike (aktivacije) med inferenco. TensorFlow Lite podpira več načinov kvantizacije\footnote{\url{https://ai.google.dev/edge/litert/models/post_training_quantization\#full_integer_quantization_of_weights_and_activations}}; v našem primeru uporabimo polno celoštevilsko kvantizacijo (\emph{full integer quantization}). To pomeni, da so kvantizirane vse uteži in aktivacije.
-                
-                Velikost modela in porabo RAM ocenimo v okolju STM32CubeIDE\footnote{\url{https://www.st.com/en/development-tools/stm32cubeide.html}} s pomočjo vmesnika X-CUBE-AI\footnote{\url{https://www.st.com/en/embedded-software/x-cube-ai.html}}, ki omogoča generiranje in profiliranje izvedbe na krmilnikih STM32 ter podpira vnos v obliki \textit{TFLite}.
-
-                V spodnjih tabelah poročamo o uspešnosti ter velikostih za izbrane vrednosti \(\alpha\), tako za nekvantiziran kot za kvantiziran model. Ker smo za kvantizacijo uporabili PTQ in ne QAT, lahko pričakujemo opazen padec v metrikah modela~\cite{src:Nikodinovska_2024}.
-                
-                % TODO: Odstrani vertikalne in horizontalne crte al pa jih dodaj vsepovsod.
-                \begin{table}[t]
-                    \centering
-                    \begin{tabular}{|l|ccc|ccc|}
-                        \toprule
-                        \multirow{2}{*}{\textbf{$\alpha$}} & \multicolumn{3}{c|}{\textbf{Pred kvantizacijo}} & \multicolumn{3}{c|}{\textbf{PTQ}} \\
-                        \cline{2-4}\cline{5-7}
-                        & \textbf{F1\textsubscript{r}} & \textbf{F1\textsubscript{p}} & \textbf{IoU} & \textbf{F1\textsubscript{r}} & \textbf{F1\textsubscript{p}} & \textbf{IoU} \\
-                        \midrule
-                        0{,}35 & 29{,}6 & 19{,}8 & 12{,}1 & 28{,}9 & 19{,}5 & 11{,}9 \\
-                        0{,}5  & 32{,}2 & 23{,}8 & 14{,}8 & 32{,}1 & 22{,}7 & 14{,}1 \\
-                        1{,}0  & \textbf{37{,}6} & \textbf{31{,}1} & \textbf{20{,}1} & \textbf{36{,}9} & \textbf{29{,}7} & \textbf{19{,}1} \\
-                        \bottomrule
-                    \end{tabular}
-                    \caption{Uspešnost glede na \(\alpha\) pred in po kvantizaciji.}
-                    \label{tab:alpha-perf-ptq}
-                \end{table}
-                
-                \begin{table}[t]
-                    \centering
-                    \begin{tabular}{|l|cc|cc|}
-                        \toprule
-                        \multirow{2}{*}{\textbf{$\alpha$}} & \multicolumn{2}{c|}{\textbf{Pred kvantizacijo}} & \multicolumn{2}{c|}{\textbf{PTQ}} \\
-                        \cline{2-3} \cline{4-5}
-                        & \textbf{Velikost} & \textbf{RAM} & \textbf{Velikost} & \textbf{RAM} \\
-                        \midrule
-                        0{,}35 & 97{,}9 & 808{,}6 & 62{,}6  &  236{,}5  \\
-                        0{,}5  & 120{,}1 & 808{,}6 & 69{,}8  &  236{,}5  \\
-                        1{,}0  & 286{,}2 & 1643{,}4 & 118{,}1  &  418{,}1  \\
-                        \bottomrule
-                    \end{tabular}
-                    \caption{Velikost modela in poraba RAM pomnilnika v kB glede na \(\alpha\) pred in po kvantizaciji.}
-                    \label{tab:alpha-size-ram}
-                \end{table}
-
-        \subsection{Model YOLOv11n-seg} \label{sct:rezultati-yolov11}
-
-            Za ocenjevanje uporabljamo metriko mIoU, enako kot pri modelu FOMO v odseku~\ref{sct:fomo-metrics-pixel}. S tem lahko rezultate neposredno primerjamo z ostalimi pristopi, ki uporabljajo isto podatkovno zbirko.
-            Uporabimo podatkovno zbirko FoodSeg103, pripravljeno enako kot v eksperimentih z modelom FOMO. Najprej izvedemo poskuse na izvirni zbirki s 103 razredi, nato še na poenostavljeni različici s 30 razredi.
+            Parameter \(\alpha\) v modelu MobileNetV2 predstavlja faktor širine
+            in določa število kanalov v konvolucijskih plasteh, s čimer
+            neposredno vpliva na velikost modela in zahteve po RAM pomnilniku.
+            V eksperimentih smo uporabili vrednosti \(\alpha \in \{0{,}35,
+            0{,}5, 1{,}0\}\). Na podlagi rezultatov v~\ref{tab:res-combos}
+            smo se odločili za vhodno ločljivost \(128 \times 128\), izhodno
+            ločljivost \(16 \times 16\), razrede pa utežili na podlagi njihove
+            frekvence. Višjih vrednosti $\alpha$ nismo uporabili, saj za
+            izbrano ločljivost ni na voljo prednaučenih
+            uteži\footnote{\url{https://github.com/JonathanCMitchell/mobilenet_v2_keras/releases/tag/v1.1}}.
             
-            V eksperimentih preizkusimo dve izvedbi modela YOLOv11-seg. Različica \emph{nano} (YOLOv11n-seg) ima 2,8 milijona parametrov, različica \emph{extra large} (YOLOv11x-seg) pa 62 milijonov parametrov. Vhodna ločljivost je \(480 \times 480\) pikslov, ostale nastavitve ostanejo privzete.
-            Potek kriterijske funkcije med učenjem je prikazan na sliki~\ref{fig:yolo11-loss}. Končne vrednosti mIoU so zbrane v tabeli~\ref{tab:yolo11-iou-table}. Na sliki~\ref{fig:yolo11-bars} je prikazana porazdelitev doseženih vrednosti IoU po razredih za obe izvedbi modela.
+            Po učenju smo izvedli še kvantizacijo modela. Uporabili smo
+            kvantizacijo po učenju (PTQ), kjer šele po učenju zmanjšamo bitno
+            širino uteži in pragov. Okolje LiteRT Micro podpira več načinov
+            kvantizacije~\cite{src:litertmicro,
+            src:david2021tensorflowlitemicro}. V našem primeru smo se odločili
+            za polno celoštevilsko kvantizacijo (angl. \emph{full integer
+            quantization})\footnote{\url{https://ai.google.dev/edge/litert/models/post_training_quantization\#full_integer_quantization_of_weights_and_activations}}.
+            To pomeni, da smo poleg uteži kvantizirali tudi vmesne
+            medpomnilnike (t.i. aktivacije), ki se uporabljajo med inferenco.
+            
+            Velikost modela in porabo RAM pomnilnika smo ocenili v okolju
+            STM32CubeIDE\footnote{\url{https://www.st.com/en/development-tools/stm32cubeide.html}}
+            s pomočjo vmesnika
+            X-CUBE-AI\footnote{\url{https://www.st.com/en/embedded-software/x-cube-ai.html}},
+            ki omogoča pripravo modelov za izvajanje na krmilnikih STM32 ter
+            oceno porabe pomnilnika, pri čemer podpira tudi modele vrste
+            \textit{tflite}.
+
+        \subsection{Modeli YOLOv11-seg} \label{sct:eir-eksperimenti-yolov11}
+
+            V tem eksperimentu smo naučili modela YOLOv11n-seg in YOLOv11x-seg.
+            Namen eksperimenta je bila ocena uspešnosti, ki jo lahko dosežemo
+            na zbirki FoodSeg103 z modelom, neposredno zasnovanim za
+            segmentacijo.
+
+            Za ocenjevanje smo uporabljali metriko mIoU. S tem smo lahko
+            rezultate neposredno primerjali z ostalimi deli, ki uporabljajo
+            isto podatkovno zbirko~\cite{src:wu2021large}. Ker smo v
+            eksperimentih z modelom FOMO v poglavju~\ref{sct:eksperimenti-fomo}
+            rezultate ravno tako podajali z
+            metriko mIoU, smo jih lahko do določene mere primerjali z rezultati
+            v tem poglavju. Pri interpretaciji je pomembno upoštevati, da so
+            izhodi modela FOMO nizkoločljivostne maske, in da neposredna
+            primerjava z izhodi YOLOv11-seg ni mogoča.
+
+            Poskuse smo najprej izvedli na izvirni podatkovni zbirki s 103
+            razredi, nato pa še na poenostavljeni različici s 30 razredi.
+            Preizkusili smo dve izvedbi modela YOLOv11-seg: različica
+            \emph{nano} z oznako YOLOv11n-seg ima 2,8 milijona parametrov,
+            različica \emph{extra large} z oznako YOLOv11x-seg pa 62 milijonov
+            parametrov. Vhodno ločljivost smo nastavili na \(480 \times 480\),
+            ostale parametre pa smo nastavili na privzete vrednosti.
+
+        \subsection{Model SAM} \label{sct:rezultati-sam}
+            
+            V tem odseku preverimo, v kolikšni meri lahko z modeloma FastSAM in
+            MobileSAM olajšamo pretvorbo anotacij iz semantičnih
+            segmentacijskih mask v instančne maske, nato pa v okvirje
+            (\emph{bounding box}), ki bi jih lahko uporabili za učenje
+            standardnih detekcijskih modelov. Namen je oceniti izvedljivost
+            takšnega postopka v praksi.
+            
+            Evalvacija takih postopkov je zahtevna, saj zahtevajo natančno
+            definicijo instanc ter jasen kriterij ujemanja med generiranimi in
+            referenčnimi obrobi. Zato se v tej fazi omejimo na kvalitativno
+            presojo z vizualizacijami.
+            
+            Kot poziv (\emph{prompt}) najprej uporabimo mrežo točk, ki
+            označujejo ospredje, kot je ponazorjeno na
+            sliki~\ref{fig:mobilesam}
+            levo.
+            Mrežo generiramo iz semantičnih mask zbirke, naloga modela pa je iz
+            teh točk razločiti posamezne instance in zanje ustvariti ustrezne
+            segmente. Pri FastSAM dodatno uporabimo tudi točke ozadja, s
+            katerimi modelu podamo negativne primere in mu olajšamo ločevanje
+            med objekti.
+            
+            Za dodatno presojo v kasnejših eksperimentih uporabimo še pozive v
+            obliki okvirjev, ki jih generiramo z enostavnim pristopom iz
+            odseka~\ref{sct:enostavnapretvorba}.
+            Ti okvirji služijo kot nadomestek instančnih oznak in omogočajo
+            oceno, kako dobro se segmenti, ustvarjeni iz pozivov, prekrivajo z
+            grobimi prostorskimi pozivi.
+            
+
+            \paragraph{MobileSAM} \label{sct:mobilesam}
+
+            Za model MobileSAM paketa
+            Ultralytics\footnote{\url{https://docs.ultralytics.com/models/mobile-sam/}}
+            se je izkazalo, da mreža točk ni ustrezen vhodni poziv. Ta
+            model namreč generira toliko instančnih mask, kolikor dobi
+            vhodnih točk. Ker ne moremo določiti instanc objektov na
+            semantičnih segmentacijskih maskah, torej koliko točk naj podamo
+            in kam naj jih postavimo, s tem pristopom nismo nadaljevali.
+            Primer je prikazan na sliki~\ref{fig:mobilesam}.
+            
+            \begin{figure}
+                \centering
+                \includegraphics[width=0.45\linewidth]{figures//mobilesam/input.png}
+                \includegraphics[width=0.45\linewidth]{figures//mobilesam/output.png}
+                % TODO: Manjkajo reference na posamezno sliko
+                \caption{Vhodna slika z mrežo točk ospredja ter izhod modela MobileSAM. MobileSAM vrne toliko instanc objektov, kolikor dobi vhodnih točk, zato za naš pristop ni ustrezen.}
+                \label{fig:mobilesam}
+            \end{figure}
+                
+            \paragraph{FastSAM} \label{sct:fastsam}
+
+            V nadaljevanju smo izvedli eksperimente s FastSAM in primerjali
+            različne vrste pozivov, ki so na voljo. Najprej smo za poziv uporabili
+            mrežo točk, ki označujejo zgolj ospredje, kot je prikazano na
+            sliki~\ref{fig:fastsam-points-fg}.
+            Nato smo kot poziv uporabili mrežo točk za ospredje in ozadje, kot je
+            prikazano na
+            sliki~\ref{fig:fastsam-points-fg-bg}.
+            V zadnjem eksperimentu smo kot poziv uporabili okvirje, določene z
+            enostavno pretvorbo iz
+            odseka~\ref{sct:enostavnapretvorba},
+            kot je prikazano na sliki~\ref{fig:fastsam-bbox}.
+
+    \FloatBarrier
+
+    \section{Rezultati} \label{sct:rezultati}
+    
+        V tem poglavju predstavimo rezultate izvedenih eksperimentov in njihovo
+        primerjavo. Najprej podamo rezultate za model FOMO, kjer primerjamo
+        vpliv različnih nastavitev učenja, ločljivosti, strategij učenja in
+        kvantizacije, nato pa predstavimo še rezultate modelov YOLOv11-seg in
+        SAM.
+
+        \subsection{Model FOMO}
+        
+            \paragraph{Validacija okolja z namernim prenaučenjem}
+
+            Rezultati na~\ref{fig:overfit_one_batch_plots}
+            in~\ref{fig:overfit_one_batch_example}
+            nakazujejo,
+            da model popolnoma reši izbran majhen nabor podatkov.
+            Vrednost kriterijske funkcije se zmanjša proti 0, medtem ko
+            vrednost metrike $F1_r$ približa vrednosti 1. Na
+            sliki~\ref{fig:overfit_one_batch_example}
+            je razvidno, da se predikcija modela popolnoma ujema z referenčno masko.
+
+            \begin{figure}[!htbp]
+                \centering
+                \setlength{\tabcolsep}{2pt} % space between columns
+                \renewcommand{\arraystretch}{1} % no extra row padding
+                \begin{tabular}{@{}cc@{}}
+
+                    \begin{tikzpicture}
+                        \begin{axis}[
+                            width=0.5\linewidth,
+                            height=0.5\linewidth,
+                            xlabel=Epohe,
+                            ylabel=Krit. funkcija,
+                            grid=both,
+                            ymin=0,
+                            %legend pos=north east,
+                            %legend style={draw=none, fill=none, font=\small}
+                            legend style={font=\small}
+                        ]
+                            \addplot+[thick, mark=none] table [x=Step, y=Value, col sep=comma] {figures/single_batch_test/loss_train_alpha_1.0.csv};
+                            \addplot+[thick, mark=none] table [x=Step, y=Value, col sep=comma] {figures/single_batch_test/loss_val_alpha_1.0.csv};
+                        \end{axis}
+                    \end{tikzpicture}
+
+                    \begin{tikzpicture}
+                        \begin{axis}[
+                            width=0.5\linewidth,
+                            height=0.5\linewidth,
+                            xlabel=Epohe,
+                            ylabel=F1$_r$,
+                            grid=both,
+                            ymin=0,
+                            legend pos=south east,
+                            %legend style={draw=none, fill=none, font=\small}
+                            legend style={font=\small}
+                        ]
+                            \addplot+[thick, mark=none] table [x=Step, y=Value, col sep=comma] {figures/single_batch_test/f1_train_alpha_1.0.csv};
+                            \addlegendentry{Učna};
+                            \addplot+[thick, mark=none] table [x=Step, y=Value, col sep=comma] {figures/single_batch_test/f1_val_alpha_1.0.csv};
+                            \addlegendentry{Validacijska};
+                        \end{axis}
+                    \end{tikzpicture}
+
+                \end{tabular}
+                % TODO: vsak graf na sliki mora biti enoznačno označen kot npr. (a) (b). Oznake moraš potem uporabiti v opisu slike.
+                \caption{Potek kriterijske funkcije in metrike $F1_r$ skozi namerno prenaučenje z namenom validacije učnega okolja.}
+                \label{fig:overfit_one_batch_plots}
+            \end{figure}
+
+            \begin{figure}[h]
+                \centering
+                \includegraphics[width=\linewidth]{figures/single_batch_test/overfit_one_batch_example.png}
+                % TODO: preveri odmik med opisom in sliko
+                % TODO: vsak graf na sliki mora biti enoznačno označen kot npr. (a) (b). Oznake moraš potem uporabiti v opisu slike.
+                \caption{Primer inference na modelu, namenjenemu validaciji okolja z namernim prenaučenjem. Od leve proti desni: vhodna slika, izhod modela in referenčna maska.}
+                \label{fig:overfit_one_batch_example}
+            \end{figure}
+
+            \FloatBarrier
+
+            \paragraph{Določanje optimalnih vrednosti za stopnjo učenja}
+
+            Na sliki~\ref{fig:lr_finder_plots}
+            sta prikazana dva eksperimenta za določanje stopnje učenja za model
+            FOMO. V prvem eksperimentu je bila vrednost parametra
+            $\alpha=0{,}35$, v drugem pa $\alpha=1{,}0$. V obeh eksperimentih
+            smo uporabili izhodno plast za 30 razredov sestavin.
+
+            Iz krivulj lahko razberemo, da se najstrmejše območje upadanja začne
+            pri okrog $10^{-5}$, konča pa pri okrog $10^{-1}$. Razvidno je
+            tudi, da parameter $\alpha$ v razponu $[0{,}35, 1{,}0]$ ne vpliva
+            bistveno strmino krivulje.
+
+            \begin{figure}[t]
+                \centering
+                \setlength{\tabcolsep}{2pt} % space between columns
+                \renewcommand{\arraystretch}{1} % no extra row padding
+                \begin{tabular}{@{}cc@{}}
+                    \begin{tikzpicture}
+                        \begin{axis}[
+                                width=0.9\linewidth,
+                                height=0.7\linewidth,
+                                xlabel=$\eta$,
+                                ylabel=Krit. funkcija,
+                                grid=both,
+                                xmode=log,
+                                legend pos=north east,
+                                %legend style={draw=none, fill=none, font=\small}
+                                legend style={font=\small}
+                            ]
+                            \addplot+[thick, mark=none] table [x=lrs, y=losses, col sep=comma] {figures/lr_finder/alpha_0.35.csv};
+                            \addlegendentry{$\alpha=0.35$}
+                            \addplot+[thick, mark=none] table [x=lrs, y=losses, col sep=comma] {figures/lr_finder/alpha_1.0.csv};
+                            \addlegendentry{$\alpha=1.0$}
+                        \end{axis}
+                    \end{tikzpicture}
+                \end{tabular}
+                \caption{Rezultati preizkusa za določanje optimalne stopnje učenja. Graf prikazuje potek kriterijske funkcije skozi naraščujoč faktor učenja $\eta$.}
+                \label{fig:lr_finder_plots}
+            \end{figure}
+
+            \FloatBarrier
+
+            \paragraph{Učenje na izvirni zbirki}
+
+            Pri tem eksperimentu smo želeli določiti izhodiščno uspešnost
+            modela po metrikah F1 in IoU na izvorni podatkovni zbirki ter
+            oceniti vpliv različnih pristopov uteževanja pri izrazito
+            neuravnoteženi porazdelitvi razredov. Rezultati so prikazani na
+            sliki~\ref{fig:experiment_full_foodseg103_dataset_loss}
+            in v tabeli~\ref{tab:experiment_full_foodseg103_dataset_table}.
+            Nekaj kvalitativnih rezultatov je prikazano na
+            sliki~\ref{fig:experiment_full_foodseg103_dataset_qualitative}.
+
+            Na obeh grafih je razvidno, da učna kriterijska funkcija skozi
+            celotno učenje monotono pada. Pri izvedbi z uniformno uteženimi
+            razredi se validacijska kriterijska funkcija po začetnem padcu med
+            približno med 10. in 20. epoho ustali. Pri izvedbi z utežmi na
+            podlagi frekvence razredov validacijska kriterijska funkcija doseže
+            najnižjo vrednost približno okrog 10. epohe, nato pa začne izrazito
+            naraščati. Proti koncu učenja je njena vrednost višja kot na
+            začetku preizkusa.
+
+            % TODO: To gre v diskusijo
+            % Obe izvedbi izkazujeta slabe rezultate. Pri izvedbi z uteževanjem glede
+            % na frekvenco razredov se prenaučenje pojavi bistveno prej, hkrati pa so
+            % rezultati na testni množici slabši. Kvalitativne vizualizacije na
+            % sliki~\ref{fig:experiment_full_foodseg103_dataset_qualitative}
+            % so skladne s številčnimi izidi. Izvedba z uteževanjem po frekvenci v večini primerov
+            % napove zgolj ozadje, medtem ko enakomerno utežena izvedba da vsaj nekaj
+            % napovedi, čeprav so te večinoma nepravilne.
+            %
+            % TODO: Tut neki takega lahko gre v diskusijo.
+            % V primeru uteževanja na podlagi frekvence je razvidno, da validacijska krivulja začne izrazito naraščati po 10. epohi. Model na nepoenostavljeni zbirki s temi utežmi izrazito hitro začne preprilegati. %kar nakazuje na preagresivno uteževanje? Zelo redki razredi v tem primeru dobijo zelo velike uteži (dodaj točne cifre). Model potem preveč optimizira za nekaj maloštevilnih razredov. Ker je vzorcev v teh razredih premalo, se model hitro prenauči na teh konkretnih vzorcih. % TODO: Referenciraj prilogo A
+            % Zaradi tega smo poskusili zbirko poenostaviti in se znebiti teh zelo redkih razredov.
+            % TODO: Mogoče za v zaključek al pa v diskusijo: mogoče bi bil tu bolj primeren kak drug način uteževanja, ki lahko bolj ustrezno uteži zelo redke razrede.
+
+
+            % Grafi kriterijske funkcije
+            \begin{figure}[t]
+                \centering
+                \setlength{\tabcolsep}{2pt} % space between columns
+                \renewcommand{\arraystretch}{1} % no extra row padding
+                \begin{tabular}{@{}cc@{}}
+                    \begin{tikzpicture}
+                        \begin{axis}[
+                            width=0.5\linewidth,
+                            height=0.5\linewidth,
+                            xlabel=Epohe,
+                            ylabel=Krit. funkcija,
+                            grid=both,
+                            ymin=0,
+                            xtick distance=10,
+                            ytick distance=0.1,
+                            %legend pos=north east,
+                            %legend style={draw=none, fill=none, font=\small}
+                            legend style={font=\small}
+                        ]
+                            \addplot+[thick, mark=none] table [x=Step, y=Value, col sep=comma] {figures/full_foodseg103_dataset/uniform_weights/loss_train.csv};
+                            \addplot+[thick, mark=none] table [x=Step, y=Value, col sep=comma] {figures/full_foodseg103_dataset/uniform_weights/loss_val.csv};
+                        \end{axis}
+                    \end{tikzpicture}
+                    \begin{tikzpicture}
+                        \begin{axis}[
+                            width=0.5\linewidth,
+                            height=0.5\linewidth,
+                            xlabel=Epohe,
+                            % ylabel=Krit. funkcija,
+                            grid=both,
+                            ymin=0,
+                            xtick distance=10,
+                            ytick distance=0.1,
+                            legend pos=south east,
+                            %legend style={draw=none, fill=none, font=\small}
+                            legend style={font=\small}
+                        ]
+                            \addplot+[thick, mark=none] table [x=Step, y=Value, col sep=comma] {figures/full_foodseg103_dataset/weights_from_stats/loss_train.csv};
+                            \addlegendentry{Učna};
+                            \addplot+[thick, mark=none] table [x=Step, y=Value, col sep=comma] {figures/full_foodseg103_dataset/weights_from_stats/loss_val.csv};
+                            \addlegendentry{Validacijska};
+                        \end{axis}
+                    \end{tikzpicture}
+                \end{tabular}
+                \caption{Spreminjanje kriterijske funkcije tekom učenja na izvirni, nepoenostavljeni zbirki FoodSeg103. Levo je izvedba z uniformno uteženimi razredi, desno pa z utežmi na podlagi frekvence razredov.}
+                \label{fig:experiment_full_foodseg103_dataset_loss}
+            \end{figure}
+
+            % Kvalitativno
+            \begin{figure*}[h!]
+                \centering
+                \includegraphics[width=0.8\linewidth]{figures/full_foodseg103_dataset/uniform_weights/example1.png}
+                \includegraphics[width=0.8\linewidth]{figures/full_foodseg103_dataset/uniform_weights/example2.png}
+                \includegraphics[width=0.8\linewidth]{figures/full_foodseg103_dataset/weights_from_stats/example1.png}
+                \includegraphics[width=0.8\linewidth]{figures/full_foodseg103_dataset/weights_from_stats/example2.png}
+                % TODO: Manjkajo reference posamezne grafike, uporabi a b c d
+                \caption{Kvalitativni rezultati na izvirni, nepoenostavljeni zbirki FoodSeg103. Od leve proti desni: vhodna slika, referenčna maska, predikcija modela. Zgornji dve sliki sta rezultat izvedbe z uniformnimi utežmi, spodnji dve pa rezultat izvedbe na podlagi frekvence razredov.}
+                \label{fig:experiment_full_foodseg103_dataset_qualitative}
+            \end{figure*}
+            
+            % Tabela rezultatov (f1 class presence, f1 per pixel, iou)
+            \begin{table}[t]
+                \centering
+                \begin{tabular}{lccc}
+                    \toprule
+                    \textbf{Izvedba uteži $w$} & \textbf{F1$_r$} & \textbf{F1$_p$} & \textbf{mIoU} \\
+                    \midrule
+                    Uniformno          & 13{,}8 & 9{,}8 & 6{,}0 \\
+                    Frekvenca razredov & 11{,}4 & 7{,}6 & 4{,}3 \\
+                    \bottomrule
+                \end{tabular}
+                \caption{Rezultati učenja na izvirni, nepoenostavljeni zbirki FoodSeg103.}
+                \label{tab:experiment_full_foodseg103_dataset_table}
+            \end{table}
+
+            \FloatBarrier
+
+            \paragraph{Učenje na poenostavljeni zbirki}
+
+            % Namen eksperimenta + opis rezultatov objektivno
+            Rezultati učenja na poenostavljeni zbirki FoodSeg103 so prikazani na
+            sliki~\ref{fig:experiment_simplified_foodseg103_dataset_loss}
+            in v
+            tabeli~\ref{tab:experiment_simplified_foodseg103_dataset_table}.
+            Na grafih je razvidno, da validacijski krivulji po začetnem padcu v
+            približno 15. epohi obrneta navzgor, vendar je rast na desnem grafu
+            počasnejša kot pa v prejšnjem eksperimentu na izvirni podatkovni
+            zbirki. Razlika med levim in desnim grafom je manjša kot med
+            grafoma v prejšnjem eksperimentu. V primerjavi z eksperimentom na
+            izvirni podatkovni zbirki
+            je model dosegel izboljšanje v doseženih metrikah - mIoU smo izboljšali za $11{,}6$ oziroma $13{,}7$ odstotnih
+            točk, metriko $F1_r$ pa za $24{,}3$ oz. $25{,}7$ odstotnih točk.
+            Razlika med posameznima pristopoma uteževanja vzorcev znaša med $0{,}4$ in $1{,}0$ odstotno točko.
+
+            % TODO: Diskusija
+            %V primerjavi z rezultati v poglavju~\ref{sct:eir-ucenje-na-izvirnem-datasetu} doseže ta eksperiment izrazito boljše rezultate. Poenostavitev podatkovne zbirke izboljša dosežene metrike, kar bi lahko nakazovalo, da je podatkovna zbirka prezahtevna za izbran model.
+            % TODO: Diskusija
+            %Levi in desni graf na \ref{fig:experiment_simplified_foodseg103_dataset_loss}  sta si precej bolj podobna kot pa pri učenju z izvirno podatkovno zbirko - različna uteževanja na pridobljene rezultate nimajo toliko vpliva, če zbirko poenostavimo. To se vidi tudi iz tabele~\ref{tab:experiment_simplified_foodseg103_dataset_table} - metrike med posameznima izvedbama uteževanja se razlikujejo za manj kot eno odstotno točko. Razlog takšno spremembo je mogoče v tem, da smo iz zbirke odstranili slabo reprezentirane razrede, zaradi česar so uteži bolj uniformne.
+            %Odstranitev slabo reprezentiranih razredov mogoče tudi zmanjša stopnjo prenaučenosti, ko uporabljamo uteževanje na podlagi frekvence. Najslabše reprezentirani razredi tako nimajo tako velikih uteži, vzorcev v teh razredih pa je več, kar reši problem z izrazito rastjo validacijske krivulje pri učenju na izvirni podatkovni zbirki.
+
+            % Grafi kriterijske funkcije
+            \begin{figure*}[t]
+                \centering
+                \setlength{\tabcolsep}{2pt} % space between columns
+                \renewcommand{\arraystretch}{1} % no extra row padding
+                \begin{tabular}{@{}cc@{}}
+                
+                    \begin{tikzpicture}
+                        \begin{axis}[
+                            width=0.5\linewidth,
+                            height=0.5\linewidth,
+                            xlabel=Epohe,
+                            ylabel=Krit. funkcija,
+                            grid=both,
+                            ymin=0,
+                            xtick distance=10,
+                            ytick distance=0.2,
+                            %legend pos=north east,
+                            %legend style={draw=none, fill=none, font=\small}
+                            legend style={font=\small}
+                        ]
+                            \addplot+[thick, mark=none] table [x=Step, y=Value, col sep=comma] {figures/simplified_foodseg103_dataset/uniform_weights/loss_train.csv};
+                            %\addlegendentry{Učna};
+                            \addplot+[thick, mark=none] table [x=Step, y=Value, col sep=comma] {figures/simplified_foodseg103_dataset/uniform_weights/loss_val.csv};
+                            %\addlegendentry{Validacijska};
+                        \end{axis}
+                    \end{tikzpicture}
+                
+                    \begin{tikzpicture}
+                        \begin{axis}[
+                            width=0.5\linewidth,
+                            height=0.5\linewidth,
+                            xlabel=Epohe,
+                            % ylabel=Krit. funkcija,
+                            grid=both,
+                            ymin=0,
+                            xtick distance=10,
+                            ytick distance=0.1,
+                            legend pos=north east,
+                            %legend style={draw=none, fill=none, font=\small}
+                            legend style={font=\small}
+                        ]
+                            \addplot+[thick, mark=none] table [x=Step, y=Value, col sep=comma] {figures/simplified_foodseg103_dataset/weights_from_stats/loss_train.csv};
+                            \addlegendentry{Učna};
+                            \addplot+[thick, mark=none] table [x=Step, y=Value, col sep=comma] {figures/simplified_foodseg103_dataset/weights_from_stats/loss_val.csv};
+                            \addlegendentry{Validacijska};
+                        \end{axis}
+                    \end{tikzpicture}
+
+                \end{tabular}
+                % TODO: Manjkajo reference na posamezno sliko. Verjetno lahko uporabis abcd oznake
+                \caption{Spreminjanje kriterijske funkcije tekom učenja modela FOMO na poenostavljeni zbirki FoodSeg103. Levo je izvedba z uniformno uteženimi razredi, desno pa z utežmi na podlagi frekvence razredov.}
+                \label{fig:experiment_simplified_foodseg103_dataset_loss}
+            \end{figure*}
+
+            % Tabela rezultatov (f1 class presence, f1 per pixel, iou)
+            \begin{table}[t]
+                \centering
+                \begin{tabular}{lccc}
+                    \toprule
+                    \textbf{Izvedba uteži $w$} & \textbf{F1$_r$} & \textbf{F1$_p$} & \textbf{mIoU} \\
+                    \midrule
+                    Uniformno          & 38{,}1 & 27{,}7  & 17{,}6  \\
+                    Frekvenca razredov & 37{,}1 & 28{,}3  & 18{,}0  \\
+                    \bottomrule
+                \end{tabular}
+                \caption{Rezultati učenja na poenostavljeni FoodSeg103 zbirki.}
+                \label{tab:experiment_simplified_foodseg103_dataset_table}
+            \end{table}
+
+        
+            \FloatBarrier
+
+            \paragraph{Primerjava različnih kombinacij resolucij}
+
+            Izbrane kombinacije ločljivosti in pripadajoči rezultati so zbrani
+            v tabeli~\ref{tab:res-combos}. 
+            %- primerjava med istimi vhodi in različnimi faktorji
+            Iz rezultatov je razvidno, da je pri vseh uporabljenih resolucijah
+            faktor zmanjšanja 8 vrnil boljše rezultate kot faktor 16. Pri
+            vhodni ločljivosti $96 \times 96$ smo z uporabo faktorja 8 namesto
+            16 metrike izboljšali za $4{,}8$ do $8{,}6$ odstotnih točk. Pri
+            ločljivosti $128 \times 128$ je razlika manjša in znaša med $0{,}4$
+            in $2{,}7$ odstotne točke. Pri resoluciji $224 \times 224$ uporaba
+            faktorja 8 izboljša metrike za $2{,}1$ do $2{,}6$ odstotnih točk.
+            % TODO: Rezultati so še vedno precej slabi, vendar na podlagi tega
+            % eksperimenta lahko določimo najbolj ustrezno vhodno ločljivost in
+            % izhodno ločljivost.
+
+            %- primerjava med istimi faktorji in različnimi vhodi
+            % Nevem točno kak bi to primerjal
+
+            %- kaj da najboljšo metriko mIoU, kaj da najboljšo metriko F1_r.
+            Splošno najboljše rezultate doseže kombinacija $128 \times 128$ s
+            faktorjem 8. V metrikah $F1_p$ in mIoU je najboljša, v metriki
+            $F1_r$ pa $0{,}5$ odstotka za najboljšim rezultatom v tej metriki.
+            % TODO: Diskusija
+            % Mogoče ravno ta kombinacija da velikost celic na
+            % izhodni maski, da jo je preprosteje razvrstiti v kategorijo, še
+            % vedno pa je dovolj majhna, da je v eni celici bolj pogosto
+            % prisoten le en razred hrane.
+            %
+            %- kaj da najslabše rezultate po obeh metrikah.
+            Splošno najslabše rezultate daje kombinacija $96 \times 96$ s
+            faktorjem 16, ki je zadnja v vseh metrikah.
+            % TODO: Diskusija
+            % Zanimivo je, ker bi mogoče pričakoval, da faktor zmanjšanja 16 da boljše rezultate, saj večje konvolucijsko jedro pomeni večje število parametrov modela in posledično večjo kapaciteto modela. Če zgornja ideja o ustrezni velikosti celic na izhodni maski drži, je nenavadno, da kombinacija $224\times224$ s faktorjem 16 da slabše rezultate kot $128\times128$ s faktorjem 8, saj so izhodne velikosti zelo podobne, prva kombinacija pa vsebuje večje število parametrov.
+
+            \begin{table}[t]
+                \centering
+                \begin{tabular}{lccccc}
+                    \toprule
+                    \textbf{Vhod} & \textbf{Izhod} & \textbf{Faktor} & \textbf{F1$_r$} & \textbf{F1$_p$} & \textbf{mIoU} \\
+                    \midrule
+                    96x96   & 12x12 & 8   &  \textbf{38{,}0} & 29{,}2 & 18{,}6 \\
+                    96x96   & 6x6   & 16  &  29{,}4 & 22{,}7 & 13{,}8 \\
+                    128x128 & 16x16 & 8   &  37{,}5 & \textbf{31{,}0} & \textbf{20{,}1} \\
+                    128x128 & 8x8   & 16  &  37{,}1 & 28{,}3 & 18{,}0 \\
+                    224x224 & 28x28 & 8   &  31{,}7 & 30{,}5 & 19{,}8 \\
+                    224x224 & 14x14 & 16  &  34{,}2 & 27{,}9 & 17{,}7 \\
+                    \bottomrule
+                \end{tabular}
+                \caption{Primerjava različnih kombinacij vhodne ločljivosti in faktorja zmanjšanja v glavi modela.}
+                \label{tab:res-combos}
+            \end{table}
+
+            \FloatBarrier
+
+            \paragraph{Primerjava različnih strategij učenja}
+
+            Rezultati so prikazani v
+            tabeli~\ref{tab:eir-strategije-ucenja}.
+            Razvidno je, da učenje celotnega modela doseže boljše rezultate v
+            vseh metrikah. Metrika F1$_r$ se izboljša za $16{,}5$, mIoU pa za
+            $11$ odstotnih točk.
+            % TODO: Diskusija
+            % Med najbolj pomembnimi parametri tu je faktor
+            % učenja. Pri učenju celotnega modela je potrebno imeti ta faktor
+            % dovolj nizek, da med učenjem ekstraktor le malo prilagodimo na
+            % dan problem in ne izgubimo vsega prednaučenega znanja
+            % ekstraktorja. Če učimo zgolj glavo modela, je ta faktor lahko
+            % večji, saj uteži v ekstraktorju ne spreminjamo, uteži v glavi pa
+            % imajo na začetku naključne vrednosti. V tem eksperimentu smo v
+            % obeh primerih uporabili enak faktor učenja kot v prejšnjih
+            % eksperimentih, prilagojen za učenje celotnega modela.
+            %
+            % Nimam pojma koliko epoh so trajali ti eksperimenti, ampak pomoje
+            % ni tak vazno ker sem uporabljal LR scheduler in early stop on
+            % plateau.
+
+            \begin{table}[t]
+                \centering
+                \begin{tabular}{lccc}
+                    \toprule
+                    \textbf{Izvedba}                 & \textbf{F1\textsubscript{r}} & \textbf{F1\textsubscript{p}} & \textbf{mIoU} \\
+                    \midrule
+                    Učenje celotnega modela & \textbf{37{,}1} & \textbf{28{,}3} & \textbf{18{,}0} \\
+                    Učenje glave            & 20{,}6 & 12{,}0 &  7{,}0 \\
+                    \bottomrule
+                \end{tabular}
+                \caption{Primerjava strategij učenja na poenostavljeni zbirki.}
+                \label{tab:eir-strategije-ucenja}
+            \end{table}
+
+            \paragraph{Specializirani modeli po posameznih razredih}
+
+            Rezultati eksperimenta so prikazani v
+            tabeli~\ref{tab:moe-results}.
+            V tem eksperimentu uporabljamo metrike za specifičen razred, ne pa
+            njihovega makro povprečja.
+
+            Iz referenčnih rezultatov opazimo, da je najbolje rešen razred
+            \textit{broccoli}. Sledi mu razred \textit{chicken duck}, na
+            zadnjem mestu pa je razred \textit{cake}. Opazimo tudi, da je
+            razlika med metrikama F1$_p$ in F1$_r$ največja za razred
+            \textit{chicken duck} s $30{,}2$ odstotki, najmanjša pa za razred
+            \textit{broccoli} s $4{,}2$ odstotki.
+            % TODO: Diskusija
+            % Metrika na ravni razredov je dejansko tisto, kar
+            % nas zanima, torej neka klasifikacijska metrika. Očitno za ta
+            % razred tista dodatna naknadna obdelava, ki jo naredimo, res
+            % pomaga.
+
+            Če primerjamo referenčne rezultate z enorazrednimi rezultati po
+            metriki na ravni pikslov F1$_p$, lahko opazimo izboljšanje v dveh
+            izmed treh razredov. Razred \textit{chicken duck} se izboljša za
+            $11{,}8$ odstotka, \textit{broccoli} za $1{,}9$ odstotka,
+            \textit{cake} pa se poslabša za $1{,}6$ odstotka.
+            % TODO:
+            % Izboljšanje v metriki F1$_p$ je precej zanemarljivo, v
+            % nekaterih primerih pa se ta celo poslabša.
+
+            Če primerjamo referenčne rezultate z enorazrednimi po metriki
+            prisotnosti razredov F1$_r$, opazimo izboljšanje za $12{,}2$
+            odstotka pri razredu \textit{cake}, pri razredih \textit{chicken
+            duck} in \textit{broccoli} pa poslabšanje za $4{,}8$ in $6{,}7$
+            odstotka.
+            % TODO: Diskusija
+            % Ta metrika je bolj relevantna za naš primer.
+            % Najslabše rešen razred malo izboljša metriko v primerjavi z
+            % F1$_p$  in referenco, medtem ko preostalima razredoma metrika
+            % pade.
+            %
+            % Overall je iz rezultatov je razvidno, da specializirani modeli ne
+            % presežejo referenčne izvedbe. % Kaj to pomeni? Zakaj? Mogoče je
+            % razlog v tem, da med učenjem ozadje še vedno vsebuje hrano, kar
+            % poveča kompleksnost ozadja.
+            
+            \begin{table}[t]
+                \centering
+                \begin{tabular}{lcccc}
+                    \toprule
+                    \multirow{2}{*}{\textbf{Razred}} & \multicolumn{2}{c}{\textbf{Referenca (30 razredov)}} & \multicolumn{2}{c}{\textbf{Enorazredni model}} \\
+                        & \textbf{F1\textsubscript{p}} & \textbf{F1\textsubscript{r}} & \textbf{F1\textsubscript{p}} & \textbf{F1\textsubscript{r}} \\
+                    \midrule
+                    %Chicken duck & 0{,}21 & 0{,}51 & 0{,}32 & 0{,}46 \\
+                    %Broccoli     & 0{,}71 & 0{,}75 & 0{,}73 & 0{,}68 \\
+                    %Cake         & 0{,}10 & 0{,}17 & 0{,}08 & 0{,}22 \\
+                    Chicken duck & 21{,}0 & 51{,}2 & 32{,}8 & 46{,}4 \\
+                    Broccoli     & 71{,}1 & 75{,}3 & 73{,}0 & 68{,}6 \\
+                    Cake         & 10{,}0 & 17{,}2 & 8{,}4 & 22{,}2 \\
+                    \bottomrule
+                \end{tabular}
+                \caption{Primerjava referenčnega modela in specializiranih enorazrednih FOMO modelov po dveh metrikah.}
+                \label{tab:moe-results}
+            \end{table}
+
+            \FloatBarrier
+
+            \paragraph{Kvantizacija modela}
+
+            V tabelah~\ref{tab:alpha-perf-ptq}
+            in~\ref{tab:alpha-size-ram}
+            poročamo o uspešnosti ter velikostih v odvisnosti od parametra
+            \(\alpha\) za model pred in po kvantizaciji. Poraba pomnilnika
+            je ocenjena v kontekstu izvajanja na platformi STM32.
+            % TODO: Diskusija
+            % Ker smo za kvantizacijo uporabili PTQ in ne ozaveščenega učenja
+            % (QAT), lahko pričakujemo opazen padec v metrikah
+            % modela~\cite{src:Nikodinovska_2024}.
+
+            Iz tabele~\ref{tab:alpha-perf-ptq}
+            je
+            razvidno, da višji parameter $\alpha$ izboljša uspešnost modela po
+            vseh metrikah ne glede na kvantizacijo. Po kvantizaciji modela je
+            uspešnost modela po metriki F1$_r$ padla za $0{,}1$ do $0{,}7$
+            odstotka, po metriki F1$_p$ za $0{,}3$ do $1{,}4$ odstotka, po
+            metriki mIoU pa za $0{,}2$ do $1{,}0$ odstotka. 
+            
+            V tabeli \ref{tab:alpha-size-ram}
+            je
+            prikazana velikost modela ter poraba pomnilnika RAM v odvisnosti od
+            parametra $\alpha$.
+            % Splošen info
+            Nekvantiziran model pri $\alpha=0{,}35$ je velik 97${,}$9 kB in je
+            za izvajanje na platformi STM32 zahteval 808${,}$6 kB pomnilnika.
+            % Razlika v velikosti v odvisnosti od alphe
+            Ko smo faktor $\alpha$ povečali iz $0{,}35$ na $0{,}5$ oz. $1{,}0$,
+            se je velikost nekvantiziranega modela sorazmerno povečala na
+            $120{,}1$ oz. $286{,}2$ kB.
+            % Razlika v porabi rama v odvisnosti od alphe
+            Pri porabi pomnilnika med modeloma $\alpha=0{,}35$ in
+            $\alpha=0{,}5$ ni razlike, pri $\alpha=1{,}0$ pa se približno
+            podvoji na $1643{,}4$ kB.
+
+            % faktor zmanjšanja velikosti
+            Velikost modela se je s kvantizacijo zmanjšala za faktor med
+            $1{,}56$ in $2{,}42$.
+            % faktor zmanjšanja porabe rama
+            Poraba pomnilnika RAM se je s kvantizacijo zmanjšala za faktor med
+            $3{,}42$ in $3{,}93$. Kvantiziran model pri $\alpha=0{,}35$ je tako
+            velik $62{,}6$ kB in je porabil $236{,}5$ kB pomnilnika. Za
+            $\alpha=1{,}0$ so se te vrednosti dvignile na $118{,}1$ in
+            $418{,}1$ kB.
+
+            % TODO: Odstrani vertikalne in horizontalne crte al pa jih dodaj vsepovsod.
+            \begin{table}[t]
+                \centering
+                \begin{tabular}{|l|ccc|ccc|}
+                    \toprule
+                    \multirow{2}{*}{\textbf{$\alpha$}} & \multicolumn{3}{c|}{\textbf{Pred kvantizacijo}} & \multicolumn{3}{c|}{\textbf{PTQ}} \\
+                    \cline{2-4}\cline{5-7}
+                    & \textbf{F1\textsubscript{r}} & \textbf{F1\textsubscript{p}} & \textbf{mIoU} & \textbf{F1\textsubscript{r}} & \textbf{F1\textsubscript{p}} & \textbf{mIoU} \\
+                    \midrule
+                    0{,}35 & 29{,}6 & 19{,}8 & 12{,}1 & 28{,}9 & 19{,}5 & 11{,}9 \\
+                    0{,}5  & 32{,}2 & 23{,}8 & 14{,}8 & 32{,}1 & 22{,}7 & 14{,}1 \\
+                    1{,}0  & \textbf{37{,}6} & \textbf{31{,}1} & \textbf{20{,}1} & \textbf{36{,}9} & \textbf{29{,}7} & \textbf{19{,}1} \\
+                    \bottomrule
+                \end{tabular}
+                \caption{Uspešnost glede na \(\alpha\) pred in po kvantizaciji.}
+                \label{tab:alpha-perf-ptq}
+            \end{table}
+            
+            \begin{table}[t]
+                \centering
+                \begin{tabular}{|l|cc|cc|}
+                    \toprule
+                    \multirow{2}{*}{\textbf{$\alpha$}} & \multicolumn{2}{c|}{\textbf{Pred kvantizacijo}} & \multicolumn{2}{c|}{\textbf{PTQ}} \\
+                    \cline{2-3} \cline{4-5}
+                    & \textbf{Velikost} & \textbf{RAM} & \textbf{Velikost} & \textbf{RAM} \\
+                    \midrule
+                    0{,}35 & 97{,}9 & 808{,}6 & 62{,}6  &  236{,}5  \\
+                    0{,}5  & 120{,}1 & 808{,}6 & 69{,}8  &  236{,}5  \\
+                    1{,}0  & 286{,}2 & 1643{,}4 & 118{,}1  &  418{,}1  \\
+                    \bottomrule
+                \end{tabular}
+                \caption{Velikost modela in poraba RAM pomnilnika v kB glede na \(\alpha\) pred in po kvantizaciji.}
+                \label{tab:alpha-size-ram}
+            \end{table}
+
+
+        \subsection{Modeli YOLOv11-seg}
+
+            Končne vrednosti metrik mIoU so zbrane v
+            tabeli~\ref{tab:yolo11-iou-table}.
+            Na izvirni zbirki s 103 razredi smo z različico \textit{nano} dosegli
+            $22{,}4$ odstotka, z različico \textit{extra large} pa $6{,}0$ odstotkov
+            več. Poenostavitev zbirke na 30 razredov je izboljšala rezultate različice \textit{nano} za
+            $16{,}0$ odstotkov, rezultate različice \textit{extra large} pa za $15{,}4$ odstotkov.
+
+            Poteki kriterijskih funkcij med učenjem obeh modelov so prikazani
+            na
+            sliki~\ref{fig:yolo11-loss}.
+            Različico \textit{nano} smo učili 150 epoh, različico \textit{extra
+            large} pa 273 oziroma 330 epoh. Pri različici \textit{nano} se
+            validacijska krivulja v obeh preizkusih približno do 20. epohe
+            znižuje, nato pa ostane približno nespremenjena. Pri različici
+            \textit{extra large} se validacijska krivulja niža dlje,
+            približno do 40. epohe, zatem pa začne počasi naraščati.
+
+            Na sliki~\ref{fig:yolo11-bars}
+            je
+            prikazana porazdelitev doseženih vrednosti IoU po posameznih
+            razredih za obe izvedbi modela in za obe različici podatkovne
+            zbirke.
+            Pri zbirki s 103 razredi različica \textit{nano} za razrede
+            z indeksom, večjim od 74, doseže vrednost IoU enako \(0\).
+            Različica \textit{extra large} v istem območju doseže neničelne
+            vrednosti IoU pri 14 razredih.
+
+            % TODO: Diskusija
+            % Smiselno bi bilo yolo probat z nižjo vhodno resolucijo, da bi ga
+            % lahko bolje primerjali z fomo, ki vrača nizkoločljivostno masko.
+            % Ob dovolj nizki izhodni ločljivosti bi bilo smiselno uporabiti
+            % tudi F1_r in F1_p metrike, kar bi dalo precej boljšo podlago za
+            % primerjavo. Čeprav vprašanje če bi lahko prišli do izhodne maske
+            % 16x16...
 
             % Slika: potek učenja 103 razredov, 30 razredov
-            \begin{figure}[h]
+            \begin{figure}[!htbp]
             \centering
             \setlength{\tabcolsep}{2pt} % space between columns
             \renewcommand{\arraystretch}{1} % no extra row padding
             \begin{tabular}{@{}cc@{}}
-                        
+
                     \begin{tikzpicture}
                         \begin{axis}[
                         width=0.5\linewidth,
@@ -1417,7 +2047,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                             %\addlegendentry{Validacijska};
                         \end{axis}
                     \end{tikzpicture}
-                    
+
                     \begin{tikzpicture}
                         \begin{axis}[
                         width=0.5\linewidth,
@@ -1436,15 +2066,15 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                             \addlegendentry{Validacijska};
                         \end{axis}
                     \end{tikzpicture}
-                    
+
                 \end{tabular}
                 % TODO: Dodaj reference na posamezne grafike, mogoce uporabi abcd
                 \caption{Spreminjanje kriterijske funkcije tekom učenja YOLO11-seg na FoodSeg103. Levo je učenje na izvirni zbirki s 103 razredi, desno pa na poenostavljeni s 30 razredi. Zgornja vrsta predstavlja različico \mbox{\textit{nano}}, spodnja pa različico \mbox{\textit{extra large}}.}
                 \label{fig:yolo11-loss}
             \end{figure}
-                
+
             % Tabela: IOU za 30 in 103 razrede, za nano in x model
-            \begin{table}[h]
+            \begin{table}[!htbp]
                 \centering
                 \begin{tabular}{lcc}
                     \toprule
@@ -1461,12 +2091,12 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             % TODO: Konfuzijska matrika za 30 razredov?
 
             % Histogram IOU po razredih, za obe varianti modelov in obe varianti FoodSeg103.
-            \begin{figure}[h]
+            \begin{figure}[!htbp]
                 \centering
                 \begin{tikzpicture}[]
                     \begin{axis}[
                     width=\linewidth,
-                    height=0.4\linewidth,
+                    height=0.35\linewidth,
                     scale only axis,
                     ybar,
                     ymin=0, ymax=1,
@@ -1502,7 +2132,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                 \begin{tikzpicture}[]
                     \begin{axis}[
                     width=\linewidth,
-                    height=0.4\linewidth,
+                    height=0.35\linewidth,
                     scale only axis,
                     ybar,
                     ymin=0, ymax=1,
@@ -1540,140 +2170,141 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                 \label{fig:yolo11-bars}
             \end{figure}
 
-        \subsection{Model SAM} \label{sct:rezultati-sam}
-            
-            V tem odseku preverimo, v kolikšni meri lahko z modeloma FastSAM in MobileSAM olajšamo pretvorbo anotacij iz semantičnih segmentacijskih mask v instančne maske, nato pa v okvirje (\emph{bounding box}), ki bi jih lahko uporabili za učenje standardnih detekcijskih modelov. Namen je oceniti izvedljivost takšnega postopka v praksi.
-            
-            Evalvacija takih postopkov je zahtevna, saj zahtevajo natančno definicijo instanc ter jasen kriterij ujemanja med generiranimi in referenčnimi obrobi. Zato se v tej fazi omejimo na kvalitativno presojo z vizualizacijami.
-            
-            Kot poziv (\emph{prompt}) najprej uporabimo mrežo točk, ki označujejo ospredje, kot je ponazorjeno na sliki~\ref{fig:mobilesam}. Mrežo generiramo iz semantičnih mask zbirke, naloga modela pa je iz teh točk razločiti posamezne instance in zanje ustvariti ustrezne segmente. Pri FastSAM dodatno uporabimo tudi točke ozadja, s katerimi modelu podamo negativne primere in mu olajšamo ločevanje med objekti.
-            
-            Za dodatno presojo v kasnejših eksperimentih uporabimo še pozive v obliki okvirjev, ki jih generiramo z enostavnim pristopom iz odseka~\ref{sct:enostavnapretvorba}. Ti okvirji služijo kot nadomestek instančnih oznak in omogočajo oceno, kako dobro se segmenti, ustvarjeni iz pozivov, prekrivajo z grobimi prostorskimi pozivi.
-            
-
-            \paragraph{MobileSAM} \label{sct:mobilesam}
-
-                Za model MobileSAM paketa Ultralytics\footnote{\url{https://docs.ultralytics.com/models/mobile-sam/}} se je izkazalo, da mreža točk ni ustrezen vhodni poziv. Ta model namreč generira toliko instančnih mask, kolikor dobi vhodnih točk. Ker ne moremo določiti instanc objektov na semantični segmentacijski maska, torej koliko točk naj podamo in kam naj jih postavimo, s tem pristopom nismo nadaljevali. Primer je prikazan na sliki~\ref{fig:mobilesam}.
-                
-                \begin{figure}
-                    \centering
-                    \includegraphics[width=0.45\linewidth]{figures//mobilesam/input.png}
-                    \includegraphics[width=0.45\linewidth]{figures//mobilesam/output.png}
-                    % TODO: Manjkajo reference na posamezno sliko
-                    \caption{Vhodna slika z mrežo točk ospredja ter izhod modela MobileSAM. MobileSAM vrne toliko instanc objektov, kolikor dobi vhodnih točk, zato za naš pristop ni ustrezen.}
-                    \label{fig:mobilesam}
-                \end{figure}
-                
-            \paragraph{FastSAM} \label{sct:fastsam}
-
-                V nadaljevanju izvedemo eksperimente s FastSAM, kjer za poziv najprej uporabimo mrežo točk, ki označujejo zgolj ospredje. Nabor rezultatov je prikazan na sliki~\ref{fig:fastsam-points-fg}. V naslednjem preizkusu uporabimo mrežo točk za ospredje in ozadje; rezultati so na sliki~\ref{fig:fastsam-points-fg-bg}. V zadnjem eksperimentu kot poziv uporabimo okvirje, določene z enostavno pretvorbo iz odseka~\ref{sct:enostavnapretvorba}, kar je prikazano na sliki~\ref{fig:fastsam-bbox}.
-
-                Ker FastSAM izvaja le segmentacijo brez razvrščanja objektov, so vse napovedi označene z razredom \emph{object}. Ker so vhodne slike različnih ločljivosti, razmik med točkami pa je podan v pikslih, se skupno število točk med posameznimi vzorci razlikuje.
-                
-                % Point based approach - foreground only
-                \begin{figure}
-                    \centering
-                    \setlength{\tabcolsep}{2pt} % space between columns
-                    \renewcommand{\arraystretch}{1} % no extra row padding
-                    \begin{tabular}{@{}cccc@{}}
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg/11.png} &
-                    \includegraphics[trim={0.0cm 6.0cm 0.0cm 6.0cm},clip, width=0.24\linewidth]{figures/fastsam/points_fg/114.png} &
-                    \includegraphics[trim={0.0cm 4.5cm 0.0cm 4.5cm},clip, width=0.24\linewidth]{figures/fastsam/points_fg/131.png} &
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg/145.png} \\
-                    
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg/11_mask.png} &
-                    \includegraphics[trim={0.0cm 6.0cm 0.0cm 6.0cm},clip, width=0.24\linewidth]{figures/fastsam/points_fg/114_mask.png} &
-                    \includegraphics[trim={0.0cm 4.5cm 0.0cm 4.5cm},clip, width=0.24\linewidth]{figures/fastsam/points_fg/131_mask.png} &
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg/145_mask.png} \\
-
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg/160.png} &
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg/203.png} &
-                    \includegraphics[trim={0.0cm 0.5cm 0.0cm 0.5cm},clip, width=0.24\linewidth]{figures/fastsam/points_fg/248.png} &
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg/306.png} \\
-                    
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg/160_mask.png} &
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg/203_mask.png} &
-                    \includegraphics[trim={0.0cm 0.5cm 0.0cm 0.5cm},clip, width=0.24\linewidth]{figures/fastsam/points_fg/248_mask.png} &
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg/306_mask.png} \\
-                    \end{tabular}
-                    % TODO: Oblika - katere slike sodijo skupaj?
-                    \caption{Vzorec rezultatov segmentacije z modelom FastSAM in pozivom v obliki točk, ki označijo ospredje. Vrstici z modrimi maskami predstavljata izhod modela.}
-                    \label{fig:fastsam-points-fg}
-                \end{figure}
-
-                % Point based approach - fg and bg
-                \begin{figure}
-                    \centering
-                    \setlength{\tabcolsep}{2pt} % space between columns
-                    \renewcommand{\arraystretch}{1} % no extra row padding
-                    \begin{tabular}{@{}cccc@{}}
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg_bg/11.png} &
-                    \includegraphics[trim={0.0cm 6.0cm 0.0cm 6.0cm},clip, width=0.24\linewidth]{figures/fastsam/points_fg_bg/114.png} &
-                    \includegraphics[trim={0.0cm 4.5cm 0.0cm 4.5cm},clip, width=0.24\linewidth]{figures/fastsam/points_fg_bg/131.png} &
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg_bg/145.png} \\
-                    
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg_bg/11_mask.png} &
-                    \includegraphics[trim={0.0cm 6.0cm 0.0cm 6.0cm},clip, width=0.24\linewidth]{figures/fastsam/points_fg_bg/114_mask.png} &
-                    \includegraphics[trim={0.0cm 4.5cm 0.0cm 4.5cm},clip, width=0.24\linewidth]{figures/fastsam/points_fg_bg/131_mask.png} &
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg_bg/145_mask.png} \\
-
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg_bg/160.png} &
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg_bg/203.png} &
-                    \includegraphics[trim={0.0cm 0.5cm 0.0cm 0.5cm},clip, width=0.24\linewidth]{figures/fastsam/points_fg_bg/248.png} &
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg_bg/306.png} \\
-                    
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg_bg/160_mask.png} &
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg_bg/203_mask.png} &
-                    \includegraphics[trim={0.0cm 0.5cm 0.0cm 0.5cm},clip, width=0.24\linewidth]{figures/fastsam/points_fg_bg/248_mask.png} &
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg_bg/306_mask.png} \\
-                    \end{tabular}
-                    % TODO: Oblika - katere slike sodijo skupaj?
-                    \caption{Vzorec rezultatov segmentacije z modelom FastSAM in pozivom v obliki točk, ki označijo ospredje (rdeče) in ozadje (modro). Vrstici z modrimi maskami predstavljata izhod modela FastSAM.}
-                    \label{fig:fastsam-points-fg-bg}
-                \end{figure}
-
-                % Bbox based approach
-                \begin{figure}
-                    \centering
-                    \setlength{\tabcolsep}{2pt} % space between columns
-                    \renewcommand{\arraystretch}{1} % no extra row padding
-                    \begin{tabular}{@{}cccc@{}}
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/bbox/11.png} &
-                    \includegraphics[trim={0.0cm 6.0cm 0.0cm 6.0cm},clip, width=0.24\linewidth]{figures/fastsam/bbox/114.png} &
-                    \includegraphics[trim={0.0cm 4.5cm 0.0cm 4.5cm},clip, width=0.24\linewidth]{figures/fastsam/bbox/131.png} &
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/bbox/145.png} \\
-                    
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/bbox/11_mask.png} &
-                    \includegraphics[trim={0.0cm 6.0cm 0.0cm 6.0cm},clip, width=0.24\linewidth]{figures/fastsam/bbox/114_mask.png} &
-                    \includegraphics[trim={0.0cm 4.5cm 0.0cm 4.5cm},clip, width=0.24\linewidth]{figures/fastsam/bbox/131_mask.png} &
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/bbox/145_mask.png} \\
-
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/bbox/160.png} &
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/bbox/203.png} &
-                    \includegraphics[trim={0.0cm 0.5cm 0.0cm 0.5cm},clip, width=0.24\linewidth]{figures/fastsam/bbox/248.png} &
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/bbox/306.png} \\
-                    
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/bbox/160_mask.png} &
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/bbox/203_mask.png} &
-                    \includegraphics[trim={0.0cm 0.5cm 0.0cm 0.5cm},clip, width=0.24\linewidth]{figures/fastsam/bbox/248_mask.png} &
-                    \includegraphics[width=0.24\linewidth]{figures/fastsam/bbox/306_mask.png} \\
-                    \end{tabular}
-                    % TODO: Oblika - katere slike sodijo skupaj?
-                    \caption{Vzorec rezultatov segmentacije z modelom FastSAM in pozivom v obliki okvirjev, pridobljenih z enostavno pretvorbo iz izvirnih segmentacijskih mask. Vrstici z modrimi maskami predstavljata izhod modela FastSAM.}
-                    \label{fig:fastsam-bbox}
-                \end{figure}
-    
-    \section{Rezultati} \label{sct:rezultati}
-
-        \subsection{Model FOMO}
-
-        \subsection{Model YOLOv11n-seg}
 
         \subsection{Model SAM}
+
+            Kvalitativni rezultati eksperimentov z modelom FastSAM so prikazani na
+            slikah~\ref{fig:fastsam-points-fg},
+            \ref{fig:fastsam-points-fg-bg}
+            in
+            \ref{fig:fastsam-bbox}.
+            Ker FastSAM izvaja le segmentacijo brez razvrščanja objektov, so
+            bile vse napovedi označene z razredom \emph{object}. Ker so bile
+            vhodne slike različnih ločljivosti, razmik med točkami pa podan v
+            pikslih, se je skupno število točk med posameznimi vzorci razlikovalo.
+
+            Nabor rezultatov za mrežo točk, ki označujejo zgolj ospredje, je
+            prikazan na
+            sliki~\ref{fig:fastsam-points-fg}.
+            Na nekaterih prikazanih vzorcih je model posamezne objekte pravilno
+            označil s pripadajočimi detekcijskimi okvirji. Na štirih od osmih
+            prikazanih vzorcev je bil kot objekt označen tudi krožnik, ki je praviloma
+            del ozadja. Pri večini prikazanih vzorcev so bili posamezni objekti
+            razdeljeni na preveč segmentov, torej označeni s preveč okvirji.
+
+            Rezultati za poziv z mrežo točk ospredja in ozadja so prikazani na
+            sliki~\ref{fig:fastsam-points-fg-bg}.
+            Rdeče točke na slikah predstavljajo poziv za ospredje, modre točke
+            pa poziv za ozadje. V tej izvedbi je model ozadje obravnaval
+            skladno s pozivi in krožnikov ni segmentiral, vendar je pri več
+            vzorcih posamezne objekte še vedno razdelil na preveč segmentov.
+
+            Rezultati za poziv z okvirji so prikazani na
+            sliki~\ref{fig:fastsam-bbox}.
+            Pri tej izvedbi so bili posamezni objekti razdeljeni na manj
+            segmentov kot pri pozivu s točkami, kar je v več primerih bolj
+            ustrezno. Na enem od prikazanih vzorcev je model segmentiral tudi
+            krožnik. Na štirih prikazanih vzorcih je model izpustil del
+            objektov, ki bi jih moral segmentirati.
+
+            % Point based approach - foreground only
+            \begin{figure}[!htbp]
+                \centering
+                \setlength{\tabcolsep}{2pt} % space between columns
+                \renewcommand{\arraystretch}{1} % no extra row padding
+                \begin{tabular}{@{}cccc@{}}
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg/11.png} &
+                \includegraphics[trim={0.0cm 6.0cm 0.0cm 6.0cm},clip, width=0.24\linewidth]{figures/fastsam/points_fg/114.png} &
+                \includegraphics[trim={0.0cm 4.5cm 0.0cm 4.5cm},clip, width=0.24\linewidth]{figures/fastsam/points_fg/131.png} &
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg/145.png} \\
+                
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg/11_mask.png} &
+                \includegraphics[trim={0.0cm 6.0cm 0.0cm 6.0cm},clip, width=0.24\linewidth]{figures/fastsam/points_fg/114_mask.png} &
+                \includegraphics[trim={0.0cm 4.5cm 0.0cm 4.5cm},clip, width=0.24\linewidth]{figures/fastsam/points_fg/131_mask.png} &
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg/145_mask.png} \\
+
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg/160.png} &
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg/203.png} &
+                \includegraphics[trim={0.0cm 0.5cm 0.0cm 0.5cm},clip, width=0.24\linewidth]{figures/fastsam/points_fg/248.png} &
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg/306.png} \\
+                
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg/160_mask.png} &
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg/203_mask.png} &
+                \includegraphics[trim={0.0cm 0.5cm 0.0cm 0.5cm},clip, width=0.24\linewidth]{figures/fastsam/points_fg/248_mask.png} &
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg/306_mask.png} \\
+                \end{tabular}
+                % TODO: Oblika - katere slike sodijo skupaj?
+                \caption{Vzorec rezultatov segmentacije z modelom FastSAM in pozivom v obliki točk, ki označijo ospredje. Vrstici z modrimi maskami predstavljata izhod modela.}
+                \label{fig:fastsam-points-fg}
+            \end{figure}
+
+            % Point based approach - fg and bg
+            \begin{figure}[!htbp]
+                \centering
+                \setlength{\tabcolsep}{2pt} % space between columns
+                \renewcommand{\arraystretch}{1} % no extra row padding
+                \begin{tabular}{@{}cccc@{}}
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg_bg/11.png} &
+                \includegraphics[trim={0.0cm 6.0cm 0.0cm 6.0cm},clip, width=0.24\linewidth]{figures/fastsam/points_fg_bg/114.png} &
+                \includegraphics[trim={0.0cm 4.5cm 0.0cm 4.5cm},clip, width=0.24\linewidth]{figures/fastsam/points_fg_bg/131.png} &
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg_bg/145.png} \\
+                
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg_bg/11_mask.png} &
+                \includegraphics[trim={0.0cm 6.0cm 0.0cm 6.0cm},clip, width=0.24\linewidth]{figures/fastsam/points_fg_bg/114_mask.png} &
+                \includegraphics[trim={0.0cm 4.5cm 0.0cm 4.5cm},clip, width=0.24\linewidth]{figures/fastsam/points_fg_bg/131_mask.png} &
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg_bg/145_mask.png} \\
+
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg_bg/160.png} &
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg_bg/203.png} &
+                \includegraphics[trim={0.0cm 0.5cm 0.0cm 0.5cm},clip, width=0.24\linewidth]{figures/fastsam/points_fg_bg/248.png} &
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg_bg/306.png} \\
+                
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg_bg/160_mask.png} &
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg_bg/203_mask.png} &
+                \includegraphics[trim={0.0cm 0.5cm 0.0cm 0.5cm},clip, width=0.24\linewidth]{figures/fastsam/points_fg_bg/248_mask.png} &
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg_bg/306_mask.png} \\
+                \end{tabular}
+                % TODO: Oblika - katere slike sodijo skupaj?
+                \caption{Vzorec rezultatov segmentacije z modelom FastSAM in pozivom v obliki točk, ki označijo ospredje (rdeče) in ozadje (modro). Vrstici z modrimi maskami predstavljata izhod modela FastSAM.}
+                \label{fig:fastsam-points-fg-bg}
+            \end{figure}
+
+            % Bbox based approach
+            \begin{figure}[!htbp]
+                \centering
+                \setlength{\tabcolsep}{2pt} % space between columns
+                \renewcommand{\arraystretch}{1} % no extra row padding
+                \begin{tabular}{@{}cccc@{}}
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/bbox/11.png} &
+                \includegraphics[trim={0.0cm 6.0cm 0.0cm 6.0cm},clip, width=0.24\linewidth]{figures/fastsam/bbox/114.png} &
+                \includegraphics[trim={0.0cm 4.5cm 0.0cm 4.5cm},clip, width=0.24\linewidth]{figures/fastsam/bbox/131.png} &
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/bbox/145.png} \\
+                
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/bbox/11_mask.png} &
+                \includegraphics[trim={0.0cm 6.0cm 0.0cm 6.0cm},clip, width=0.24\linewidth]{figures/fastsam/bbox/114_mask.png} &
+                \includegraphics[trim={0.0cm 4.5cm 0.0cm 4.5cm},clip, width=0.24\linewidth]{figures/fastsam/bbox/131_mask.png} &
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/bbox/145_mask.png} \\
+
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/bbox/160.png} &
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/bbox/203.png} &
+                \includegraphics[trim={0.0cm 0.5cm 0.0cm 0.5cm},clip, width=0.24\linewidth]{figures/fastsam/bbox/248.png} &
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/bbox/306.png} \\
+                
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/bbox/160_mask.png} &
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/bbox/203_mask.png} &
+                \includegraphics[trim={0.0cm 0.5cm 0.0cm 0.5cm},clip, width=0.24\linewidth]{figures/fastsam/bbox/248_mask.png} &
+                \includegraphics[width=0.24\linewidth]{figures/fastsam/bbox/306_mask.png} \\
+                \end{tabular}
+                % TODO: Oblika - katere slike sodijo skupaj?
+                \caption{Vzorec rezultatov segmentacije z modelom FastSAM in pozivom v obliki okvirjev, pridobljenih z enostavno pretvorbo iz izvirnih segmentacijskih mask. Vrstici z modrimi maskami predstavljata izhod modela FastSAM.}
+                \label{fig:fastsam-bbox}
+            \end{figure}
+    
 
 \chapter{Diskusija} \label{sct:diskusija}
 
     \section{Cilji in raziskovalna vprašanja}
+
         V tem poglavju povzamemo ugotovitve o poenostavitvi podatkovne zbirke FoodSeg103, metrikah in njihovi interpretaciji, obnašanju FOMO v primerjavi z YOLOv11-seg, izvedljivosti metod SAM ter učinku kvantizacije na izvajanje na mikrokrmilnikih.
 
     \section{Izbrana podatkovna zbirka in vpliv poenostavitve}
@@ -1700,7 +2331,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
 
         % Komentar na eksperimente
         
-        \subsection{Učenje na izvirni FoodSeg103 zbirki}
+        \subsection{Učenje na izvirni zbirki}
         
             Najprej smo v odseku~\ref{sct:ucenje-na-izvirnem-datasetu} model FOMO učili na izvirni, nepoenostavljeni zbirki FoodSeg103, rezultati pa so zbrani v tabeli~\ref{tab:experiment_full_foodseg103_dataset_table}. Po metriki mIoU je dosežena uspešnost v primerjavi z najboljšimi pristopi zanemarljiva. K temu verjetno prispevajo majhna kapaciteta modela, nizkoločljivostna izhodna maska (npr. \(8 \times 8\) ali \(16 \times 16\)), nestabilnost IoU pri zelo majhnih objektih in sama zahtevnost podatkovne zbirke.
             
@@ -1710,30 +2341,72 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             Slednje se je po analizi izkazalo za problematično. Najredkejši razredi dobijo zelo visoke uteži, tudi do faktorja \(\sim 4000\), medtem ko je ozadje uteženo z \(1\). Na sliki~\ref{fig:experiment_full_foodseg103_dataset_loss} je razvidno, da pri uteževanju po frekvenci validacijska krivulja hitreje kaže znake prenaučenja. Deloma je to pričakovano, saj večje uteži pospešijo učenje teh razredov. Dodatno pa na obliko krivulje vpliva sama definicija kriterijske funkcije. V odseku~\ref{sct:fomo-ucenje} smo opisali, da je izgubna funkcija utežena po razredih, zato imajo napake visoko uteženih in hkrati slabo zastopanih razredov nesorazmerno velik vpliv na skupno izgubo, zaradi česar se prenaučenje teh razredov pokaže prej.
             
 
+        %\subsection{Učenje na poenostavljeni zbirki}
+        %    
+        %    Zaradi izrazito slabih rezultatov in problematike zelo redkih
+        %    razredov smo zato zbirko poenostavili in odstranili najslabše
+        %    zastopane razrede. Eksperimenti so predstavljeni v
+        %    odseku~\ref{sct:fomo-simplified-experiments}.
+
+        %    % Primerjava rezultatov z nepoenostavljeno zbirko. A so rezultati
+        %    % uporabni?
+        %    V tabeli~\ref{tab:experiment_simplified_foodseg103_dataset_table}
+        %    prikažemo,
+        %    da dosežemo do 24 odstotkov boljše rezultate v metriki $F1_r$ v
+        %    primerjavi z eksperimenti na nepoenostavljeni zbirki. Vsekakor so
+        %    rezultati izrazito boljši, vendar so še vedno prenizki, da bi lahko
+        %    rekli, da model zanesljivo reši podatkovno zbirko.
+        %    % Komentar na mIoU, da ga lahko primerjamo samo z našim YOLO
+        %    % eksperimentom, ker smo spremenili dataset.
+        %    Tudi metriki $F1_p$ in mIoU se izrazito izboljšata za 19 oziroma 12
+        %    odstotkov, vendar so vrednosti še vedno prenizke za zanesljivo
+        %    delovanje.
+
+        %    % Primerjava različnih načinov uteževanja.
+        %    Uteževanje v tem primeru nima tako bistvenega vpliva kot pri
+        %    nepoenostavljeni zbirki. Razlika v metrikah znaša največ en
+        %    odstotek.
+        %    % Komentar na grafe kriterijske funkcije, ni več take razlike med
+        %    % različnimi uteževanji, ker ni več razredov z izjemno velikimi
+        %    % utežmi
+        %    Tudi kriterijski funkciji na
+        %    sliki~\ref{fig:experiment_simplified_foodseg103_dataset_loss}
+        %    sta si precej
+        %    bolj podobni, saj je distribucija razredov precej bolj enakomerna,
+        %    tako da ni več razredov z izjemno velikimi utežmi, ki bi
+        %    potencialno destabilizirali učenje.
+
         \subsection{Učenje na poenostavljeni zbirki}
+
+            Zaradi slabih rezultatov na izvirni zbirki in izrazitega vpliva
+            zelo redkih razredov smo zbirko poenostavili ter odstranili
+            najslabše zastopane razrede. Eksperimente s poenostavljeno
+            različico predstavljamo v
+            odseku~\ref{sct:fomo-simplified-experiments}.
             
-            Zaradi izrazito slabih rezultatov in problematike zelo redkih razredov smo zato zbirko poenostavili in odstranili najslabše zastopane razrede. Eksperimenti so predstavljeni v odseku~\ref{sct:fomo-simplified-experiments}.
-
-            % Primerjava rezultatov z nepoenostavljeno zbirko. A so rezultati uporabni?
-            V tabeli~\ref{tab:experiment_simplified_foodseg103_dataset_table} prikažemo, da dosežemo do 24 odstotkov boljše rezultate v metriki $F1_r$ v primerjavi z eksperimenti na nepoenostavljeni zbirki. Vsekakor so rezultati izrazito boljši, vendar so še vedno prenizki, da bi lahko rekli, da model zanesljivo reši podatkovno zbirko.
-            % Komentar na mIoU, da ga lahko primerjamo samo z našim YOLO eksperimentom, ker smo spremenili dataset.
-            Tudi metriki $F1_p$ in mIoU se izrazito izboljšata za 19 oziroma 12 odstotkov, vendar so vrednosti še vedno prenizke za zanesljivo delovanje.
-
-            % Primerjava različnih načinov uteževanja.
-            Uteževanje v tem primeru nima tako bistvenega vpliva kot pri nepoenostavljeni zbirki. Razlika v metrikah znaša največ en odstotek.
-            % Komentar na grafe kriterijske funkcije, ni več take razlike med različnimi uteževanji, ker ni več razredov z izjemno velikimi utežmi
-            Tudi kriterijski funkciji na sliki~\ref{fig:experiment_simplified_foodseg103_dataset_loss} sta si precej bolj podobni, saj je distribucija razredov precej bolj enakomerna, tako da ni več razredov z izjemno velikimi utežmi, ki bi potencialno destabilizirali učenje.
-
-        \subsection{Učenje na poenostavljeni zbirki}
-
-            Zaradi slabih rezultatov na izvirni zbirki in izrazitega vpliva zelo redkih razredov smo zbirko poenostavili ter odstranili najslabše zastopane razrede. Eksperimente s poenostavljeno različico predstavljamo v odseku~\ref{sct:fomo-simplified-experiments}.
+            V tabeli~\ref{tab:experiment_simplified_foodseg103_dataset_table}
+            pokažemo,
+            da se metrika \(F1_r\) glede na učenje na izvirni zbirki izboljša
+            tudi za 24~\%. Rezultati so občutno boljši, vendar še vedno niso
+            dovolj visoki za zanesljivo uporabo modela. Metriki \(F1_p\) in
+            mIoU se prav tako izboljšata, in sicer za približno 19~\% oziroma
+            12~\%. Pri mIoU opozorimo, da je neposredna primerjava z literaturo
+            neustrezna, saj je zbirka precej poenostavljena. Smiselna je
+            predvsem primerjava z našimi lastnimi referencami na YOLOv11-seg na
+            isti različici podatkov.
             
-            V tabeli~\ref{tab:experiment_simplified_foodseg103_dataset_table} pokažemo, da se metrika \(F1_r\) glede na učenje na izvirni zbirki izboljša tudi za 24~\%. Rezultati so občutno boljši, vendar še vedno niso dovolj visoki za zanesljivo uporabo modela. Metriki \(F1_p\) in mIoU se prav tako izboljšata, in sicer za približno 19~\% oziroma 12~\%. Pri mIoU opozorimo, da je neposredna primerjava z literaturo neustrezna, saj je zbirka precej poenostavljena. Smiselna je predvsem primerjava z našimi lastnimi referencami na YOLOv11-seg na isti različici podatkov.
-            
-            Vpliv uteževanja razredov je po poenostavitvi zbirke bistveno manjši. Razlike v metrikah so največ okoli en odstotek. Krivulji kriterijske funkcije sta si pri različnih uteževanjih precej podobni, ker je porazdelitev razredov bolj enakomerna in ni več razredov z izjemno velikimi utežmi, ki bi potencialno destabilizirale učenje. Poenostavitev torej pomaga pri stabilnosti in doseženih metrikah, a rešuje zgolj problem neuravnovešenosti podatkovne zbirke, ostale omejitve pa ostajajo.
+            Vpliv uteževanja razredov je po poenostavitvi zbirke bistveno
+            manjši. Razlike v metrikah so največ okoli en odstotek. Krivulji
+            kriterijske funkcije sta si pri različnih uteževanjih precej
+            podobni, ker je porazdelitev razredov bolj enakomerna in ni več
+            razredov z izjemno velikimi utežmi, ki bi potencialno
+            destabilizirale učenje. Poenostavitev torej pomaga pri stabilnosti
+            in doseženih metrikah, a rešuje zgolj problem neuravnovešenosti
+            podatkovne zbirke, ostale omejitve pa ostajajo.
     
-            % TODO
-            % Metrike kažejo praktično isti performance. Kaj pa konfuzijske matrike? Je uteževanje na podlagi frekvence boljše? Je to morda posledica neuglašenega parametra \tau?
+            % TODO Metrike kažejo praktično isti performance. Kaj pa
+            % konfuzijske matrike? Je uteževanje na podlagi frekvence boljše?
+            % Je to morda posledica neuglašenega parametra \tau?
 
         % Primerjava resolucij
         \subsection{Primerjava različnih kombinacij resolucij}
@@ -1820,7 +2493,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
 
         Med eksperimenti se je izkazalo še, da STM32Cube.AI MCU podpira tudi hibridne modele. To so modeli, kjer so deli grafa kvantizirani v podatkovni tip \textit{int8}, drugi pa ostanejo v \textit{float32}. To je koristno pri nepopolni kvantizaciji, ko kvantiziramo le operacije s podporo za to, preostale pa pustimo v izvirni \textit{float32} obliki. Okolje TFLite Micro hibridnih modelov v naših poskusih ni podpiral. Meritve izvajamo v vmesniku X-CUBE-AI različice 9.0.0.
         
-        V eksperimentih smo opazili tudi, da STM32Cube.AI MCU zahteva manj pomnilnika kot TFLite Micro. Za \(\alpha=0{,}35\) se velikost kvantiziranega modela povečajo z \(236\,\mathrm{kB}\) na \(405\,\mathrm{kB}\), ko namesto STM32Cube.AI MCU uporabimo TFLite Micro. To nakazuje, da namenska optimizacija dobro izkoristi ciljno strojno opremo in da TFLite Micro, kljub razširjenosti, ni nujno najboljša izbira na platformi STM32.
+        Med dodatnimi eksperimenti smo opazili tudi, da STM32Cube.AI MCU zahteva manj pomnilnika kot TFLite Micro. Za \(\alpha=0{,}35\) se velikost kvantiziranega modela povečajo z \(236\,\mathrm{kB}\) na \(405\,\mathrm{kB}\), ko namesto okolja STM32Cube.AI uporabimo TFLite Micro. To nakazuje, da optimizacije na platformi STM32  dobro izkoristijo ciljno strojno opremo in da TFLite Micro kljub svoji splošni razširjenosti ni nujno najboljša izbira na platformi STM32.
 
     % TODO: Pokaži konfuzijsko matriko za navadno učenje na poenostavljenem datasetu (če ni prevelika), mogoče primerjaj načine uteževanja, komentiraj katere razrede dobro rešimo, katere meša med sabo in ugibaj zakaj jih meša med sabo.
     
