@@ -510,7 +510,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
         Model FOMO (angl. Faster Objects, More Objects)~\cite{src:announcingfomo, src:fomodocs} je detekcijski model, namenjen realnočasovnemu izvajanju na mikrokrmilnikih. Na voljo je na platformi \mbox{Edge Impulse}~\cite{src:fomodocs}. Zanj je značilna nizka poraba pomnilnika in učinkovito izvajanje - avtorji v demonstraciji prikažejo izvajanje na Cortex M7 jedru razvojnega kompleta Arduino Nicla Vision, kjer dosežejo obdelavo do 28 sličic na sekundo ob porabi zgolj 245 kB pomnilnika~\cite{src:fomodocs}.
         Model je odprtokoden~\cite{src:fomodocs}, portal pa omogoča prenos kode z definicijami modelov ter postopki za učenje. To nam omogoča prilagajanje arhitekture modela, obdelave vhodnih in izhodnih podatkov ter postopka učenja glede na naravo izbranega problema.
 
-        \subsection{Arhitektura}
+        \subsection{Arhitektura} \label{sct:fomo-arhitektura}
 
             % Network architecture - nismo modificirali originala
             Model je sestavljen iz dveh glavnih delov: izluščevalnik značilk (angl. feature extractor), kjer avtorji uporabijo začetne plasti modela MobileNetV2~\cite{src:sandler2018mobilenetv2}, ter glave modela~\cite{src:fomodocs}.
@@ -686,15 +686,15 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
     
 \chapter{Eksperimenti in rezultati} \label{sct:eir}
 
-    V tem poglavju predstavimo eksperimentalni del naloge in dobljene rezultate. V
-    odseku~\ref{sct:eir-podatkovnazbirka}
+    V tem poglavju predstavimo eksperimentalni del naloge in dobljene
+    rezultate. V odseku~\ref{sct:eir-podatkovnazbirka}
     opišemo uporabljeno podatkovno zbirko
-    FoodSeg103 in njeno poenostavljeno različico, v odseku~\ref{sct:eir-metrike}
-    pa predstavimo izbrane metrike. V
-    odsekih~\ref{sct:eir-eksperimenti}
+    FoodSeg103 in njeno poenostavljeno različico, v
+    odseku~\ref{sct:eir-metrike} pa predstavimo
+    izbrane metrike. V odsekih~\ref{sct:eir-eksperimenti}
     in~\ref{sct:rezultati}
-    nato podamo zasnovo eksperimentov ter rezultate za
-    modele FOMO, YOLOv11-seg in SAM.
+    nato podamo zasnovo eksperimentov ter rezultate
+    za modele FOMO, YOLOv11-seg in SAM.
 
     \section{Podatkovna zbirka} \label{sct:eir-podatkovnazbirka}
 
@@ -744,7 +744,10 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             \includegraphics[width=0.24\linewidth]{figures/FoodSeg103_examples/img8_mask.jpg} \\
             \end{tabular}
             % TODO: Ni jasno katera maska pripada kateri sliki
-            \caption{Primeri vzorcev in pripadajočih segmentacijskih mask iz podatkovne zbirke FoodSeg103~\cite{src:wu2021large}. Na maskah sivinska vrednost piksla predstavlja indeks razreda, ki mu piksel pripada.}
+            \caption{Primeri vzorcev in pripadajočih segmentacijskih mask iz
+            podatkovne zbirke FoodSeg103~\cite{src:wu2021large}. Na maskah
+            sivinska vrednost piksla predstavlja indeks razreda, ki mu piksel
+            pripada.}
             \label{fig:foodseg103vzorci}
         \end{figure}
 
@@ -1176,20 +1179,21 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             \paragraph{Primerjava različnih strategij učenja}
 
 
-            V tem odseku primerjamo dve strategiji učenja: učenje po celotnem
+            V tem eksperimentu smo primerjali dve strategiji učenja: učenje po celotnem
             modelu in učenje z zamrznjenim izluščevalnikom značilk. Obe izvedbi
-            inicializiramo z utežmi, prednaučenimi na ImageNet. Namen tega
+            smo inicializirali z utežmi, prednaučenimi na zbirki ImageNet. Namen tega
             eksperimenta je ugotoviti, v kolikšni meri lahko izvedemo prenos
-            znanja. Ker ta zbirka le omejeno pokriva živila in sestavine, je
-            vprašanje tudi, kolikšen del prenesenega znanja je v tej domeni
+            znanja. Ker ImageNet le omejeno pokriva živila in sestavine, je
+            bilo vprašanje tudi, kolikšen del prenesenega znanja je v tej domeni
             dejansko uporaben.
 
-            Prva strategija je učenje celotnega modela (\emph{end-to-end}),
-            kjer vse plasti fino prilagodimo na ciljni podatkovni zbirki. Druga
-            strategija je učenje z zamrznjenim izluščevalnikom značilk, pri
-            čemer učimo samo glavo modela, izluščevalnik značilk pa ohranimo
+            Prva strategija je bila učenje celotnega modela (angl. \emph{end-to-end}),
+            kjer smo vse plasti fino prilagodili na zbirki FoodSeg103. Druga
+            strategija je bila učenje z zamrznjenim izluščevalnikom značilk, pri
+            kateri smo učili zgolj glavo modela, izluščevalnik pa ohranili
             nespremenjen (angl. \textit{transfer learning}). Slednji pristop
-            praviloma bolje ohrani prednaučeno znanje.
+            praviloma bolje ohrani prednaučeno znanje, vendar slabše prilagodi
+            model na končno podatkovno zbirko.
             
             %V tem eksperimentu uporabimo FOMO model iz
             %odseka~\ref{sct:eir-fomo-simplified-experiments} s parametrom
@@ -1205,19 +1209,24 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             \paragraph{Specializirani modeli po posameznih razredih}
 
             %Namen in zasnova
-            Namen tega eksperimenta je preveriti, ali pristop s
+            Namen tega eksperimenta je bil preveriti, ali pristop s
             specializiranimi modeli po posameznih razredih (angl. \emph{mixture
             of experts})~\cite{src:jacobs1991adaptive-mixture-of-experts}
             izboljša delovanje v primerjavi z referenčno izvedbo, ki hkrati
-            razpoznava več razredov. Izbran je pristop na ravni razredov: za
+            razpoznava več razredov. Izbrali smo pristop na ravni razredov: za
             vsak razred v podatkovni zbirki smo naučili specializiran
             enorazredni FOMO model, ki razlikuje zgolj med ozadjem in tem
             razredom.
 
             %\paragraph{Specializirani enorazredni modeli}
-            Za učenje posameznega enorazrednega modela smo morali pripraviti podatkovno zbirko, da je vsebovala zgolj dva razreda - ciljni razred ter razred ozadja.
-            Kot omenjeno v poglavju~\ref{sct:eir-podatkovnazbirka-poenostavitev}, je to mogoče na več načinov. Kot izhodišče smo uporabili poenostavljeno zbirko s 30 razredi. Vsakemu vzorcu smo nato masko priredili tako, 
-            da je vsebovala le ciljni razred, preostali razredi pa so bili označeni kot ozadje.
+            Za učenje posameznega enorazrednega modela smo morali pripraviti
+            podatkovno zbirko, da je vsebovala zgolj dva razreda - ciljni
+            razred ter razred ozadja. Kot omenjeno v
+            poglavju~\ref{sct:eir-podatkovnazbirka-poenostavitev},
+            je to mogoče na več načinov. Kot izhodišče smo uporabili
+            poenostavljeno zbirko s 30 razredi. Vsakemu vzorcu smo nato masko
+            priredili tako, da je vsebovala le ciljni razred, preostali razredi
+            pa so bili označeni kot ozadje.
             %\paragraph{Referenca}
             % Za \textbf{referenco} uporabimo standarden FOMO model iz
             % eksperimentov v odseku~\ref{sct:fomo-simplified-experiments} s
@@ -1241,7 +1250,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             razredih, ne pa njihovega makro povprečja.
 
 
-            \paragraph{Kvantizacija modela}
+            \paragraph{Kvantizacija modela} \label{sct:eir-eksperimenti-kvantizacija}
 
             V tem eksperimentu smo model FOMO kvantizirali z metodo
             kvantizacije po učenju (PTQ) in poročali o končni uspešnosti
@@ -1307,7 +1316,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             parametrov. Vhodno ločljivost smo nastavili na \(480 \times 480\),
             ostale parametre pa smo nastavili na privzete vrednosti.
 
-        \subsection{Model SAM} \label{sct:rezultati-sam}
+        \subsection{Modeli SAM} \label{sct:rezultati-sam}
             
             V tem odseku preverimo, v kolikšni meri lahko z modeloma FastSAM in
             MobileSAM olajšamo pretvorbo anotacij iz semantičnih
@@ -1530,7 +1539,9 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             % TODO: Tut neki takega lahko gre v diskusijo.
             % V primeru uteževanja na podlagi frekvence je razvidno, da validacijska krivulja začne izrazito naraščati po 10. epohi. Model na nepoenostavljeni zbirki s temi utežmi izrazito hitro začne preprilegati. %kar nakazuje na preagresivno uteževanje? Zelo redki razredi v tem primeru dobijo zelo velike uteži (dodaj točne cifre). Model potem preveč optimizira za nekaj maloštevilnih razredov. Ker je vzorcev v teh razredih premalo, se model hitro prenauči na teh konkretnih vzorcih. % TODO: Referenciraj prilogo A
             % Zaradi tega smo poskusili zbirko poenostaviti in se znebiti teh zelo redkih razredov.
-            % TODO: Mogoče za v zaključek al pa v diskusijo: mogoče bi bil tu bolj primeren kak drug način uteževanja, ki lahko bolj ustrezno uteži zelo redke razrede.
+            % TODO: Mogoče za v zaključek al pa v diskusijo: mogoče bi bil tu
+            % bolj primeren kak drug način uteževanja, ki lahko bolj ustrezno
+            % uteži zelo redke razrede.
 
 
             % Grafi kriterijske funkcije
@@ -1618,15 +1629,16 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             sliki~\ref{fig:experiment_simplified_foodseg103_dataset_loss}
             in v
             tabeli~\ref{tab:experiment_simplified_foodseg103_dataset_table}.
-            Na grafih je razvidno, da validacijski krivulji po začetnem padcu v
+            Na grafih je razvidno, da se validacijski krivulji po začetnem padcu v
             približno 15. epohi obrneta navzgor, vendar je rast na desnem grafu
             počasnejša kot pa v prejšnjem eksperimentu na izvirni podatkovni
             zbirki. Razlika med levim in desnim grafom je manjša kot med
             grafoma v prejšnjem eksperimentu. V primerjavi z eksperimentom na
-            izvirni podatkovni zbirki
-            je model dosegel izboljšanje v doseženih metrikah - mIoU smo izboljšali za $11{,}6$ oziroma $13{,}7$ odstotnih
-            točk, metriko $F1_r$ pa za $24{,}3$ oz. $25{,}7$ odstotnih točk.
-            Razlika med posameznima pristopoma uteževanja vzorcev znaša med $0{,}4$ in $1{,}0$ odstotno točko.
+            izvirni podatkovni zbirki je model dosegel izboljšanje v doseženih
+            metrikah - mIoU smo izboljšali za $11{,}6$ in $13{,}7$ odstotnih
+            točk, metriko $F1_r$ pa za $24{,}3$ ter $25{,}7$ odstotnih točk.
+            Razlika med posameznima pristopoma uteževanja vzorcev znaša med
+            $0{,}4$ in $1{,}0$ odstotkov.
 
             % TODO: Diskusija
             %V primerjavi z rezultati v poglavju~\ref{sct:eir-ucenje-na-izvirnem-datasetu} doseže ta eksperiment izrazito boljše rezultate. Poenostavitev podatkovne zbirke izboljša dosežene metrike, kar bi lahko nakazovalo, da je podatkovna zbirka prezahtevna za izbran model.
@@ -1766,7 +1778,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
 
             Rezultati so prikazani v
             tabeli~\ref{tab:eir-strategije-ucenja}.
-            Razvidno je, da učenje celotnega modela doseže boljše rezultate v
+            Razvidno je, da je učenje celotnega modela doseglo boljše rezultate v
             vseh metrikah. Metrika F1$_r$ se izboljša za $16{,}5$, mIoU pa za
             $11$ odstotnih točk.
             % TODO: Diskusija
@@ -1823,8 +1835,8 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             $11{,}8$ odstotka, \textit{broccoli} za $1{,}9$ odstotka,
             \textit{cake} pa se poslabša za $1{,}6$ odstotka.
             % TODO:
-            % Izboljšanje v metriki F1$_p$ je precej zanemarljivo, v
-            % nekaterih primerih pa se ta celo poslabša.
+            % Izboljšanje v metriki F1$_p$ je precej zanemarljivo, v nekaterih
+            % primerih pa se ta celo poslabša.
 
             Če primerjamo referenčne rezultate z enorazrednimi po metriki
             prisotnosti razredov F1$_r$, opazimo izboljšanje za $12{,}2$
@@ -1832,13 +1844,13 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             duck} in \textit{broccoli} pa poslabšanje za $4{,}8$ in $6{,}7$
             odstotka.
             % TODO: Diskusija
-            % Ta metrika je bolj relevantna za naš primer.
-            % Najslabše rešen razred malo izboljša metriko v primerjavi z
-            % F1$_p$  in referenco, medtem ko preostalima razredoma metrika
-            % pade.
+            % Ta metrika je bolj relevantna za naš primer. Najslabše rešen
+            % razred malo izboljša metriko v primerjavi z F1$_p$  in referenco,
+            % medtem ko preostalima razredoma metrika pade.
             %
             % Overall je iz rezultatov je razvidno, da specializirani modeli ne
-            % presežejo referenčne izvedbe. % Kaj to pomeni? Zakaj? Mogoče je
+            % presežejo referenčne izvedbe.
+            % Kaj to pomeni? Zakaj? Mogoče je
             % razlog v tem, da med učenjem ozadje še vedno vsebuje hrano, kar
             % poveča kompleksnost ozadja.
             
@@ -2171,7 +2183,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             \end{figure}
 
 
-        \subsection{Model SAM}
+        \subsection{Modeli SAM}
 
             Kvalitativni rezultati eksperimentov z modelom FastSAM so prikazani na
             slikah~\ref{fig:fastsam-points-fg},
@@ -2303,43 +2315,202 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
 
 \chapter{Diskusija} \label{sct:diskusija}
 
-    \section{Cilji in raziskovalna vprašanja}
-
-        V tem poglavju povzamemo ugotovitve o poenostavitvi podatkovne zbirke FoodSeg103, metrikah in njihovi interpretaciji, obnašanju FOMO v primerjavi z YOLOv11-seg, izvedljivosti metod SAM ter učinku kvantizacije na izvajanje na mikrokrmilnikih.
+        V tem poglavju povzamemo ugotovitve o poenostavitvi podatkovne zbirke
+        FoodSeg103, metrikah in njihovi interpretaciji, obnašanju FOMO v
+        primerjavi z YOLOv11-seg, izvedljivosti metod SAM ter učinku
+        kvantizacije na izvajanje na mikrokrmilnikih.
 
     \section{Izbrana podatkovna zbirka in vpliv poenostavitve}
     
-        Porazdelitev podatkov je izrazito problematična, saj najredkejši razredi vsebujejo le nekaj deset slik, zato zanje težko pričakujemo dobre rezultate. Dodatno težavnost prinaša narava zbirk s sestavinami hrane z visoko znotrajrazredno variabilnostjo in nizko medrazredno diferenciacijo. Tudi najboljši objavljeni pristopi na tej zbirki praviloma dosegajo okoli 50~\% mIoU, kar potrjuje zahtevnost problema. V naših poskusih z YOLOv11x-seg smo dosegli 28{,}4~\% mIoU. V kontekstu omejitev mikrokrmilniških modelov to nakazuje, da je zbirka v izvorni obliki za naš primer uporabe zelo zahtevna in precej neustrezna.
+        Neuravnovešena porazdelitev podatkov je izrazito problematična, saj
+        najredkejši razredi vsebujejo le nekaj deset slik, zato zanje težko
+        pričakujemo dobre rezultate. Dodatno težavnost prinaša narava problema
+        - za zbirke s sestavinami hrane je značilna visoka varianca znotraj
+        razredov in nizka varianca med razredi~\cite{src:wu2021large}. Tudi
+        najboljši objavljeni pristopi na tej zbirki praviloma ne presegajo
+        50~\% mIoU, kar potrjuje zahtevnost problema in zbirke. V naših
+        poskusih smo z YOLOv11x-seg, najzmogljivejšim izmed izbranih modelov,
+        dosegli le 28{,}4~\% po metriki mIoU. V kontekstu omejitev
+        mikrokrmilniških modelov to nakazuje, da je zbirka v izvorni obliki za
+        naš primer uporabe zelo zahtevna in precej neustrezna.
+
+        Sama poenostavitev zbirke je povečala povprečno število primerov na
+        razred, hkrati pa zmanjšala pokritost redkih razredov in skupni obseg
+        podatkovne zbirke. Pri tem smo morali sprejeti kompromis: če bi
+        odstranili premalo razredov, bi v zbirki ostalo preveč slabo zastopanih
+        razredov, če pa bi jih odstranili preveč, bi zbirko preveč zmanjšali. V
+        različici s 30 razredi je povprečno število slik na razred znašalo
+        \(322{,}9 \pm 188{,}5\), kar je za kakovostno učenje razmeroma malo.
+        Količina učnih podatkov se je dodatno zmanjšala, ker smo del nabora morali nameniti
+        še validaciji in testiranju.
+
     
-        Zato smo se lotili poenostavitve zbirke. Poenostavitev je skrajšala rep porazdelitve in povečala povprečno število primerov na razred, hkrati pa znižala pokritost redkih razredov in skupni obseg podatkov. Nastane jasen kompromis: premalo odstranjevanja pusti premalo podatkov na repu in slabše rezultate na teh razredih; preveč odstranjevanja zmanjša nabor do mere, ko kakovostno učenje ni več mogoče. V različici s 30 razredi je povprečno število slik na razred \(322{,}9 \pm 188{,}5\); dodatno se učinkovita količina učnih podatkov zmanjša, ker del nabora namenimo validaciji in testu.
-    
-        Če bi delo nadaljevali z zbirko FoodSeg103, bi bilo smiselno razmisliti o drugačnem načinu poenostavitve. V odseku~\ref{sct:foodseg103-poenostavitev} smo obravnavali več pristopov. Prepisovanje mask neželenih razredov v ozadje se ne izkaže kot ustrezno, saj poveča varianco ozadja, ki pogosto vsebuje segmente hrane, in s tem oteži učenje odločitvenih mej. Perspektivnejša možnost je združevanje sorodnih razredov v širše, semantično koherentne kategorije, kar ohranja velikost nabora in znižuje neuravnoteženost, vendar zahteva premišljeno definicijo nadrazredov in dodatno urejanje oznak.
+        % TODO: Zaključek - če bi še naprej uporabljali FoodSeg103
+        %Če bi delo nadaljevali z zbirko FoodSeg103, bi bilo smiselno razmisliti
+        %o drugačnem načinu poenostavitve in bolje preveriti, kater pristop je bolj ustrezen. V
+        %odseku~\ref{sct:foodseg103-poenostavitev} smo obravnavali več
+        %pristopov. Prepisovanje mask neželenih razredov v ozadje se ne izkaže
+        %kot ustrezno, saj poveča varianco ozadja, ki pogosto vsebuje segmente
+        %hrane, in s tem oteži učenje odločitvenih mej. Perspektivnejša možnost
+        %je združevanje sorodnih razredov v širše, semantično koherentne
+        %kategorije, kar ohranja velikost nabora in znižuje neuravnoteženost,
+        %vendar zahteva premišljeno definicijo nadrazredov in dodatno urejanje
+        %oznak.
 
     \section{Ustreznost izbranih metrik}
 
-        Izbor metrik na ravni pikslov in metrik prisotnosti razredov daje vpogled tako v lokalizirano klasifikacijo kot v uporabnost za končni cilj. Metrika mIoU do neke mere omogoča primerljivost z literaturo. Razred ozadje pri metrikah praviloma izključimo, ker nas zanimajo sestavine. Pri metrikah prisotnosti razredov je ozadje še posebej nerelevantno, saj je prisotno na vsakem vzorcu.
+        %Izbor metrik na ravni pikslov in metrik prisotnosti razredov daje vpogled tako v lokalizirano klasifikacijo kot v uporabnost za končni cilj.
+        %Metrika mIoU do neke mere omogoča primerljivost z literaturo.
+        %Razred ozadje pri metrikah praviloma izključimo, ker nas zanimajo sestavine.
+        %Pri metrikah prisotnosti razredov je ozadje še posebej nerelevantno, saj je prisotno na vsakem vzorcu.
         
-        Uporaba metrike mIoU je v našem okolju problematična zaradi zelo nizke ločljivosti izhodnih mask. Če objekt na maski zavzame le nekaj pikslov, je vrednost IoU izrazito nezvezna in lahko preskakuje med skrajnimi vrednostmi. To oteži zanesljivo primerjavo med modeli, zlasti pri majhnih in delno vidnih objektih. Metrika je bolj relevantna za primerjavo modela YOLOv11-seg, ker ima tista izhodna maska višjo ločljivost.
+        Uporaba metrike mIoU je v našem okolju problematična zaradi zelo nizke
+        ločljivosti izhodnih mask. Če objekt na maski zavzame le nekaj pikslov,
+        je vrednost IoU izrazito nezvezna in lahko preskakuje med skrajnimi
+        vrednostmi. To oteži zanesljivo primerjavo med modeli, zlasti pri
+        majhnih in delno vidnih objektih. Metrika je bolj relevantna pri
+        modelih družine YOLOv11-seg, ker imajo tam izhodne maske višjo
+        ločljivost.
         
-        Metrike na ravni pikslov \(F1_p\) povedo, kako model lokalizira razrede, kar ni neposreden cilj naloge, je pa koristno pri analizi napak. Z njimi lažje prepoznamo, katere razrede model zamenjuje med seboj, saj je za tak vpogled potrebna tudi informacija o lokaciji. Vsekakor pa jo težko uporabimo za primerjavo z ostalimi deli.
-        
-        Metrika prisotnosti razredov \(F1_r\) je v kontekstu naše naloge najbolj relevantna. Občutljiva je na prag minimalnega števila zaplat \(\nu\), ki je izbran hevristično, in opira se na naknadno obdelavo, ki preoblikuje izhod modela. Ta dodatna kompleksnost lahko slabša stabilnost rezultata. Ena od možnosti za izboljšavo je zamenjava naknadne obdelave z gosto izhodno plastjo in obravnava modela kot večoznačnega klasifikatorja prisotnosti razredov. Tak pristop bi bolje sledil cilju naloge, a modela ne bi neposredno silil v pravilno lokalizacijo.
+        Metrika na ravni pikslov \(F1_p\) nakazuje, kako model lokalizira
+        razrede, kar ni neposreden cilj naloge, je pa koristno pri analizi
+        napak. Z njimi lažje prepoznamo, katere razrede model zamenjuje med
+        seboj, saj je za tak vpogled potrebna tudi informacija o lokaciji.
+        %Vsekakor pa jo težko uporabimo za primerjavo z ostalimi deli.
+        Po drugi strani nam podobno informacijo daje metrika tudi mIoU, ki je
+        hkrati bolj primerna, ko želimo rezultat primerjati z drugimi deli.
+
+        Metrika prisotnosti razredov \(F1_r\) je v kontekstu naše naloge
+        najbolj relevantna. Občutljiva je na prag minimalnega števila zaplat
+        \(\nu\), ki je izbran hevristično, in opira se na naknadno obdelavo, ki
+        preoblikuje izhod modela. Ta dodatna kompleksnost lahko slabša
+        stabilnost rezultata.
+        % TODO: Zaključek
+        % Mogoče bi bilo namesto zapletene, nestandardne naknadne obdelave
+        % izhoda modela bolje uporabiti nek standarden klasifikacijski model,
+        % ali pa vsaj dodati polnopovezano plast na izhod modela. Tak pristop
+        % bi bolje sledil cilju naloge, a modela ne bi neposredno silil v
+        % pravilno lokalizacijo.
     
     \section{Ključne ugotovitve in omejitve modela FOMO}
     
-        FOMO omogoča izredno hitro učenje in nizko računsko zahtevnost, vendar je omejen z nizkoločljivostnim izhodom in majhnim receptivnim poljem.
+        FOMO omogoča izredno hitro učenje in nizko računsko zahtevnost, vendar
+        je omejen z nizkoločljivostnim izhodom, majhnim receptivnim poljem in
+        nizko kapaciteto.
+        Ker model FOMO ni bil predstavljen v recenzirani znanstveni objavi, je
+        bilo težje najti neodvisne in objektivne ocene njegove uspešnosti ter
+        njegovih prednosti in omejitev.
 
-        % Komentar na eksperimente
-        
         \subsection{Učenje na izvirni zbirki}
+
+            % --- notsi iz rezultatov ---
+
+            % Obe izvedbi izkazujeta slabe rezultate. Pri izvedbi z uteževanjem
+            % glede na frekvenco razredov se prenaučenje pojavi bistveno prej,
+            % hkrati pa so rezultati na testni množici slabši. Kvalitativne
+            % vizualizacije na
+            % sliki~\ref{fig:experiment_full_foodseg103_dataset_qualitative} so
+            % skladne s številčnimi izidi. Izvedba z uteževanjem po frekvenci v
+            % večini primerov
+            % napove zgolj ozadje, medtem ko enakomerno utežena izvedba da vsaj
+            % nekaj napovedi, čeprav so te večinoma nepravilne.
+            %
+            % V primeru uteževanja na podlagi frekvence je razvidno, da
+            % validacijska krivulja začne izrazito naraščati po 10. epohi. Model na
+            % nepoenostavljeni zbirki s temi utežmi izrazito hitro začne
+            % preprilegati.
+            % Zelo redki razredi v tem primeru dobijo zelo velike uteži (dodaj točne cifre).
+            % Model potem preveč optimizira za nekaj maloštevilnih razredov. Ker je
+            % vzorcev v teh razredih premalo, se model hitro prenauči na teh
+            % konkretnih vzorcih.
+            % TODO: Referenciraj prilogo A
+            % Zaradi tega smo poskusili zbirko poenostaviti in se znebiti teh zelo redkih razredov.
+            % TODO: Mogoče za v zaključek al pa v diskusijo: mogoče bi bil tu
+            % bolj primeren kak drug način uteževanja, ki lahko bolj ustrezno
+            % uteži zelo redke razrede.
+
+            %% --- Stara diskusija ---
         
-            Najprej smo v odseku~\ref{sct:ucenje-na-izvirnem-datasetu} model FOMO učili na izvirni, nepoenostavljeni zbirki FoodSeg103, rezultati pa so zbrani v tabeli~\ref{tab:experiment_full_foodseg103_dataset_table}. Po metriki mIoU je dosežena uspešnost v primerjavi z najboljšimi pristopi zanemarljiva. K temu verjetno prispevajo majhna kapaciteta modela, nizkoločljivostna izhodna maska (npr. \(8 \times 8\) ali \(16 \times 16\)), nestabilnost IoU pri zelo majhnih objektih in sama zahtevnost podatkovne zbirke.
-            
-            Rezultati \(F1_r\)  so zelo slabi. Konfuzijska matrika kaže vedenje, ki je blizu naključnemu ugibanju. Posebej problematični so zelo redki razredi, kot je \emph{kelp}, za katere konfuzijska matrika nakazuje, da imajo praktično nič referenčnih pikslov. Pri nizki izhodni ločljivosti se ti razredi pogosto izgubijo pri zmanjševanju maske, kar pomeni, da predprocesiranje pomembno spremeni statistične lastnosti podatkov.
-            
-            Uniformno uteževanje nepoenostavljene podatkovne zbirke je dalo malenkost boljše rezultate, kot pa uteževanje po frekvenci razredov.
-            Slednje se je po analizi izkazalo za problematično. Najredkejši razredi dobijo zelo visoke uteži, tudi do faktorja \(\sim 4000\), medtem ko je ozadje uteženo z \(1\). Na sliki~\ref{fig:experiment_full_foodseg103_dataset_loss} je razvidno, da pri uteževanju po frekvenci validacijska krivulja hitreje kaže znake prenaučenja. Deloma je to pričakovano, saj večje uteži pospešijo učenje teh razredov. Dodatno pa na obliko krivulje vpliva sama definicija kriterijske funkcije. V odseku~\ref{sct:fomo-ucenje} smo opisali, da je izgubna funkcija utežena po razredih, zato imajo napake visoko uteženih in hkrati slabo zastopanih razredov nesorazmerno velik vpliv na skupno izgubo, zaradi česar se prenaučenje teh razredov pokaže prej.
-            
+            %Najprej smo v odseku~\ref{sct:ucenje-na-izvirnem-datasetu} model
+            %FOMO učili na izvirni, nepoenostavljeni zbirki FoodSeg103,
+            %rezultati pa so zbrani v
+            %tabeli~\ref{tab:experiment_full_foodseg103_dataset_table}.
+            %Po metriki mIoU je dosežena uspešnost v primerjavi z najboljšimi
+            %pristopi zanemarljiva. K temu verjetno prispevajo majhna kapaciteta
+            %modela, nizkoločljivostna izhodna maska (npr. \(8 \times 8\) ali
+            %\(16 \times 16\)), nestabilnost IoU pri zelo majhnih objektih in
+            %sama zahtevnost podatkovne zbirke.
+
+            %Rezultati \(F1_r\) so zelo slabi. Konfuzijska matrika kaže
+            %vedenje, ki je blizu naključnemu ugibanju. Posebej problematični so
+            %zelo redki razredi, kot je \emph{kelp}, za katere konfuzijska
+            %matrika nakazuje, da imajo praktično nič referenčnih pikslov. Pri
+            %nizki izhodni ločljivosti se ti razredi pogosto izgubijo pri
+            %zmanjševanju maske, kar pomeni, da predprocesiranje pomembno
+            %spremeni statistične lastnosti podatkov.
+
+            %% Primerjava uteževanja
+            %Uniformno uteževanje nepoenostavljene podatkovne zbirke je dalo
+            %malenkost boljše rezultate, kot pa uteževanje po frekvenci
+            %razredov. Slednje se je po analizi izkazalo za problematično.
+            %Najredkejši razredi dobijo zelo visoke uteži, tudi do faktorja
+            %\(\sim 4000\), medtem ko je ozadje uteženo z \(1\). Na
+            %sliki~\ref{fig:experiment_full_foodseg103_dataset_loss}
+            %je razvidno, da pri uteževanju po frekvenci validacijska krivulja
+            %hitreje kaže znake prenaučenja. Deloma je to pričakovano, saj večje
+            %uteži pospešijo učenje teh razredov. Dodatno pa na obliko krivulje
+            %vpliva sama definicija kriterijske funkcije. V
+            %odseku~\ref{sct:fomo-ucenje} smo
+            %opisali, da je izgubna funkcija utežena po razredih, zato imajo
+            %napake visoko uteženih in hkrati slabo zastopanih razredov
+            %nesorazmerno velik vpliv na skupno izgubo, zaradi česar se
+            %prenaučenje teh razredov pokaže prej.
+
+            % --- Nova diskusija ---
+            Najprej smo model FOMO učili na izvirni, nepoenostavljeni zbirki
+            FoodSeg103, da bi določili njegovo izhodiščno uspešnost.
+            % Komentar izhodiščnih rezultatov & Komentar na kvalitativne
+            % rezultat
+            Obe preizkušeni izvedbi sta v izbranih metrikah dosegli zelo nizke
+            vrednosti. S številčnimi rezultati so skladne tudi kvalitativne
+            vizualizacije na
+            sliki~\ref{fig:experiment_full_foodseg103_dataset_qualitative}.
+
+            % Primerjava uteževanj & Oblika kriterijske funkcije
+            V primerjavi z uniformnim uteževanjem je uteževanje na podlagi
+            frekvence razredov v izbranih metrikah doseglo slabše rezultate. Iz
+            učnih krivulj je razvidno, da se pri tej izvedbi prenaučenje pojavi
+            prej kot pri uniformnem uteževanju. Na kvalitativnih primerih je
+            mogoče opaziti, da model z uniformnim uteževanjem naredi več
+            napovedi, medtem ko izvedba z uteževanjem po frekvenci razredov v
+            številnih primerih napove predvsem ozadje.
+            % - Uteževanje po frekvenci na izvirni zbirki je problematično ker da slabše kvantitativne in kvalitativne rezultate, hitreje overfitta. Napovej zakaj tak misliš.
+            Eden izmed potencialnih razlogov za to je, da zelo redki razredi
+            pri uteževanju po frekvenci dobijo zelo visoke uteži, zaradi česar
+            model med učenjem nesorazmerno poudarja razrede z zelo majhnim
+            številom vzorcev. Ker je primerov za te razrede malo, se model
+            nanje lahko hitro prenauči, medtem ko je učenju pogostejših
+            razredov namenjen manjši delež optimizacije. To je skladno tako s
+            potekom učnih krivulj kot tudi s kvantitativnimi in kvalitativnimi
+            rezultati.
+
+            % Ugotovitve:
+            % - FOMO & FoodSeg103 dont vibe together
+            Razlogov za splošno nizko uspešnost modela v tem eksperimentu je
+            verjetno več. Med možnimi dejavniki sta predvsem zahtevnost
+            podatkovne zbirke FoodSeg103 in omejena kapaciteta uporabljenega
+            modela. Rezultati tako nakazujejo, da kombinacija izvorne,
+            nepoenostavljene zbirke in modela FOMO za obravnavani problem ni
+            ustrezna.
+            % TODO: Mogoče za v zaključek al pa v diskusijo: mogoče bi bil tu
+            % bolj primeren kak drug način uteževanja, ki lahko bolj ustrezno
+            % uteži zelo redke razrede.
+            Na tej točki bi bilo smiselno preizkusiti tudi druge pristope
+            uteževanja razredov. Ker pa je eden izmed verjetnih vzrokov za
+            slabe rezultate tudi sama zahtevnost podatkovne zbirke, smo se v
+            nadaljevanju raje osredotočili na njeno poenostavitev.
+
+
 
         %\subsection{Učenje na poenostavljeni zbirki}
         %    
@@ -2378,147 +2549,675 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
 
         \subsection{Učenje na poenostavljeni zbirki}
 
-            Zaradi slabih rezultatov na izvirni zbirki in izrazitega vpliva
-            zelo redkih razredov smo zbirko poenostavili ter odstranili
-            najslabše zastopane razrede. Eksperimente s poenostavljeno
-            različico predstavljamo v
-            odseku~\ref{sct:fomo-simplified-experiments}.
-            
-            V tabeli~\ref{tab:experiment_simplified_foodseg103_dataset_table}
-            pokažemo,
-            da se metrika \(F1_r\) glede na učenje na izvirni zbirki izboljša
-            tudi za 24~\%. Rezultati so občutno boljši, vendar še vedno niso
-            dovolj visoki za zanesljivo uporabo modela. Metriki \(F1_p\) in
-            mIoU se prav tako izboljšata, in sicer za približno 19~\% oziroma
-            12~\%. Pri mIoU opozorimo, da je neposredna primerjava z literaturo
-            neustrezna, saj je zbirka precej poenostavljena. Smiselna je
-            predvsem primerjava z našimi lastnimi referencami na YOLOv11-seg na
-            isti različici podatkov.
-            
-            Vpliv uteževanja razredov je po poenostavitvi zbirke bistveno
-            manjši. Razlike v metrikah so največ okoli en odstotek. Krivulji
-            kriterijske funkcije sta si pri različnih uteževanjih precej
-            podobni, ker je porazdelitev razredov bolj enakomerna in ni več
-            razredov z izjemno velikimi utežmi, ki bi potencialno
-            destabilizirale učenje. Poenostavitev torej pomaga pri stabilnosti
-            in doseženih metrikah, a rešuje zgolj problem neuravnovešenosti
-            podatkovne zbirke, ostale omejitve pa ostajajo.
+            %% --- Stara diskusija ---
+            %Zaradi slabih rezultatov na izvirni zbirki in izrazitega vpliva
+            %zelo redkih razredov smo zbirko poenostavili ter odstranili
+            %najslabše zastopane razrede. Eksperimente s poenostavljeno
+            %različico predstavljamo v
+            %odseku~\ref{sct:fomo-simplified-experiments}.
+            %
+            %V tabeli~\ref{tab:experiment_simplified_foodseg103_dataset_table}
+            %pokažemo,
+            %da se metrika \(F1_r\) glede na učenje na izvirni zbirki izboljša
+            %tudi za 24~\%. Rezultati so občutno boljši, vendar še vedno niso
+            %dovolj visoki za zanesljivo uporabo modela. Metriki \(F1_p\) in
+            %mIoU se prav tako izboljšata, in sicer za približno 19~\% oziroma
+            %12~\%. Pri mIoU opozorimo, da je neposredna primerjava z literaturo
+            %neustrezna, saj je zbirka precej poenostavljena. Smiselna je
+            %predvsem primerjava z našimi lastnimi referencami na YOLOv11-seg na
+            %isti različici podatkov.
+            %
+            %Vpliv uteževanja razredov je po poenostavitvi zbirke bistveno
+            %manjši. Razlike v metrikah so največ okoli en odstotek. Krivulji
+            %kriterijske funkcije sta si pri različnih uteževanjih precej
+            %podobni, ker je porazdelitev razredov bolj enakomerna in ni več
+            %razredov z izjemno velikimi utežmi, ki bi potencialno
+            %destabilizirale učenje. Poenostavitev torej pomaga pri stabilnosti
+            %in doseženih metrikah, a rešuje zgolj problem neuravnovešenosti
+            %podatkovne zbirke, ostale omejitve pa ostajajo.
     
-            % TODO Metrike kažejo praktično isti performance. Kaj pa
-            % konfuzijske matrike? Je uteževanje na podlagi frekvence boljše?
-            % Je to morda posledica neuglašenega parametra \tau?
+            %% TODO Metrike kažejo praktično isti performance. Kaj pa
+            %% konfuzijske matrike? Je uteževanje na podlagi frekvence boljše?
+            %% Je to morda posledica neuglašenega parametra \tau?
+
+            %-
+
+            %% --- TODOji iz rezultatov ---
+            %V primerjavi z rezultati v
+            %poglavju~\ref{sct:eir-ucenje-na-izvirnem-datasetu} doseže ta
+            %eksperiment izrazito boljše rezultate. Poenostavitev podatkovne
+            %zbirke izboljša dosežene metrike, kar bi lahko nakazovalo, da je
+            %podatkovna zbirka prezahtevna za izbran model.
+            %
+            %Levi in desni graf na
+            %\ref{fig:experiment_simplified_foodseg103_dataset_loss}  sta si
+            %precej bolj podobna kot pa pri učenju z izvirno podatkovno zbirko -
+            %različna uteževanja na pridobljene rezultate nimajo toliko vpliva,
+            %če zbirko poenostavimo. To se vidi tudi iz
+            %tabele~\ref{tab:experiment_simplified_foodseg103_dataset_table} -
+            %metrike med posameznima izvedbama uteževanja se razlikujejo za manj
+            %kot eno odstotno točko. Razlog takšno spremembo je mogoče v tem, da
+            %smo iz zbirke odstranili slabo reprezentirane razrede, zaradi česar
+            %so uteži bolj uniformne.
+
+            %Odstranitev slabo reprezentiranih razredov mogoče tudi zmanjša
+            %stopnjo prenaučenosti, ko uporabljamo uteževanje na podlagi
+            %frekvence. Najslabše reprezentirani razredi tako nimajo tako
+            %velikih uteži, vzorcev v teh razredih pa je več, kar reši problem z
+            %izrazito rastjo validacijske krivulje pri učenju na izvirni
+            %podatkovni zbirki.
+
+            %Eden izmed potencialnih razlogov za to je, da zelo redki razredi
+            %pri uteževanju po frekvenci dobijo zelo visoke uteži, zaradi česar
+            %model med učenjem nesorazmerno poudarja razrede z zelo majhnim
+            %številom vzorcev. Ker je primerov za te razrede malo, se model
+            %nanje lahko hitro prenauči, medtem ko je učenju pogostejših
+            %razredov namenjen manjši delež optimizacije. To je skladno tako s
+            %potekom učnih krivulj kot tudi s kvantitativnimi in kvalitativnimi
+            %rezultati.
+
+            % --- nova diskusija ---
+            V primerjavi z eksperimenti na izvirni zbirki doseže ta eksperiment
+            boljše rezultate. V tem eksperimentu imajo različna uteževanja
+            precej manj vpliva na dosežene rezultate: validacijske krivulje na
+            grafih~\ref{fig:experiment_simplified_foodseg103_dataset_loss} si
+            bolj podobne, razlike v doseženih metrikah v
+            tabeli~\ref{tab:experiment_simplified_foodseg103_dataset_table} pa
+            so manjše. To bi lahko bila posledica odstranitve zelo redkih
+            razredov, kar pomeni bolj uravnoteženo porazdelitev zbirke in
+            posledično bolj uniformne uteži.
+            % Omeni da rpride do manj overfittinga
+            Bolj uniformne uteži so lahko tudi razlog za zmanjšanje stopnje
+            prenaučenosti, kot je razvidno ob primerjavi validacijskih krivulj
+            na slikah~\ref{fig:experiment_simplified_foodseg103_dataset_loss}
+            in~\ref{fig:experiment_full_foodseg103_dataset_loss}. Najslabše
+            reprezentirani razredi nimajo tako velikih uteži, vzorcev v teh
+            razredih pa je več.
+
+            % Overall mnenje o slabih rezultatih in možni vzroki
+            Poenostavitev tako deloma reši problem neuravnovešenosti in zmanjša
+            zahtevnost podatkovne zbirke, vendar dosežene metrike še vedno ne
+            kažejo zadostne uspešnosti za zanesljivo uporabo modela. Razloge za
+            to je mogoče v omejitvah pristopa, kot so kapaciteta modela ter
+            izbrani postopki predhodne in naknadne obdelave. Podatkovna zbirka
+            je zato za izbrani pristop morda še vedno prezahtevna.
 
         % Primerjava resolucij
         \subsection{Primerjava različnih kombinacij resolucij}
-            V odseku~\ref{sct:primerjava-resolucij} primerjamo različne kombinacije vhodne in izhodne ločljivosti, saj te skupaj s faktorjem zmanjšanja močno vplivajo na delovanje modela.
 
-            Najboljše vrednosti \(F1_p\) in mIoU dosežemo pri kombinaciji \mbox{\(128 \times 128 \rightarrow 16 \times 16\)}. Po metriki \(F1_r\) je ta nastavitev primerljiva z \mbox{\(96 \times 96 \rightarrow 12 \times 12\)}. Obe navedeni nastavitvi sta se izkazali kot zanesljivi, zadovoljive rezultate pa daje tudi kombinacija \mbox{\(128 \times 128 \rightarrow 8 \times 8\)}. Najslabše rezultate opazimo pri najmanjši izhodni ločljivosti \mbox{\(6 \times 6\)}. Tudi pretirano velike izhodne ločljivosti se pri dani kapaciteti modela niso izkazale kot koristne.
+            %% --- Stara diskusija ---
+            %V odseku~\ref{sct:primerjava-resolucij} primerjamo različne kombinacije
+            %vhodne in izhodne ločljivosti, saj te skupaj s faktorjem zmanjšanja
+            %močno vplivajo na delovanje modela.
 
-            Nizke izhodne ločljivosti so lahko problematične, ker se pri zmanjševanju ločljivosti maske majhni objekti pogosto izgubijo, informacija v posamezni zaplati pa postane preveč groba, kar zniža kakovost učinkovitih anotacij in oteži učenje.
-            % Mogoče je to odvisno od izhodne resolucije, ampak težko argumentiram.
-            Na podlagi teh ugotovitev smo se v nadaljevanju omejili na ločljivost \mbox{\(128 \times 128 \rightarrow 16 \times 16\)}.
+            %Najboljše vrednosti F1\(_p\) in mIoU dosežemo pri kombinaciji
+            %\mbox{\(128 \times 128 \rightarrow 16 \times 16\)}. Po metriki F1\(_r\)
+            %je ta nastavitev primerljiva z \mbox{\(96 \times 96 \rightarrow 12
+            %\times 12\)}. Obe navedeni nastavitvi sta se izkazali kot zanesljivi,
+            %zadovoljive rezultate pa daje tudi kombinacija \mbox{\(128 \times 128
+            %\rightarrow 8 \times 8\)}. Najslabše rezultate opazimo pri najmanjši
+            %izhodni ločljivosti \mbox{\(6 \times 6\)}. Tudi pretirano velike
+            %izhodne ločljivosti se pri dani kapaciteti modela niso izkazale kot
+            %koristne.
+
+            %Nizke izhodne ločljivosti so lahko problematične, ker se pri
+            %zmanjševanju ločljivosti maske majhni objekti pogosto izgubijo,
+            %informacija v posamezni zaplati pa postane preveč groba, kar zniža
+            %kakovost učinkovitih anotacij in oteži učenje.
+            %% Mogoče je to odvisno od izhodne resolucije, ampak težko argumentiram.
+            %Na podlagi teh ugotovitev smo se v nadaljevanju omejili na ločljivost
+            %\mbox{\(128 \times 128 \rightarrow 16 \times 16\)}.
+            %%
+            %% --- TODOji iz rezultatov ---
+            %%- primerjava med istimi vhodi in različnimi faktorji
+            %% Iz rezultatov je razvidno, da je pri vseh uporabljenih resolucijah
+            %% faktor zmanjšanja 8 vrnil boljše rezultate kot faktor 16. Pri
+            %% vhodni ločljivosti $96 \times 96$ smo z uporabo faktorja 8 namesto
+            %% 16 metrike izboljšali za $4{,}8$ do $8{,}6$ odstotnih točk. Pri
+            %% ločljivosti $128 \times 128$ je razlika manjša in znaša med $0{,}4$
+            %% in $2{,}7$ odstotne točke. Pri resoluciji $224 \times 224$ uporaba
+            %% faktorja 8 izboljša metrike za $2{,}1$ do $2{,}6$ odstotnih točk.
+            %% TODO: Rezultati so še vedno precej slabi, vendar na podlagi tega
+            %% eksperimenta lahko določimo najbolj ustrezno vhodno ločljivost in
+            %% izhodno ločljivost.
+
+            %%- kaj da najboljšo metriko mIoU, kaj da najboljšo metriko F1_r.
+            %%Splošno najboljše rezultate doseže kombinacija $128 \times 128$ s
+            %%faktorjem 8. V metrikah $F1_p$ in mIoU je najboljša, v metriki
+            %%$F1_r$ pa $0{,}5$ odstotka za najboljšim rezultatom v tej metriki.
+            %% TODO: Diskusija
+            %% Mogoče ravno ta kombinacija da velikost celic na
+            %% izhodni maski, da jo je preprosteje razvrstiti v kategorijo, še
+            %% vedno pa je dovolj majhna, da je v eni celici bolj pogosto
+            %% prisoten le en razred hrane.
+            %%
+            %%- kaj da najslabše rezultate po obeh metrikah.
+            %%Splošno najslabše rezultate daje kombinacija $96 \times 96$ s
+            %%faktorjem 16, ki je zadnja v vseh metrikah.
+            % --- Nova diskusija ---
+            V tem eksperimentu smo primerjali različne kombinacije vhodne in
+            izhodne ločljivosti, saj te močno vplivajo na delovanje modela. S
+            tem smo lahko določili najbolj ustrezno vhodno ločljivost in
+            izhodno ločljivost za optimalno delovanje modela. Izkazalo se je,
+            da je najustreznejša izbira kombinacija $128\times128 \rightarrow
+            16\times16$, ker je v metrikah F1$_p$ in mIoU dosegla najboljše
+            rezultate, v F1$_r$ pa je le $0{,}5$ odstotka za najboljšim
+            rezultatom.
+
+            Izbira faktorja zmanjšanja in resolucije vpliva predvsem na
+            velikost receptivnega polja za posamezno celico na izhodu modela.
+            Ker na vsaki celici vbistvu ločneno izvajamo klasifikacijo, je
+            pomembno, kolikšen del slike lahko posamezna celica zajame.
+            Sklepali bi lahko, da smo z izbrano kombinacijo izbrali receptivno
+            polje, ki je dovolj majhno, da pogosto zajame zgolj en razred
+            sestavin, hkrati pa je dovolj veliko, da ga glava modela
+            preprosteje razvrsti. Če imamo v receptivnem polju hkrati prisotnih
+            več razredov, bo razvrščanje težavno, saj moramo vsaki celici na
+            koncu prirediti zgolj eno kategorijo.
+
+            % TODO: Diskusija
+            % Zanimivo je, ker bi mogoče pričakoval, da faktor zmanjšanja 16 da
+            % boljše rezultate, saj večje konvolucijsko jedro pomeni večje
+            % število parametrov modela in posledično večjo kapaciteto modela.
+            % Če zgornja ideja o ustrezni velikosti celic na izhodni maski
+            % drži, je nenavadno, da kombinacija $224\times224$ s faktorjem 16
+            % da slabše rezultate kot $128\times128$ s faktorjem 8, saj so
+            % izhodne velikosti zelo podobne, prva kombinacija pa vsebuje večje
+            % število parametrov.
+            
 
         \subsection{Primerjava strategij učenja}
         
-            V odseku~\ref{sct:primerjava-strategij-ucenja} primerjamo učenje celotnega modela (\emph{end-to-end}) z učenjem zgolj glave z zamrznjeno hrbtenico. Hrbtenica je v obeh primerih prednaučena na zbirki ImageNet. Iz rezultatov v tabeli~\ref{tab:strategije-ucenja} je razvidno, da \emph{end-to-end} učenje doseže občutno boljše vrednosti metrik kakor učenje samo glave. Razlogov je lahko več. Eden izmed potencialnih razlogov je, da prednaučene uteži na ImageNet niso domensko povsem ustrezne za razpoznavo sestavin hrane, zaradi česar je prenos znanja omejen. Mogoče bi bila bolj primerna hrbtenica, prednaučena na zbirki, kot recimo Food-101, ki poglavitno vsebuje slike hrane. Drug razlog bi lahko bil, da pri gradnji FOMO hrbtenice MobileNetV2 preveč odrežemo, zaradi tako velike arhitekturne spremembe pa prednaučene uteži niso več dovolj relevantne.
+            % Nimam pojma koliko epoh so trajali ti eksperimenti, ampak pomoje
+            % ni tak vazno ker sem uporabljal LR scheduler in early stop on
+            % plateau.
+            % --- nova diskusija ---
+            V tem eksperimentu smo primerjali učenje celotnega modela z učenjem
+            zgolj glave z zamrznjenim izluščevalnikom. Iz rezultatov v
+            tabeli~\ref{tab:eir-strategije-ucenja}
+            je razvidno, da učenje celotnega modela doseže izrazito boljše
+            rezultate. Eden izmed potencialnih razlogov za to je, da
+            prednaučene uteži na ImageNet niso domensko ustrezne za razpoznavo
+            sestavin hrane, zaradi česar je prenos znanja omejen. Mogoče bi
+            bile bolj primerne uteži, prednaučene na zbirkah, kot je Food-101, ki
+            poglavitno vsebuje slike hrane. Drug razlog bi lahko bil, da pri
+            gradnji modela FOMO preveč odrežemo izluščevalnik modela
+            MobileNetV2, zaradi tako velike arhitekturne spremembe modela pa
+            prednaučene uteži niso več ustrezne.
+            
+            % Dodan odstavek o faktorju učenja
+            Med pomembnejšimi parametri v tem eksperimentu je faktor učenja. Pri učenju
+            celotnega modela mora biti ta dovolj nizek, da se prednaučene uteži v
+            izluščevalniku značilk med prilagajanjem na obravnavani problem ne spremenijo
+            preveč. Če učimo le glavo modela, je lahko faktor učenja večji, saj uteži
+            izluščevalnika ostanejo nespremenjene, medtem ko se glava modela uči iz
+            naključno inicializiranih uteži. V tem eksperimentu smo v obeh primerih
+            uporabili enak faktor učenja kot v prejšnjih eksperimentih. Ta je bil izbran
+            za učenje celotnega modela in je bil zato dovolj nizek, da smo ga lahko
+            uporabili pri obeh pristopih.
 
         \subsection{Specializirani modeli po posameznih razredih}
 
-            Izbrani model je v primerjavi s SOTA pristopi zelo majhen, zato smo v odseku~\ref{sct:specializirani-modeli} preizkusili idejo specializacije: namesto enega modela, ki pokriva vse razrede, učimo ločen model za vsak posamezen razred. Za referenco uporabimo FOMO iz odseka~\ref{sct:fomo-simplified-experiments} z enakomernim uteževanjem ter poročamo metriki \(F1_r\) in \(F1_p\) brez povprečenja, torej po razredih. Eksperiment zavoljo enostavnosti izvedemo na zgolj treh razredih: \emph{broccoli} (najbolje rešen v referenci), \emph{chicken duck} in \emph{cake} (najslabše rešen v referenci).
-            
-            Rezultati v tabeli~\ref{tab:moe-results} ne kažejo prednosti specializiranih modelov pred referenco. Pri \emph{chicken duck} se \(F1_p\) nekoliko izboljša, a \(F1_r\) pade; \emph{broccoli} ostane približno na ravni reference, \emph{cake} pa ostaja izrazito slabo rešen.
-            
-            Verjeten razlog je priprava podatkov: z združevanjem vseh drugih razredov v ozadje povečamo varianco razreda ozadje, ki tako pogosto vsebuje dele hrane. Model zato še vedno rešuje težko diskriminacijsko nalogo “ciljni razred proti raznolikemu ozadju”, kjer se mora še vedno močno zanašati na teksturo in barvo po zaplatah. Ob uporabljeni kapaciteti (\(\alpha=1{,}0\)) specializacija sama po sebi tako ne zniža zahtevnosti naloge dovolj, da bi prinesla opazno izboljšanje.
+            %% --- stara diskusija ---
+            %Izbrani model je v primerjavi s SOTA pristopi zelo majhen, zato smo
+            %v odseku~\ref{sct:specializirani-modeli} preizkusili idejo
+            %specializacije: namesto enega modela, ki pokriva vse razrede, učimo
+            %ločen model za vsak posamezen razred. Za referenco uporabimo FOMO
+            %iz odseka~\ref{sct:fomo-simplified-experiments} z enakomernim
+            %uteževanjem ter poročamo metriki \(F1_r\) in \(F1_p\) brez
+            %povprečenja, torej po razredih. Eksperiment zavoljo enostavnosti
+            %izvedemo na zgolj treh razredih: \emph{broccoli} (najbolje rešen v
+            %referenci), \emph{chicken duck} in \emph{cake} (najslabše rešen v
+            %referenci).
+            %
+            %Rezultati v tabeli~\ref{tab:moe-results}
+            %ne
+            %kažejo prednosti specializiranih modelov pred referenco. Pri
+            %\emph{chicken duck} se \(F1_p\) nekoliko izboljša, a \(F1_r\) pade;
+            %\emph{broccoli} ostane približno na ravni reference, \emph{cake} pa
+            %ostaja izrazito slabo rešen.
+            %
+            %Verjeten razlog je priprava podatkov: z združevanjem vseh drugih
+            %razredov v ozadje povečamo varianco razreda ozadje, ki tako pogosto
+            %vsebuje dele hrane. Model zato še vedno rešuje težko
+            %diskriminacijsko nalogo “ciljni razred proti raznolikemu ozadju”,
+            %kjer se mora še vedno močno zanašati na teksturo in barvo po
+            %zaplatah. Ob uporabljeni kapaciteti (\(\alpha=1{,}0\))
+            %specializacija sama po sebi tako ne zniža zahtevnosti naloge
+            %dovolj, da bi prinesla opazno izboljšanje.
+
+            % --- todoji iz rezultatov ---
+            %Iz referenčnih rezultatov opazimo, da je najbolje rešen razred
+            %\textit{broccoli}. Sledi mu razred \textit{chicken duck}, na
+            %zadnjem mestu pa je razred \textit{cake}. Opazimo tudi, da je
+            %razlika med metrikama F1$_p$ in F1$_r$ največja za razred
+            %\textit{chicken duck} s $30{,}2$ odstotki, najmanjša pa za razred
+            %\textit{broccoli} s $4{,}2$ odstotki.
+            % TODO: Diskusija
+            % Metrika na ravni razredov je dejansko tisto, kar
+            % nas zanima, torej neka klasifikacijska metrika. Očitno za ta
+            % razred tista dodatna naknadna obdelava, ki jo naredimo, res
+            % pomaga.
+
+            %Če primerjamo referenčne rezultate z enorazrednimi rezultati po
+            %metriki na ravni pikslov F1$_p$, lahko opazimo izboljšanje v dveh
+            %izmed treh razredov. Razred \textit{chicken duck} se izboljša za
+            %$11{,}8$ odstotka, \textit{broccoli} za $1{,}9$ odstotka,
+            %\textit{cake} pa se poslabša za $1{,}6$ odstotka.
+            % TODO:
+            % Izboljšanje v metriki F1$_p$ je precej zanemarljivo, v nekaterih
+            % primerih pa se ta celo poslabša.
+
+            %Če primerjamo referenčne rezultate z enorazrednimi po metriki
+            %prisotnosti razredov F1$_r$, opazimo izboljšanje za $12{,}2$
+            %odstotka pri razredu \textit{cake}, pri razredih \textit{chicken
+            %duck} in \textit{broccoli} pa poslabšanje za $4{,}8$ in $6{,}7$
+            %odstotka.
+            % TODO: Diskusija
+            % ta metrika je bolj relevantna za naš primer. najslabše rešen
+            % razred malo izboljša metriko v primerjavi z f1$_p$  in referenco,
+            % medtem ko preostalima razredoma metrika pade.
+            %
+            % Overall je iz rezultatov je razvidno, da specializirani modeli ne
+            % presežejo referenčne izvedbe.
+            % Kaj to pomeni? Zakaj? Mogoče je
+            % razlog v tem, da med učenjem ozadje še vedno vsebuje hrano, kar
+            % poveča kompleksnost ozadja.
+
+            % --- nova diskusija ---
+            Ker je model FOMO v primerjavi z drugimi pristopi na tej podatkovni
+            zbirki precej manjši, smo v tem eksperimentu preverili tudi možnost
+            specializacije. Namesto enega samega modela, ki hkrati obravnava
+            vse razrede, smo za izbrane razrede naučili ločene specializirane
+            modele.
+
+            Rezultati v tabeli~\ref{tab:moe-results}
+            ne
+            kažejo izrazite prednosti specializiranih modelov v primerjavi z
+            referenčno izvedbo. Metrika F1$_p$ se izboljša le pri enem od treh
+            obravnavanih razredov. Tudi metrika F1$_r$, ki je za naš primer
+            uporabe pomembnejša, se izboljša le pri enem od treh razredov, pri
+            preostalih pa se celo poslabša.
+
+            % TODO: Diskusija
+            % Metrika na ravni razredov je dejansko tisto, kar
+            % nas zanima, torej neka klasifikacijska metrika. Očitno za ta
+            % razred tista dodatna naknadna obdelava, ki jo naredimo, res
+            % pomaga.
+            Eden izmed možnih razlogov za takšne rezultate je, da združevanje
+            vseh preostalih razredov v razred ozadja poveča njegovo
+            variabilnost. Model tako še vedno rešuje zahtevno diskriminacijsko
+            nalogo ločevanja ciljnega razreda od zelo raznolikega ozadja, pri
+            čemer se mora v veliki meri zanašati na barvne in teksturne
+            značilke. Zdi se torej, da sama specializacija naloge ne poenostavi
+            dovolj, da bi prinesla opaznejše izboljšanje rezultatov.
+
+            % Tradeoff specializiranih modelov
+            Dodatna omejitev pristopa s specializiranimi modeli je potreba po
+            ločenem modelu za vsak posamezen razred. Na mikrokrmilniških
+            napravah je to hitro problematično zaradi omejenega pomnilnika in
+            prostora za shranjevanje, hkrati pa oteži tudi praktično uporabo
+            takšnega sistema.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
         \subsection{Parameter $\alpha$}
 
-            V odseku~\ref{sct:kvantizacija} preverimo tudi vpliv parametra $\alpha$ na dosežene metrike. $\alpha$ je parameter širine modela, in je specifičen za MobileNetV2. Načeloma vpliva na kapaciteto modela, saj z dodajanjem parametrov povečujemo opisno zmožnost modela. V tabeli~\ref{tab:alpha-perf-ptq} so prikazane dosežene metrike za tri izbrane vrednosti $\alpha$. Kot je pričakovano, večja vrednost $\alpha$ in posledično večja kapaciteta parametrov vodi k znatno boljšim rezultatom v metrikah. 
-            To nakazuje, da je kapaciteta do neke mere ena izmed omejitev, ki jih srečujemo pri tem problemu, in da bi povečanje kapacitete potencialno pomenilo doseganje boljših rezultatov.
+            Med kvantizacijo modela v
+            poglavju~\ref{sct:eir-eksperimenti-kvantizacija}
+            smo preverili tudi vpliv
+            parametra $\alpha$ na dosežene metrike. Parameter $\alpha$ je
+            specifičen za MobileNetV2 in določa širino modela in posledično
+            njegovo kapaciteto.
+            %kapaciteto modela, saj z dodajanjem parametrov povečujemo opisno
+            %zmožnost modela.
+            V tabeli~\ref{tab:alpha-perf-ptq}
+            so
+            prikazane dosežene metrike za tri izbrane vrednosti $\alpha$. Kot
+            je pričakovano, večja vrednost $\alpha$ in posledično večja
+            kapaciteta parametrov vodi k znatno boljšim rezultatom v metrikah. 
 
+            % TODO: V zaključek?
+            To nakazuje, da je kapaciteta do neke mere ena izmed omejitev, ki
+            jih srečujemo pri tem problemu, in da bi povečanje kapacitete
+            potencialno pomenilo doseganje boljših rezultatov.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         \subsection{Kritična ocena modela} \label{sct:fomo-diskusija-kriticen-pogled}
             
-            Model se v promocijskih materialih pogosto predstavi kot zelo nov pristop~\cite{src:fomodocs}, vendar iz vidika znanstvene primerljivosti ostajajo odprta vprašanja. Manjkajo sistematične primerjave na uveljavljenih zbirkah in z uveljavljenimi metrikami, dodatno pa izhod v obliki centroidov oteži neposredno primerjavo s klasičnimi detekcijskimi metrikami. Glavna praktična prednost je preprostost uporabe v ekosistemu Edge Impulse (enostaven zajem in obdelava podatkov ter izvoz na robne naprave), ne pa nujno preboj v samem modeliranju. Tudi nekatera druga dela so kritična glede modela FOMO~\cite{src:boyle2024dsort}.
+            Avtorji modela FOMO ga predstavljajo kot zelo nov
+            pristop~\cite{src:fomodocs}, vendar iz vidika znanstvene
+            primerljivosti ostajajo odprta vprašanja, saj ni bil objavljen v
+            recenziranem znanstvenem članku. Manjkajo sistematične primerjave
+            na uveljavljenih zbirkah z uveljavljenimi metrikami, dodatno pa
+            izhod v obliki centroidov oteži neposredno primerjavo s klasičnimi
+            detekcijskimi metrikami. Glavna praktična prednost modela je
+            preprostost uporabe v okolju Edge Impulse, kar vključuje enostaven
+            zajem in obdelava podatkov ter izvoz na robne naprave, ne pa nujno
+            preboj v arhitekturi modela. Tudi nekatera druga dela so kritična
+            glede modela FOMO~\cite{src:boyle2024dsort}.
             
-            % Kaj pravijo drugi viri o FOMO (brez citatov tu, samo napotek kam kasneje v referencah); poudari, da je glavna prednost enostavnost uporabe.
+            % Kaj pravijo drugi viri o FOMO (brez citatov tu, samo napotek kam
+            % kasneje v referencah); poudari, da je glavna prednost enostavnost
+            % uporabe.
+            Arhitekturno je model omejen z majhnim receptivnim poljem in
+            nizkoločljivostnim izhodom. Posamezne celice se klasificirajo
+            skoraj neodvisno, zato se model primarno opira na lokalne teksturne
+            in barvne pozive znotraj posamezne celice. To pojasni dobre
+            rezultate pri razredih z izrazito teksturo in barvo (npr.\
+            \emph{broccoli}) ter težave pri razredih z vizualno podobnimi
+            teksturami, kjer je za razlikovanje potrebna informacija o obliki
+            (npr.\ \emph{pork} proti \emph{chicken duck}). Kratek izluščevalnik
+            značilk dodatno omeji kapaciteto: v našem izrezu ohranimo le
+            4{,}8~\% parametrov in 36{,}6~\% plasti iz izvornega MobileNetV2,
+            kot je opisano v
+            poglavju~\ref{sct:fomo-ekstraktor-znacilk}.
+            Prednost tako majhne arhitekture je sicer preprostejše izvajanje na
+            robnih napravah, slabost pa je nižja kapaciteta modela. Rezultati
+            eksperimentov z različnimi nastavitvami $\alpha$ kažejo, da dodatna
+            kapaciteta praviloma pomaga in je potencialna smer nadgradnje
+            modela.
+            % TODO: Zaključek To lahko primarno dosežemo s povečanjem parametra
+            % $\alpha$ ali pa z arhitekturnimi spremembami hrbtenice.
             
-            Arhitekturno je model omejen z majhnim receptivnim poljem in nizkoločljivostnim izhodom. Posamezne zaplate se klasificirajo skoraj neodvisno, zato se model primarno opira na lokalne teksturne in barvne pozive znotraj zaplate. To pojasni dobre rezultate pri razredih z izrazito teksturo in barvo (npr.\ \emph{broccoli}) ter težave pri razredih z vizualno podobnimi teksturami, kjer je za razlikovanje potrebna informacija oblike (npr.\ \emph{pork} proti \emph{chicken duck}). Kratka hrbtenica dodatno omeji kapaciteto: v našem izrezu ohranimo le 4{,}8~\% parametrov in 36{,}6~\% plasti iz izvornega MobileNetV2 (glej~\ref{sct:fomo-ekstraktor-znacilk}). Prednost tako majhne arhitekture je sicer lahka izvedba na robnih napravah, slabost pa je nižja zgornja meja natančnosti. Rezultati z različnimi nastavitvami \(\alpha\) (glej~\ref{sct:kvantizacija}) kažejo, da dodatna kapaciteta praviloma pomaga in je potencialna smer nadgradnje modela. To lahko primarno dosežemo s povečanjem parametra $\alpha$ ali pa z arhitekturnimi spremembami hrbtenice.
-            
-            Pomemben vpliv ima tudi naknadna obdelava izhoda. Zasnova kot nizkoločljivostna segmentacija model sili v pravilno lokalizacijo, toda prisotnost razredov na sliki izrazimo šele v naknadni obdelavi, pri čemer se del informacije zavrže in temelji na pravilih in dveh hiperparametrih \(\tau\) in \(\nu\). Ta nista optimizirana med učenjem, temveč izbrana hevristično. Alternativno bi lahko namesto tega uporabili gosto povezano izhodno plast in model obravnavali kot večoznačni klasifikator prisotnosti razredov; parametri bi se učili skupaj z ostalimi utežmi. Kompromis takšnega pristopa je izguba neposredne zahteve po lokalizaciji. Možna vmesna rešitev je dvostopenjski postopek: najprej naučiti nizkoločljivostno segmentacijo, nato hrbtenico zamrzniti ter dodati in naučiti gosto plast, ki neposredno napove prisotne razrede. Tako bi ohranili naučeno lokalizacijsko znanje, hkrati pa bi metrika prisotnosti postala del učnega cilja, ne naknadne obdelave.
+            Pomemben vpliv ima tudi naknadna obdelava izhoda. Zasnova kot
+            nizkoločljivostna segmentacija model sili v pravilno lokalizacijo,
+            toda prisotnost razredov na sliki izrazimo šele v naknadni
+            obdelavi, pri čemer se del informacije zavrže in temelji na
+            pravilih in dveh hiperparametrih $\tau$ in $\nu$. Ta nista
+            optimizirana med učenjem, temveč izbrana hevristično.
+            % TODO: Zaključek
+            % Verjetno bi lahko našli kak boljši pristop, ki se izogne tem mahinacijam z naknadno obdelavo.
+            % TODO: Zaključek
+            %Alternativno bi lahko namesto tega uporabili gosto povezano izhodno plast in model obravnavali kot večoznačni klasifikator prisotnosti razredov; parametri bi se učili skupaj z ostalimi utežmi. Kompromis takšnega pristopa je izguba neposredne zahteve po lokalizaciji. Možna vmesna rešitev je dvostopenjski postopek: najprej naučiti nizkoločljivostno segmentacijo, nato hrbtenico zamrzniti ter dodati in naučiti gosto plast, ki neposredno napove prisotne razrede. Tako bi ohranili naučeno lokalizacijsko znanje, hkrati pa bi metrika prisotnosti postala del učnega cilja, ne naknadne obdelave.
     
     \section{Primerjava z YOLOv11-seg}
         
-        S tem eksperimentom smo pridobili lastno referenco o tem, kako dobro večji sodoben segmentacijski model reši FoodSeg103, ter dodatno potrditev zahtevnosti naloge. Rezultati so zbrani v tabeli~\ref{tab:yolo11-iou-table}. YOLOv11-seg nudi višjo ločljivost mask in doseže višje mIoU, vendar je bistveno večji in zahtevnejši za izvajanje. FOMO ostaja primernejši za preprostejše naloge in tam, kjer sta ključni nizka latenca in majhen pomnilniški odtis.
-        
-        \paragraph{Primerjava s FOMO.}
-        V primerjavi s FOMO (tabele~\ref{tab:experiment_full_foodseg103_dataset_table} in~\ref{tab:experiment_simplified_foodseg103_dataset_table}) opazimo izrazit porast mIoU, kar potrjuje, da YOLOv11-seg v tem pogledu deluje bolje, kar je glede na velikost in arhitekturno zasnovo pričakovano. Poenostavljena različica zbirke FoodSeg103 je za YOLO očitno lažja od izvirne, kar je skladno tudi z opažanji pri FOMO. Kljub temu absolutne mIoU vrednosti ostajajo zmerne, kar ponovno kaže na zahtevnost izbrane zbirke.
+        S tem eksperimentom smo želeli pridobiti lastno referenco o tem, kako dobro večji sodoben segmentacijski model reši FoodSeg103.
+        %Rezultati so zbrani v tabeli~\ref{tab:yolo11-iou-table}.
+        Modeli YOLOv11-seg nudijo višjo ločljivost mask in dosežejo višje vrednosti metrik mIoU, vendar so bistveno večji in zahtevnejši za izvajanje. FOMO ostaja primernejši za preprostejše naloge in tam, kjer sta ključni nizka latenca in majhen pomnilniški odtis.
+
+        \paragraph{Primerjava s modelom FOMO.}
+        V primerjavi s rezultati modela FOMO v
+        tabelah~\ref{tab:experiment_full_foodseg103_dataset_table}
+        in~\ref{tab:experiment_simplified_foodseg103_dataset_table}
+        je razvidno, da modela YOLOv11n-seg in YOLOv11x-seg v tem
+        pogledu deluje bolje, kar je glede na velikost in arhitekturno zasnovo
+        pričakovano. Poenostavljena različica zbirke FoodSeg103 je za modela YOLOv11-seg
+        lažja od izvirne, kar je skladno tudi z opažanji pri FOMO. Kljub temu
+        vrednosti mIoU na izvirni zbirki ne presegajo $28{,}4$ odstotka, kar
+        ponovno kaže na zahtevnost izbrane zbirke.
+        Pri tem je treba upoštevati, da so izhodi modela FOMO nizkoločljivostne
+        maske,
+        zato primerjava v metriki mIoU z modeli YOLOv11-seg ni povsem ustrezna in omogoča zgolj grobo primerjavo med obema pristopoma.
         
         \paragraph{\emph{Nano} proti \emph{extra large}.}
-        Iz histogramov na sliki~\ref{fig:yolo11-bars} je razvidno, kateri razredi so problematični za YOLO modele. Manj pogosti razredi so izrazito slabše rešeni, pri čemer razlika med različicama \emph{nano} in \emph{extra large} pride najbolj do izraza prav na repu porazdelitve. Tabela~\ref{tab:yolo11-iou-table} in slika~\ref{fig:yolo11-bars} dodatno nakazujeta, da poenostavitev nabora pomaga: odstranitev najredkejših razredov dvigne mIoU. Na podlagi porazdelitve IoU po razredih histogram okvirno nakazuje, da bi bila lahko potrebna poenostavitev celo manj obsežna (npr. odstranitev približno 30 najslabše zastopanih razredov), vendar tak sklep zahteva dodatne preizkuse.
+        Iz histogramov na sliki~\ref{fig:yolo11-bars}
+        je razvidno, kateri razredi so problematični za YOLO modele. Manj pogosti
+        razredi so izrazito slabše rešeni, pri čemer razlika med različicama
+        \emph{nano} in \emph{extra large} pride najbolj do izraza prav na repu
+        porazdelitve. Tabeli~\ref{tab:yolo11-iou-table}
+        in slika~\ref{fig:yolo11-bars}
+        dodatno nakazujeta, da poenostavitev nabora pomaga, saj odstranitev
+        najredkejših razredov dvigne metriko mIoU. Na podlagi porazdelitve
+        metrike IoU po razredih histogram nakazuje tudi, da bi poenostavitev
+        lahko bila celo manj obsežna, vendar tak sklep zahteva dodatne
+        preizkuse.
         
-        \paragraph{Opomba o kvantizaciji in izvozu.}
-        Okolje Ultralytics dobro podpira kvantizacijo in izvoz v format TFLite, vendar se je pri segmentacijskem modelu izkazalo, da pretvorba ni popolna: izvajanje prek STMCube.AI MCU okolja je bilo problematično, okolje Tensorflow Lite Micro prav tako, saj slednje še ne podpira hibridnih modelov (mešanih podatkovnih tipov). Glede na število parametrov lahko ocenimo, da bi kvantizirana \emph{nano} izvedba (\textit{int8} uteži) imela najmanj približno \(2{,}8\)\ MB uteži; dejanska velikost in poraba RAM pa sta odvisni od vmesnih tenzorjev in podpore operacij. \textit{Float32} izvedbo smo lahko zagnali in izmerili porabo, vendar se točni podatki razlikujejo glede na okolje in različico orodij, zato jih v tem poglavju ne navajamo.
+        \paragraph{Kvantizacija in izvoz modela.}
+        % TODO: Mogoče bi tole moralo it v rezultate?
+        Med eksperimenti se je izkazalo, da okolje Ultralytics dobro podpira
+        tudi kvantizacijo modelov in njihov izvoz v zapis TFLite. Pri modelih
+        YOLOv11-seg se je pokazalo, da pretvorba ni popolna, saj je
+        nastali kvantizirani model vseboval uteži različnih podatkovnih tipov.
+        Ker okolji STM32Cube.AI in LiteRT Micro izvajanja takšnih modelov ne
+        podpirata, kvantiziranega modela ni bilo mogoče zagnati.
+
+        Glede na število parametrov lahko ocenimo, da bi tako kvantizirana
+        \emph{nano} izvedba z utežmi tipa \emph{int8} imela najmanj \(2{,}8\)\
+        MB uteži. Dejanska velikost in poraba pomnilnika sta odvisni od vmesnih
+        tenzorjev in podpore operacij. Zaradi težav pri izvajanju v omenjenih
+        programskih okoljih natančnih meritev nismo mogli izvesti.
+        %Izvedbo tipa \textit{Float32} smo lahko zagnali in izmerili porabo,
+        %vendar se točni podatki razlikujejo glede na okolje in različico
+        %orodij, zato jih v tem poglavju ne navajamo.
+
         % TODO: Mogoče probaj dejansko izmerit
-        Ugotovitev ostaja, da novejši segmentacijski modeli z optimizacijami niso nujno daleč od praktične uporabe na robnih napravah, saj omejitve vse bolj izvirajo iz podpore orodij in operatorjev, ne zgolj iz velikosti modela.
+        Na podlagi teh ugotovitev lahko sklepamo, da novejši segmentacijski
+        modeli z optimizacijami niso nujno daleč od praktične uporabe na robnih
+        napravah, saj omejitve vse bolj izvirajo iz podpore orodij in
+        operatorjev, ne zgolj iz velikosti modela in zmožnosti strojne opreme.
 
     \section{Vloga metod SAM}
-    
-        V odseku~\ref{sct:rezultati-sam} smo predstavili eksperimente z MobileSAM in FastSAM, kjer smo kvalitativno ocenjevali, v kolikšni meri bi lahko s pozivi pretvorili semantične segmentacijske maske najprej v instančne, nato pa še v okvirje za učenje detekcijskih modelov. Preizkusili smo različne oblike pozivov (mreža točk ospredja, mreža točk ospredja in ozadja, ter okvirji) in rezultate primerjali na izbranih primerih.
-        
-        Ugotovitev je, da so metode SAM uporabne predvsem kot generatorji predlogov segmentov, ki lahko pospešijo ročno anotiranje ali popravljanje anotacij. Težko pa iz njih brez dodatnega preverjanja in ročnega posega dobimo konsistentne, kakovostne instančne maske. SAM torej ni \emph{end-to-end} rešitev za našo nalogo, lahko pa poenostavi najzahtevnejši del - risanje mask na objekt.
-        
+
+        V odseku~\ref{sct:rezultati-sam} smo
+        predstavili eksperimente z MobileSAM in FastSAM, kjer smo kvalitativno
+        ocenjevali, v kolikšni meri bi lahko s pozivi pretvorili semantične
+        segmentacijske maske najprej v instančne, nato pa še v detekcijske
+        okvirje za učenje detekcijskih modelov. Preizkusili smo različne oblike
+        pozivov
+        %(mreža točk ospredja, mreža točk ospredja in ozadja, ter okvirji)
+        in rezultate primerjali na izbranih primerih.
+
+        Na podlagi rezultatov lahko sklepamo, da so metode SAM uporabne
+        predvsem za ustvarjanje predlogov segmentov, ki lahko pospešijo ročno
+        anotiranje ali popravljanje anotacij. Brez dodatnega preverjanja in
+        ročnega posega težko dobimo konsistentne, kakovostne instančne maske.
+        Dodatna pomanjkljivost metod SAM je, da z njimi izgubimo informacijo o
+        razredu objekta. Določanje razredov posameznim segmentom bi
+        zahtevalo dodatno procesiranje in v nekaterih primerih tudi ročno
+        anotiranje. SAM torej ni celotna rešitev za izbrano
+        nalogo, lahko pa poenostavi najzahtevnejši del - risanje mask na
+        objekt.
+
         \paragraph{MobileSAM.}
-        MobileSAM se v našem kontekstu ne izkaže kot primeren za pozive z mrežo točk, saj vrne toliko instanc, kolikor je vhodnih točk. To je razvidno na sliki~\ref{fig:mobilesam}. Ker želimo, da metoda sama določi tudi število instanc, je tak izhod povsem neprimeren za naš cilj.
+        MobileSAM se v našem kontekstu ne izkaže kot primeren za pozive z mrežo
+        točk, saj vrne toliko instanc, kolikor je vhodnih točk. To je razvidno
+        na
+        sliki~\ref{fig:mobilesam}.
+        Ker želimo, da metoda sama določi tudi število instanc, je tak izhod
+        povsem neprimeren za naš cilj.
         
         \paragraph{FastSAM.}
-        FastSAM nima omenjene omejitve. Rezultati z mrežo zgolj točk ospredja so prikazani na sliki~\ref{fig:fastsam-points-fg}, z dodanimi točkami ozadja pa na sliki~\ref{fig:fastsam-points-fg-bg}. V preprostih prizorih, kjer so objekti jasno ločeni, doseže sprejemljive segmente, v kompleksnejših pa pogosto odpove. Dodajanje točk ozadja praviloma izboljša rezultate, saj model dobi jasnejšo informacijo, kaj naj obravnava kot ozadje; posledično je na sliki~\ref{fig:fastsam-points-fg-bg} manj napak (npr. segmentirani krožniki, ki bi morali biti del ozadja). Preverili smo tudi pozive v obliki okvirjev (slika~\ref{fig:fastsam-bbox}); ta pristop se je izkazal za manj ustreznega, kar je pričakovano, saj okvir nosi manj informacij kot mreža točk, in številni objekti ostanejo nesegmentirani.
+        FastSAM nima omenjene omejitve. Rezultati z mrežo zgolj točk ospredja
+        so prikazani na
+        sliki~\ref{fig:fastsam-points-fg},
+        z dodanimi točkami ozadja pa na
+        sliki~\ref{fig:fastsam-points-fg-bg}.
+        V preprostih prizorih, kjer so objekti jasno ločeni, doseže
+        sprejemljive segmente, v kompleksnejših pa pogosto odpove. Dodajanje
+        točk ozadja praviloma izboljša rezultate, saj model dobi jasnejšo
+        informacijo, kaj naj obravnava kot ozadje. Posledično je na
+        sliki~\ref{fig:fastsam-points-fg-bg}
+        manj
+        napak, kot so segmentirani krožniki, ki bi morali biti del ozadja.
+        %Preverili smo tudi pozive v obliki okvirjev
+        %(slika~\ref{fig:fastsam-bbox});
+        Pozivi v obliki okvirjev so se izkazali za manj ustrezne. To je
+        pričakovano, saj okvir nosi manj informacij kot mreža točk, in številni
+        objekti ostanejo nesegmentirani.
         
-        \paragraph{Praktična uporabnost.} % Overall sentiment
-        V praksi FastSAM marsikdaj generira slabše okvirje, kot jih že imamo; včasih so boljši pozivi s točkami, drugič z okvirji. Ključna pomanjkljivost je, da pri uporabi FastSAM izgubimo informacijo o razredu objekta, zato tak potek dela za naš namen ni posebej koristen in z njim nismo nadaljevali.
+        %\paragraph{Uporabnost v kontekstu naloge.} % Overall sentiment
+        %V eksperimentih se je izkazalo, da FastSAM marsikdaj generira slabše
+        %okvirje, kot jih že imamo. včasih so boljši pozivi s točkami, drugič z
+        %okvirji. Ključna pomanjkljivost je, da pri uporabi FastSAM izgubimo
+        %informacijo o razredu objekta, zato tak potek dela za naš namen ni
+        %posebej koristen
+        %in z njim nismo nadaljevali.
         
         \paragraph{Težava definicije objektov.}
-        Še bolj bistvena, temeljna ovira je definicija, kaj šteje kot posamezen objekt. Pri nalogah, kot so “osebe” ali “vozila”, je ta odločitev običajno jasnejša; pri sestavinah hrane je pogosto nejasno, ali je ustrezneje združiti več delov v eno instanco ali jih obravnavati ločeno. To je razvidno že na rezultatih s točkami ospredja in ozadja (slika~\ref{fig:fastsam-points-fg-bg}) in je podrobneje obravnavano v~\cite{src:koporec2020cognitive}. Tudi če bi se kot avtorji zbirke odločili za specifična pravila združevanja, bi uporabniki te zbirke lahko pričakovali drugačno razmejitev za njihovo specifično aplikacijo. Robustno določitev pravil bi bilo težko doseči brez  vključitve več anotatorjev in namenska evalvacija. Zaradi navedenega ter dodatnega potrebnega dela, da bi anotacije spravili v konsistentno celoto, pristopa SAM v tej fazi nismo nadaljevali.
+
+        Ena izmed temeljnih ovir v teh pristopih je definicija, kaj šteje kot
+        posamezen objekt~\cite{src:koporec2020cognitive}. Pri nalogah, kot so \enquote{osebe} ali \enquote{vozila}, je ta
+        odločitev običajno jasna, pri sestavinah hrane pa je pogosto nejasno,
+        ali je ustrezneje združiti več delov v eno instanco ali jih obravnavati
+        ločeno. To je razvidno že na rezultatih na
+        sliki~\ref{fig:fastsam-points-fg-bg}
+        in
+        je podrobneje obravnavano v~\cite{src:koporec2020cognitive}. Tudi če bi
+        se kot avtorji zbirke odločili za specifična pravila združevanja, bi
+        uporabniki te zbirke lahko pričakovali drugačno razmejitev za njihovo
+        specifično aplikacijo. Robustno določitev pravil bi bilo težko doseči
+        brez  vključitve več anotatorjev in namenske evalvacije. To je še eden
+        izmed razlogov, zakaj pristopa SAM v tej fazi ni bilo smiselno
+        nadaljevati.
     
     \section{Kvantizacija in izvedba na mikrokrmilnikih}
 
-        Model kvantiziramo s kvantizacijo po učenju (PTQ). Končne velikosti so zbrane v tabeli~\ref{tab:alpha-size-ram}, dosežene metrike pred in po kvantizaciji pa v tabeli~\ref{tab:alpha-perf-ptq}. Meritve velikosti in porabe pomnilnika izvedemo prek vmesnika X-CUBE-AI z izvajanjem v STM32Cube.AI MCU izvajalnem okolju. Povzetek ugotovitev je, da PTQ občutno zmanjša velikost modela in porabo RAM, padec metrik pa ostane zmeren. Vpliv parametra širine \(\alpha\) na velikost, pomnilnik in metrike je izrazit.
+        Model kvantiziramo s kvantizacijo po učenju (PTQ). Končne velikosti so
+        zbrane v
+        tabeli~\ref{tab:alpha-size-ram},
+        dosežene metrike pred in po kvantizaciji pa v
+        tabeli~\ref{tab:alpha-perf-ptq}.
+        Meritve velikosti in porabe pomnilnika izvedemo prek vmesnika X-CUBE-AI
+        z izvajanjem v STM32Cube.AI MCU izvajalnem okolju. Iz rezultatov je
+        razvidno, da PTQ občutno zmanjša velikost modela in porabo RAM, padec
+        metrik pa ostane zmeren. Ravno tako lahko vidimo, da ima parameter
+        \(\alpha\) izrazit vpliv na velikost, pomnilnik in metrike.
 
         % Padec v metrikah zaradi kvantizacije
-        Padec metrik zaradi kvantizacije v naših poskusih ne preseže 1{,}4~\%. Učenje s sprotno kvantizacijo (QAT) praviloma še zmanjša ta padec, saj kvantizacijo upošteva že med učenjem, vendar ob tako majhnem poslabšanju QAT ni tako nujen. Drugje poročajo tudi do 9~\% padca F1 po PTQ, medtem ko QAT uspešnost ohrani ali celo izboljša~\cite{src:Nikodinovska_2024}. Odločitev za QAT oteži še dodatna izvedbena kompleksnost, saj TensorFlow Model Optimization Toolkit\footnote{\url{https://github.com/tensorflow/model-optimization}} trenutno zahteva starejše različice orodij TensorFlow, Keras in ostalih podpornih knjižnic.
+        % Ker smo za kvantizacijo uporabili PTQ in ne ozaveščenega učenja
+        % (QAT), lahko pričakujemo opazen padec v metrikah
+        % modela~\cite{src:Nikodinovska_2024}.
+        %Padec metrik zaradi kvantizacije v naših poskusih ne preseže 1{,}4~\%.
+        %Ozaveščeno učenje s sprotno kvantizacijo (QAT) praviloma še zmanjša ta padec, saj
+        %saj kvantizacijo upošteva že med učenjem, vendar ob tako majhnem
+        %poslabšanju QAT ni tako nujen.
+        V eksperimentih smo uporabili kvantizacijo po učenju (PTQ) in ne
+        ozaveščenega učenja (QAT), zato smo pričakovali opazen padec v
+        doseženih metrikah modela~\cite{src:Nikodinovska_2024}. Izkazalo se je,
+        da padec metrik zaradi kvantizacije ni presegel $1{,}4$ odstotka, kar
+        je precej zanemarljivo. Razlogov za to je lahko več, mogoče pa bi pri
+        višjih izhodiščnih rezultatih lahko opazili večji padec zaradi
+        kvantizacije. Drugje poročajo tudi do 9~\% padca v metrikah po
+        kvantizaciji s PTQ, medtem ko pri kvantizaciji s QAT uspešnost ohranijo
+        ali celo izboljšajo~\cite{src:Nikodinovska_2024}. Izvedba kvantizacije
+        s QAT je lahko precej kompleksna, saj zahteva uporabo orodja TensorFlow
+        Model Optimization
+        Toolkit\footnote{\url{https://github.com/tensorflow/model-optimization}},
+        ki trenutno zahteva starejše različice orodij TensorFlow, Keras in
+        ostalih podpornih knjižnic.
 
         % Zmanjšanje velikosti zaradi kvantizacije
-        Iz tabele~\ref{tab:alpha-size-ram} je razvidno, da kvantizacija zmanjša porabo RAM za približno \(3{,}6\) do \(3{,}9\) krat, torej skoraj doseže teoretično mejo \(4\times\), ki izhaja iz zamenjave podatkovnih tipov \textit{float32} z \textit{int8}. Vpliv na velikost modela, torej koliko prostora zasedejo parametri na disku, je manjši, a še vedno znaten, zmanjšanje doseže faktor od \(1{,}56\) do \(2{,}42\). Kvantiziran model z \(\alpha=1{,}0\) ostane majhen, a je velik \(118{,}1\,\mathrm{kB}\) in med izvajanjem zasede \(418{,}1\,\mathrm{kB}\) pomnilnika, pri čemer dosega najboljše metrike med preizkušenimi vrednostmi \(\alpha\). Za nadaljnje delo je zato \(\alpha=1{,}0\) najbolj smiselna izbira.
+        Iz tabele~\ref{tab:alpha-size-ram}
+        je
+        razvidno, da kvantizacija izrazito zmanjša porabo RAM in skoraj doseže
+        teoretični faktor \(4\times\), ki izhaja iz zamenjave podatkovnih tipov
+        \textit{float32} z \textit{int8}. Vpliv kvantizacije na velikost
+        modela, torej koliko prostora zasedejo parametri na disku, je manjši, a
+        še vedno znaten. Tudi pri $\alpha = 1{,}0$ je kvantiziran model velik
+        le $118{,}1$ kB in zahteva le $418{,}1$ kB pomnilnika, hkrati pa doseže
+        najvišje metrike, zato je visok $\alpha$ za nadaljnje delo najbolj
+        smiselna izbira.
 
         % Ostale ugotovitve
-        Iz tabele~\ref{tab:alpha-size-ram} lahko opazimo tudi, da vrednosti \(\alpha=0{,}35\) in \(\alpha=0{,}5\) zahtevata enako količino pomnilnika. Vzrokov za to je lahko več. Mogoče porabo pomnilnika v teh primerih narekuje predvsem velikost začetnih oziroma izhodnih plasti, ki niso odvisne od \(\alpha\), ali pa v optimizacijah, ki jih vključi STM32Cube.AI MCU. Za zanesljiv zaključek bi bila potrebna podrobnejša analiza grafa izvajanja in vmesnih tenzorjev.
+        Iz tabele~\ref{tab:alpha-size-ram}
+        lahko opazimo tudi, da vrednosti \(\alpha=0{,}35\) in \(\alpha=0{,}5\)
+        zahtevata enako količino pomnilnika. Vzrokov za to je lahko več. Mogoče
+        porabo pomnilnika v teh primerih narekuje predvsem velikost začetnih
+        oziroma izhodnih plasti, ki niso odvisne od \(\alpha\), ali pa v
+        optimizacijah, ki jih vključi okolje STM32Cube.AI. Za zanesljiv zaključek
+        bi bila potrebna podrobnejša analiza grafa izvajanja in vmesnih
+        tenzorjev.
 
-        Med eksperimenti se je izkazalo še, da STM32Cube.AI MCU podpira tudi hibridne modele. To so modeli, kjer so deli grafa kvantizirani v podatkovni tip \textit{int8}, drugi pa ostanejo v \textit{float32}. To je koristno pri nepopolni kvantizaciji, ko kvantiziramo le operacije s podporo za to, preostale pa pustimo v izvirni \textit{float32} obliki. Okolje TFLite Micro hibridnih modelov v naših poskusih ni podpiral. Meritve izvajamo v vmesniku X-CUBE-AI različice 9.0.0.
-        
-        Med dodatnimi eksperimenti smo opazili tudi, da STM32Cube.AI MCU zahteva manj pomnilnika kot TFLite Micro. Za \(\alpha=0{,}35\) se velikost kvantiziranega modela povečajo z \(236\,\mathrm{kB}\) na \(405\,\mathrm{kB}\), ko namesto okolja STM32Cube.AI uporabimo TFLite Micro. To nakazuje, da optimizacije na platformi STM32  dobro izkoristijo ciljno strojno opremo in da TFLite Micro kljub svoji splošni razširjenosti ni nujno najboljša izbira na platformi STM32.
+        % A nismo rekl pr kvantiziranem fastsamu cubeai ne podpira hibridnih modelov?
+        %Med eksperimenti se je izkazalo še, da STM32Cube.AI MCU podpira tudi
+        %hibridne modele. To so modeli, kjer so deli grafa kvantizirani v
+        %podatkovni tip \textit{int8}, drugi pa ostanejo v \textit{float32}. To
+        %je koristno pri nepopolni kvantizaciji, ko kvantiziramo le operacije s
+        %podporo za to, preostale pa pustimo v izvirni \textit{float32} obliki.
+        %Okolje TFLite Micro hibridnih modelov v naših poskusih ni podpiral.
+        %Meritve izvajamo v vmesniku X-CUBE-AI različice 9.0.0.
+
+        Med eksperimenti se je pokazalo tudi, da okolje STM32Cube.AI pri
+        izvajanju modelov zahteva manj pomnilnika kot LiteRT Micro. Pri modelu
+        z \(\alpha=0{,}35\) se je zahtevana količina RAM povečala z
+        \(236\,\mathrm{kB}\) na \(405\,\mathrm{kB}\), ko smo namesto okolja
+        STM32Cube.AI uporabili LiteRT Micro. To nakazuje, da optimizacije na
+        platformi STM32 dobro izkoriščajo ciljno strojno opremo in da LiteRT
+        Micro kljub splošni razširjenosti ni nujno najprimernejša izbira za
+        platformo STM32.
 
     % TODO: Pokaži konfuzijsko matriko za navadno učenje na poenostavljenem datasetu (če ni prevelika), mogoče primerjaj načine uteževanja, komentiraj katere razrede dobro rešimo, katere meša med sabo in ugibaj zakaj jih meša med sabo.
     
     \section{Praktične smernice in prihodnje delo}
 
         \paragraph{Formulacija naloge, izbira podatkovne zbirke in nadzor okolja.}
-        Zahtevnost izbrane podatkovne zbirke mogoče ni preveč optimalna za probleme, ki zajemajo izvajanje na robnih napravah. Zbirka FoodSeg103 predstavlja odprt problem (angl. \textit{open world problem}), kjer je okolje nenadzorovano. V kontekstu praktične oz. industrijske aplikacije je smiselno vložiti trud tudi v nadzorovanje okolja, kar lahko vključuje konstantno osvetlitev, pričakovan položaj objektov na sliki ter konstantno skalo objektov. Takšna standardizacija lahko izrazito poenostavi reševanje problema, vendar zahteva zajem in anotacijo namenske podatkovne zbirke, prilagojene ciljni rabi.
+        Zahtevnost izbrane podatkovne zbirke mogoče ni preveč optimalna za
+        probleme, ki zajemajo izvajanje na robnih napravah. Zbirka FoodSeg103
+        predstavlja odprt problem, kjer je okolje nenadzorovano. V kontekstu
+        praktične oz. industrijske uporabe je smiselno vložiti trud tudi v
+        nadzorovanje okolja, kar lahko vključuje konstantno osvetlitev,
+            pričakovan položaj objektov na sliki ter konstantno skalo objektov.
+        Takšna standardizacija lahko izrazito poenostavi reševanje problema,
+        vendar zahteva zajem in anotacijo namenske podatkovne zbirke,
+        prilagojene ciljni rabi.
         
-        Za nadaljnje raziskovalno delo bi bilo verjetno smiselno poiskati podatkovno zbirko, ki je bolj usklajena z izbrano nalogo. Tudi najnovejši pristopi imajo težave pri reševanju zbirke FoodSeg103~\cite{src:wu2021large, src:lan2023foodsam}, zato z modeli, primernimi za robne naprave, ne moremo pričakovati izrazito dobrih rezultatov. V~\cite{src:bolanos2017food} se na primer lotijo klasifikacije sestavin z večoznačno klasifikacijo na drugih zbirkah (Food-101, Ingredients101 in Recipes5k). Tak pristop bi bil za praktično uporabo morda bolj ustrezen, podatkovne zbirke pa ustreznejše zmogljivostim modelov za robne naprave.
+        Za nadaljnje raziskovalno delo bi bilo verjetno smiselno poiskati
+        podatkovno zbirko, ki je bolj usklajena z izbrano nalogo. Tudi
+        najnovejši pristopi imajo težave pri reševanju zbirke
+        FoodSeg103~\cite{src:wu2021large, src:lan2023foodsam}, zato z modeli,
+        primernimi za robne naprave, ne moremo pričakovati izrazito dobrih
+        rezultatov. V~\cite{src:bolanos2017food} se na primer lotijo
+        klasifikacije sestavin z večoznačno klasifikacijo na drugih zbirkah
+        (Food-101, Ingredients101 in Recipes5k). Tak pristop bi bil za
+        praktično uporabo morda bolj ustrezen, podatkovne zbirke pa ustreznejše
+        zmogljivostim modelov za robne naprave.
         
         \paragraph{Poenostavitev oznak in združevanje razredov.}
-        V kolikor bi za nadaljnje delo še naprej uporabljali FoodSeg103, bi jo lahko poenostavili tudi na ravni oznak: najobetavnejše se zdi združevanje kategorij v logične nadkategorije, določene na podlagi videza in lastnosti sestavin. Takšna redukcija kompleksnosti bi lahko izboljšala robustnost in zanesljivost napovedi v situacijah, kjer je pomembnejša stabilnost kot pa ločevanje med zelo podobnimi razredi.
+        V kolikor bi za nadaljnje delo še naprej uporabljali FoodSeg103, bi jo
+        lahko poenostavili tudi na ravni oznak: najobetavnejše se zdi
+        združevanje kategorij v logične nadkategorije, določene na podlagi
+        videza in lastnosti sestavin. Takšna redukcija kompleksnosti bi lahko
+        izboljšala robustnost in zanesljivost napovedi v situacijah, kjer je
+        pomembnejša stabilnost kot pa ločevanje med zelo podobnimi razredi.
         
         \paragraph{Alternativne arhitekture.}
-        Če bi se znova lotili dela na isti podatkovni zbirki, bi bilo za izhodiščne eksperimente poskusiti z navadno večoznačno klasifikacijo. FoodSeg103 bi prilagodili tako, da bi vsak vzorec imel oznake prisotnih razredov, za model pa bi uporabili konvencionalne večoznačne klasifikatorje. Tak pristop bi v sistem vnesel poenostavitev, saj bi bila prisotnost razreda neposreden izhod modela in bi se izognili kompleksnemu procesiranju izhoda FOMO-modela.
+        Če bi se znova lotili dela na isti podatkovni zbirki, bi bilo za
+        izhodiščne eksperimente poskusiti z navadno večoznačno klasifikacijo.
+        FoodSeg103 bi prilagodili tako, da bi vsak vzorec imel oznake prisotnih
+        razredov, za model pa bi uporabili konvencionalne večoznačne
+        klasifikatorje. Tak pristop bi pomenil precejšnjo poenostavitev, saj bi
+        bila prisotnost razreda neposreden izhod modela in bi se izognili
+        kompleksnemu procesiranju izhoda FOMO-modela.
         
-        Namesto FOMO-arhitekture bi lahko vhodno sliko razdelili na dele in vsak del ločeno obdelali s klasifikacijskim modelom. S tem bi pridobili več nadzora nad arhitekturo izluščevalnika značilk, ki bi lahko bil daljši (npr. cel \textit{MobileNetV2}), kar je težje doseči z modelom FOMO. Tak pristop bi lahko ponudil kompromis med natančnostjo in strojno zahtevnostjo.
+        Namesto FOMO-arhitekture bi lahko vhodno sliko razdelili na dele in
+        vsak del ločeno obdelali s klasifikacijskim modelom. S tem bi pridobili
+        več nadzora nad arhitekturo izluščevalnika značilk, ki bi lahko bil
+        daljši, kar je težje doseči z modelom FOMO. Tak pristop bi lahko
+        ponudil kompromis med natančnostjo in strojno zahtevnostjo.
         
-        Koristno bi bilo preveriti tudi pristope, kjer pri učenju klasifikacijskih ali segmentacijskih modelov izkoristijo informacije iz recepta (tj. nabora sestavin)~\cite{src:wu2021large, src:min2019ingredient}, in možnosti prilagoditve takšnih arhitektur na robne naprave. Poleg tega bi bilo smiselno preveriti šibko nadzorovane pristope, kot je~\cite{src:vlachopoulou2023food}, kjer posamezne dele vhodne slike pošljejo v ResNet-34, nato pa z mehanizmom pozornosti (angl. \textit{attention mechanism}) utežijo in združijo prispevke. Izluščevalnik značilk bi bilo morda možno zamenjati z drugačnim, bolj primernim za izvajanje na robnih napravah.
+        Koristno bi bilo preveriti tudi pristope, kjer pri učenju
+        klasifikacijskih ali segmentacijskih modelov izkoristijo informacije iz
+        recepta, torej nabora sestavin~\cite{src:wu2021large,
+        src:min2019ingredient}, in možnosti prilagoditve takšnih arhitektur na
+        robne naprave. Poleg tega bi bilo smiselno preveriti šibko nadzorovane
+        pristope, kot je~\cite{src:vlachopoulou2023food}, kjer posamezne dele
+        vhodne slike pošljejo v ResNet-34, nato pa z mehanizmom pozornosti
+        (angl. \textit{attention mechanism}) utežijo in združijo prispevke.
+        Izluščevalnik značilk bi bilo morda možno zamenjati z drugačnim, bolj
+        primernim za izvajanje na robnih napravah.
         
-        \paragraph{Uporaba drugih modelskih zbirk kot izhodišče.}
-        Če pristop prilagodimo tako, da vsebuje standardne klasifikacijske ali detekcijske modele, je dobro izhodišče zbirka modelov \textit{STM32 Model Zoo}~\cite{src:stm32modelzoo}. Nabor modelov je izbran za izvajanje na STM32 mikrokrmilnikih in je prilagojen porabi pomnilnika ter prostora. Tipično so modeli osnovani na obstoječih arhitekturah in člankih ter ne predstavljajo povsem novih zasnov. Običajno so podane tudi dosežene metrike kvantiziranih modelov na zbirkah, kot so Food-101, ImageNet in COCO-Persons, skupaj z izmerjeno porabo pomnilnika ter prostora. To, skupaj z olajšanim postopkom učenja, kvantizacije, evalvacije in priprave za izvajanje na mikrokrmilnikih, omogoča hitro evalvacijo pristopov, kar je posebej primerno za industrijsko rabo.
+        \paragraph{Uporaba drugih modelov.}
+        Če pristop prilagodimo tako, da vsebuje standardne klasifikacijske ali
+        detekcijske modele, je dobro izhodišče zbirka modelov STM32
+        Model Zoo~\cite{src:stm32modelzoo}. Nabor modelov je izbran za
+        izvajanje na STM32 mikrokrmilnikih in je prilagojen porabi pomnilnika
+        ter prostora. Tipično so modeli osnovani na arhitekturah iz
+        recenziranih znanstvenih del in ne predstavljajo povsem novih,
+        nepreverjenih pristopov. Običajno so podane tudi dosežene metrike
+        kvantiziranih modelov na zbirkah, kot so Food-101, ImageNet in
+        COCO-Persons, skupaj z izmerjeno porabo pomnilnika ter prostora. To,
+        skupaj z olajšanim postopkom učenja, kvantizacije, evalvacije in
+        priprave za izvajanje na mikrokrmilnikih, omogoča hitro evalvacijo
+        pristopov, kar je posebej primerno za industrijsko rabo.
         
         \paragraph{Bolj ustrezno prednaučene uteži.}
-        Ne glede na izbrani model je smiselno izluščevalnik značilk prednaučiti na bolj relevantni podatkovni zbirki. Food-101 bi bila bolj ustrezna izbira kot pa ImageNet, ki vsebuje le nekaj kategorij, povezanih s hrano. Uteži modela MobileNetV2, prednaučene na Food-101, so na voljo tudi v STM32 Model Zoo~\cite{src:stm32modelzoo}.
+        Ne glede na izbrani model je smiselno izluščevalnik značilk prednaučiti
+        na relevantni podatkovni zbirki. Food-101 bi bila bolj ustrezna izbira
+        kot pa ImageNet, saj slednja vsebuje le nekaj kategorij, povezanih s
+        hrano. Uteži modela MobileNetV2, prednaučene na Food-101, so na voljo
+        tudi v STM32 Model Zoo~\cite{src:stm32modelzoo}.
         
         % Keras class weights get applied only to train loss (see notes)
 
