@@ -2345,18 +2345,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
         še validaciji in testiranju.
 
     
-        % TODO: Zaključek - če bi še naprej uporabljali FoodSeg103
-        %Če bi delo nadaljevali z zbirko FoodSeg103, bi bilo smiselno razmisliti
-        %o drugačnem načinu poenostavitve in bolje preveriti, kater pristop je bolj ustrezen. V
-        %odseku~\ref{sct:foodseg103-poenostavitev} smo obravnavali več
-        %pristopov. Prepisovanje mask neželenih razredov v ozadje se ne izkaže
-        %kot ustrezno, saj poveča varianco ozadja, ki pogosto vsebuje segmente
-        %hrane, in s tem oteži učenje odločitvenih mej. Perspektivnejša možnost
-        %je združevanje sorodnih razredov v širše, semantično koherentne
-        %kategorije, kar ohranja velikost nabora in znižuje neuravnoteženost,
-        %vendar zahteva premišljeno definicijo nadrazredov in dodatno urejanje
-        %oznak.
-
+      
     \section{Ustreznost izbranih metrik}
 
         %Izbor metrik na ravni pikslov in metrik prisotnosti razredov daje vpogled tako v lokalizirano klasifikacijo kot v uporabnost za končni cilj.
@@ -2385,12 +2374,6 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
         \(\nu\), ki je izbran hevristično, in opira se na naknadno obdelavo, ki
         preoblikuje izhod modela. Ta dodatna kompleksnost lahko slabša
         stabilnost rezultata.
-        % TODO: Zaključek
-        % Mogoče bi bilo namesto zapletene, nestandardne naknadne obdelave
-        % izhoda modela bolje uporabiti nek standarden klasifikacijski model,
-        % ali pa vsaj dodati polnopovezano plast na izhod modela. Tak pristop
-        % bi bolje sledil cilju naloge, a modela ne bi neposredno silil v
-        % pravilno lokalizacijo.
     
     \section{Ključne ugotovitve in omejitve modela FOMO}
     
@@ -2927,9 +2910,16 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             pravilih in dveh hiperparametrih $\tau$ in $\nu$. Ta nista
             optimizirana med učenjem, temveč izbrana hevristično.
             % TODO: Zaključek
-            % Verjetno bi lahko našli kak boljši pristop, ki se izogne tem mahinacijam z naknadno obdelavo.
-            % TODO: Zaključek
-            %Alternativno bi lahko namesto tega uporabili gosto povezano izhodno plast in model obravnavali kot večoznačni klasifikator prisotnosti razredov; parametri bi se učili skupaj z ostalimi utežmi. Kompromis takšnega pristopa je izguba neposredne zahteve po lokalizaciji. Možna vmesna rešitev je dvostopenjski postopek: najprej naučiti nizkoločljivostno segmentacijo, nato hrbtenico zamrzniti ter dodati in naučiti gosto plast, ki neposredno napove prisotne razrede. Tako bi ohranili naučeno lokalizacijsko znanje, hkrati pa bi metrika prisotnosti postala del učnega cilja, ne naknadne obdelave.
+            %Alternativno bi lahko namesto tega uporabili gosto povezano
+            %izhodno plast in model obravnavali kot večoznačni klasifikator
+            %prisotnosti razredov; parametri bi se učili skupaj z ostalimi
+            %utežmi. Kompromis takšnega pristopa je izguba neposredne zahteve
+            %po lokalizaciji. Možna vmesna rešitev je dvostopenjski postopek:
+            %najprej naučiti nizkoločljivostno segmentacijo, nato hrbtenico
+            %zamrzniti ter dodati in naučiti gosto plast, ki neposredno napove
+            %prisotne razrede. Tako bi ohranili naučeno lokalizacijsko znanje,
+            %hkrati pa bi metrika prisotnosti postala del učnega cilja, ne
+            %naknadne obdelave.
     
     \section{Primerjava z YOLOv11-seg}
         
@@ -3165,27 +3155,46 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
         zmogljivostim modelov za robne naprave.
         
         \paragraph{Poenostavitev oznak in združevanje razredov.}
-        V kolikor bi za nadaljnje delo še naprej uporabljali FoodSeg103, bi jo
-        lahko poenostavili tudi na ravni oznak: najobetavnejše se zdi
-        združevanje kategorij v logične nadkategorije, določene na podlagi
-        videza in lastnosti sestavin. Takšna redukcija kompleksnosti bi lahko
-        izboljšala robustnost in zanesljivost napovedi v situacijah, kjer je
-        pomembnejša stabilnost kot pa ločevanje med zelo podobnimi razredi.
+        %V kolikor bi za nadaljnje delo še naprej uporabljali FoodSeg103, bi jo
+        %lahko poenostavili tudi na ravni oznak: najobetavnejše se zdi
+        %združevanje kategorij v logične nadkategorije, določene na podlagi
+        %videza in lastnosti sestavin. Takšna redukcija kompleksnosti bi lahko
+        %izboljšala robustnost in zanesljivost napovedi v situacijah, kjer je
+        %pomembnejša stabilnost kot pa ločevanje med zelo podobnimi razredi.
+
+        Če bi delo nadaljevali z zbirko FoodSeg103, bi bilo smiselno
+        razmisliti o drugačnem načinu poenostavitve in bolje preveriti, kater
+        pristop je bolj ustrezen. V odseku~\ref{sct:foodseg103-poenostavitev}
+        smo obravnavali več pristopov. Prepisovanje mask neželenih razredov v
+        ozadje se ne izkaže kot ustrezno, saj poveča varianco ozadja, ki
+        pogosto vsebuje segmente hrane, in s tem oteži učenje.
+        Perspektivnejša možnost je združevanje sorodnih razredov v širše,
+        nadkategorije, določene na podlagi videza in lastnosti sestavin. Tak
+        pristop bi ohranil velikost zbirke in znižal neuravnoteženost, vendar
+        bi zahteval premišljeno definicijo nadkategorij in dodatno urejanje
+        oznak. Takšno zmanjšanje kompleksnosti bi lahko izboljšalo robustnost
+        in zanesljivost napovedi predvsem v situacijah, kjer je pomembnejša
+        stabilnost modela kot pa fino ločevanje med zelo sorodnimi
+        kategorijami.
+
+
         
         \paragraph{Alternativne arhitekture.}
         Če bi se znova lotili dela na isti podatkovni zbirki, bi bilo za
-        izhodiščne eksperimente poskusiti z navadno večoznačno klasifikacijo.
-        FoodSeg103 bi prilagodili tako, da bi vsak vzorec imel oznake prisotnih
-        razredov, za model pa bi uporabili konvencionalne večoznačne
-        klasifikatorje. Tak pristop bi pomenil precejšnjo poenostavitev, saj bi
-        bila prisotnost razreda neposreden izhod modela in bi se izognili
-        kompleksnemu procesiranju izhoda FOMO-modela.
-        
-        Namesto FOMO-arhitekture bi lahko vhodno sliko razdelili na dele in
-        vsak del ločeno obdelali s klasifikacijskim modelom. S tem bi pridobili
-        več nadzora nad arhitekturo izluščevalnika značilk, ki bi lahko bil
-        daljši, kar je težje doseči z modelom FOMO. Tak pristop bi lahko
-        ponudil kompromis med natančnostjo in strojno zahtevnostjo.
+        izhodiščne eksperimente smiselno poskusiti z navadno večoznačno
+        klasifikacijo. FoodSeg103 bi prilagodili tako, da bi vsak vzorec imel
+        oznake prisotnih razredov, za model pa bi uporabili konvencionalne
+        večoznačne klasifikatorje. Tak pristop bi pomenil precejšnjo
+        poenostavitev, saj bi bila prisotnost razreda neposreden izhod modela,
+        s tem pa bi se izognili zapleteni, nestandardni naknadni obdelavi
+        izhoda FOMO modela. Tak pristop bi bolje sledil cilju naloge, čeprav
+        modela morda ne bi neposredno spodbujal k lokalizaciji na vmesnih plastih.
+
+        Alternativno bi lahko namesto FOMO-arhitekture vhodno sliko razdelili
+        na dele in vsak del ločeno obdelali s klasifikacijskim modelom. S tem
+        bi pridobili več nadzora nad arhitekturo izluščevalnika značilk, ki bi
+        lahko bil daljši, kar je težje doseči z modelom FOMO. Tak pristop bi
+        lahko ponudil kompromis med natančnostjo in strojno zahtevnostjo.
         
         Koristno bi bilo preveriti tudi pristope, kjer pri učenju
         klasifikacijskih ali segmentacijskih modelov izkoristijo informacije iz
@@ -3224,11 +3233,32 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
 %******************************* ZAKLJUČEK *************************************
 \chapter{Zaključek} \label{sct:zakljucek}
 
-V delu smo preverili izvedljivost razpoznave sestavin na robni napravi z lahkim pristopom FOMO na zbirki FoodSeg103. Ugotovili smo, da so doseženi rezultati omejeni: deloma zaradi pomanjkljivosti izbranega pristopa (majhno receptivno polje in obsežna obdelava izhoda modela), deloma zaradi zahtevne, odprte narave in zelo podrobno razdeljenih razredov v podatkovni zbirki. Ker tipični raziskovalni pristopi do zbirke FoodSeg103 temeljijo na semantični segmentaciji in se ne ciljajo na izvajanje na mikrokrmilnikih, niso nujno primerni za našo končno uporabo~\cite{src:wu2021large, src:lan2023foodsam}. Omejitve pristopa in izsledki jasno kažejo, da je razpoznavanje sestavin zahtevno in še ni zadovoljivo rešeno ter da morajo rešitve izhajati iz omejitev robne platforme in industrijskega okolja.
+V delu smo preverili izvedljivost razpoznave sestavin na robni napravi z lahkim
+pristopom FOMO na zbirki FoodSeg103. Ugotovili smo, da so doseženi rezultati
+omejeni: deloma zaradi pomanjkljivosti izbranega pristopa (majhno receptivno
+polje in obsežna obdelava izhoda modela), deloma zaradi zahtevne, odprte narave
+in zelo podrobno razdeljenih razredov v podatkovni zbirki. Ker tipični
+raziskovalni pristopi do zbirke FoodSeg103 temeljijo na semantični segmentaciji
+in ne ciljajo na izvajanje na mikrokrmilnikih, niso nujno primerni za našo
+končno uporabo~\cite{src:wu2021large, src:lan2023foodsam}. Omejitve pristopa in
+izsledki jasno kažejo, da je razpoznavanje sestavin zahtevno in še ni
+zadovoljivo rešeno ter da morajo rešitve izhajati iz omejitev robne platforme
+in industrijskega okolja.
 %Regardless of our results, ingredient-supervised dish detection is a likely trend of research and is worth getting into it.
 
-Za praktično in industrijsko rabo se kot smiselna kažeta standardizacija okolja (nadzor osvetlitve, položaja in skale) in poenostavitev formulacije naloge. Kot obetavna alternativa neposredni segmentaciji je obdelava zaplat (\textit{patch-wise}), pri kateri lahko izkoristimo nekoliko kompleksnejši model z daljšim izluščevalnikom značilk, ki ga strojna oprema še dopušča. Dodatno lahko k robustnosti prispevata prednaučevanje izluščevalnika na domeni bližjih zbirkah (npr. Food-101) ter združevanje razredov v smiselne super-kategorije. Za nadaljevanje dela tako predlagamo pripravo ustrezne, nadzorovane podatkovne zbirke in sistematičen preizkus navedenih poenostavitev ter arhitekturnih sprememb.
-Ne glede na dosežene rezultate je razpoznava jedi na podlagi sestavin verjeten raziskovalni trend, v katerega se je smiselno usmeriti~\cite{src:konstantakopoulos2023review}.
+Za praktično in industrijsko rabo se kot smiselna kažeta poenostavitev
+formulacije naloge in standardizacija okolja, kot recimo nadzor osvetlitve,
+položaja in skale. Kot obetavna alternativa neposredni segmentaciji je obdelava
+posameznih delov slike (angl. \textit{patch-wise}), pri kateri lahko
+izkoristimo nekoliko kompleksnejši model z daljšim izluščevalnikom značilk, ki
+ga strojna oprema še dopušča. Dodatno lahko k robustnosti prispevata
+izluščevalnik, ki je prednaučen bolj relevantnih zbirkah (npr. Food-101) ter
+združevanje razredov v smiselne nadkategorije. Za nadaljevanje dela tako
+predlagamo pripravo ustrezne, nadzorovane podatkovne zbirke in sistematičen
+preizkus navedenih poenostavitev ter arhitekturnih sprememb. Ne glede na
+dosežene rezultate je razpoznava jedi na podlagi sestavin verjeten raziskovalni
+trend, v katerega se je smiselno
+usmeriti~\cite{src:konstantakopoulos2023review}.
 
 %******************************* LITERATURA ************************************
 \cleardoublepage\phantomsection\addcontentsline{toc}{chapter}{Literatura} % vnos literature v kazalo
