@@ -138,30 +138,77 @@ V zahvali se kandidat lahko zahvali mentorju in poimensko tudi vsem sodelavcem i
 
 %******************************* POVZETEK IN KLJUČNE BESEDE ********************
 \povzetek
-% TODO: Dodaj
-V tem dokumentu so predstavljena navodila za izdelavo zaključnega dela na FAKULTETI za elektrotehniko v Ljubljani. Zaključno delo predstavlja diplomsko delo na prvi in magistrsko delo na drugi stopnji izobraževalnega programa.
+%Sem sodi povzetek.
+%V tem dokumentu so predstavljena navodila za izdelavo zaključnega dela na
+%FAKULTETI za elektrotehniko v Ljubljani. Zaključno delo predstavlja diplomsko
+%delo na prvi in magistrsko delo na drugi stopnji izobraževalnega programa.
 
-V povzetku v slovenščini in v angleščini kandidat navede glavne rezultate dela, zato naj povzetek seznani bralca z jedrom dela na način, ki je običajen za pisanje krajših člankov ali referatov. Obseg povzetka je za Repozitorij Univerze v Ljubljani omejen na 20.000 znakov.
+%V povzetku v slovenščini in v angleščini kandidat navede glavne rezultate
+%dela, zato naj povzetek seznani bralca z jedrom dela na način, ki je običajen
+%za pisanje krajših člankov ali referatov. Obseg povzetka je za Repozitorij
+%Univerze v Ljubljani omejen na 20.000 znakov.
 
-Povzetek se prične z opisom in definicijo problema. Nadaljuje se z opisom uporabljenih metod in postopkov, ki so privedli do rešitve. Na koncu so opisani rezultati dela in glavni zaključki, ki iz rezultatov izhajajo.
+%Povzetek se prične z opisom in definicijo problema. Nadaljuje se z opisom
+%uporabljenih metod in postopkov, ki so privedli do rešitve. Na koncu so
+%opisani rezultati dela in glavni zaključki, ki iz rezultatov izhajajo.
 
-Za povzetkom se na isti strani navede še ključne besede.
+Razpoznava sestavin hrane na slikah predstavlja zahteven problem, posebej kadar
+želimo modele izvajati neposredno na mikrokrmilnikih. Večina sorodnih pristopov
+problem obravnava kot semantično ali instančno segmentacijo, kar praviloma
+zahteva modele z večjo računsko in pomnilniško zahtevnostjo, zato so takšne
+rešitve za zelo omejene robne naprave pogosto neprimerne. V tem delu
+zato obravnavamo možnost izvedbe z uporabo lahkega modela FOMO,
+ki je bil prvotno zasnovan kot detekcijski model za
+mikrokrmilnike. Uporabili smo podatkovno zbirko FoodSeg103, model prilagodili
+za ugotavljanje prisotnosti sestavin na sliki ter ovrednotili vpliv
+poenostavitve podatkovne zbirke, izbire učnih nastavitev, sprememb vhodne in
+izhodne ločljivosti ter kvantizacije pri pripravi modela za izvajanje na
+platformi STM32. Kot referenčni segmentacijski pristop smo uporabili modele družine
+YOLOv11-seg, kvalitativno pa smo preverili tudi uporabnost metod SAM. Ugotovili
+smo, da je FOMO z vidika velikosti, porabe pomnilnika in izvedljivosti na
+mikrokrmilnikih ustrezen, vendar je njegova uspešnost pri zahtevnejši razpoznavi
+sestavin omejena. Med pomembnejšimi omejitvami so majhno receptivno
+polje, nizkoločljivostni izhod, omejena kapaciteta modela ter občutljivost na
+pripravo podatkov in naknadno obdelavo. Prispevek dela je eksperimentalna ocena
+primernosti takšnega pristopa za mikrokrmilnike ter izpeljava smernic za
+nadaljnje izboljšave.
+
+%Za povzetkom se na isti strani navede še ključne besede.
 
 \kljucnebesede
-% TODO: Dodaj
-beseda1, beseda2, ...
+razpoznava sestavin hrane, robne naprave, mikrokrmilniki, lahki modeli, globoko učenje, kvantizacija modelov
 
 \selectlanguage{english}
 
 %******************************* ABSTRACT AND KEYWORDS *************************
 
 \abstract
-% TODO: Dodaj
-The thesis addresses...
+
+Recognizing food ingredients in images is a challenging problem, particularly
+when models are intended for direct deployment on microcontrollers. Most
+related approaches formulate the problem as semantic or instance segmentation,
+which generally requires models with higher computational and memory demands,
+making such solutions often unsuitable for highly resource-constrained edge
+devices. This thesis therefore investigates the feasibility of using FOMO, a lightweight model, originally designed as a detection model for
+microcontrollers. We used the FoodSeg103 dataset, adapted the model to
+determine the presence of ingredients in an image, and evaluated the effects of
+dataset simplification, training settings, changes in input and output
+resolution, and quantization when preparing the model for deployment on the
+STM32 platform.
+Models from the YOLOv11-seg family were used as reference
+segmentation approaches, and the applicability of SAM methods was also assessed
+qualitatively.
+We found that FOMO is suitable in terms of model size, memory
+consumption, and feasibility of deployment on microcontrollers, but its
+performance remains limited for more demanding ingredient recognition tasks.
+The main limitations include small receptive field, low-resolution output,
+limited model capacity, and sensitivity to data preparation and
+post-processing. The contribution of this thesis is an experimental assessment
+of the suitability of such an approach for microcontrollers and the derivation
+of guidelines for further development.
 
 \keywords
-% TODO: Dodaj
-word1, word2, ...
+food ingredient recognition, edge devices, microcontrollers, lightweight models, deep learning, model quantization
 
 \selectlanguage{slovene}
 
@@ -3207,7 +3254,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
         Izluščevalnik značilk bi bilo morda možno zamenjati z drugačnim, bolj
         primernim za izvajanje na robnih napravah.
         
-        \paragraph{Uporaba drugih modelov.}
+        \paragraph{Uporaba pripravljenih zbirk modelov.}
         Če pristop prilagodimo tako, da vsebuje standardne klasifikacijske ali
         detekcijske modele, je dobro izhodišče zbirka modelov STM32
         Model Zoo~\cite{src:stm32modelzoo}. Nabor modelov je izbran za
