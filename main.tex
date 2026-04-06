@@ -69,6 +69,7 @@
 % Rendranje grafov lahko precej poveča compile time. Te opcije omogočajo izvoz figure in uporabo tako shranjene PDF datoteke.
 %\tikzexternalize[prefix=externalized/]
 
+
 % Vključevanje datotek
 \usepackage{pdfpages} % vključevanje PDF datotek z ukazom \includegraphics
 \usepackage{epstopdf} % vključevanje EPS datotek z ukazom \includegraphics
@@ -103,6 +104,7 @@
 
 % Force no hypenation for all-uppercase words
 \uchyph=0
+
 
 % Barriers for float objects
 \usepackage{placeins}
@@ -3304,19 +3306,23 @@ usmeriti~\cite{src:konstantakopoulos2023review}.
 \bibliography{literatura}
 
 %******************************* PRILOGE ***************************************
+\let\origcleardoublepage\cleardoublepage
+\let\cleardoublepage\clearpage
+
 \appendix
 
-    % TODO: Nekako odstrani prazne strani
+\chapter{Distribucija razredov v FoodSeg103}\label{sct:appendixA}
 
-    \chapter{Distribucija razredov v FoodSeg103} \label{sct:appendixA}
+\vspace*{\fill}
+\begin{center}
+    \makebox[\textwidth][c]{%
+        \rotatebox{-90}{%
+                \includegraphics[width=0.85\textheight]{figures/class_frequencies_hist.pdf}%
+        }%
+    }
+\end{center}
+\vspace*{\fill}
 
-            \begin{turn}{-90}
-                \centering
-                \includegraphics[height=250pt]{figures/class_frequencies_hist.pdf}
-                % TODO: Dodaj opis slike
-                %\caption{}
-                \label{fig:foodseg103_orig_distribution}
-            \end{turn}
+\let\cleardoublepage\origcleardoublepage
 
 \end{document}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
