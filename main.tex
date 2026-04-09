@@ -872,7 +872,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             \includegraphics[width=0.24\linewidth]{figures/FoodSeg103_examples/img8_mask.jpg} \\
             \end{tabular}
             % TODO: Ni jasno katera maska pripada kateri sliki
-            \caption{Primeri vzorcev in pripadajočih segmentacijskih mask iz
+            \caption[Primeri vzorcev in segmentacijskih mask iz zbirke FoodSeg103]{Primeri vzorcev in pripadajočih segmentacijskih mask iz
             podatkovne zbirke FoodSeg103~\cite{src:wu2021large}. Na maskah
             sivinska vrednost piksla predstavlja indeks razreda, ki mu piksel
             pripada.}
@@ -887,7 +887,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             \centering
             \includegraphics[width=\linewidth]{figures/num_classes_per_image.pdf}
             % TODO: preveri odmik med opisom in sliko
-            \caption{Prikaz števila razredov na posamezni sliki v izvorni zbirki FoodSeg103.}
+            \caption[Porazdelitev števila razredov v zbirki FoodSeg103]{Prikaz števila razredov na posamezni sliki v izvorni zbirki FoodSeg103.}
             \label{fig:foodseg103_orig_num_classes_per_image}
         \end{figure*}
     
@@ -952,7 +952,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                 \centering
                 \includegraphics[width=\linewidth]{figures/class_frequency_trimmed_30.pdf}
                 % TODO: Prevelik odmik med opisom in sliko
-                \caption{Distribucija razredov v zbirki FoodSeg103, poenostavljeni na 30 razredov.}
+                \caption[Distribucija razredov v zbirki FoodSeg103 s 30 razredi]{Distribucija razredov v zbirki FoodSeg103, poenostavljeni na 30 razredov.}
                 \label{fig:class_freq_30}
             \end{figure*}
             
@@ -960,7 +960,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                 \centering
                 \includegraphics[width=\linewidth]{figures/class_frequency_trimmed_20.pdf}
                 % TODO: Prevelik odmik med opisom in sliko
-                \caption{Distribucija razredov v zbirki FoodSeg103, poenostavljeni na 20 razredov.}
+                \caption[Distribucija razredov v zbirki FoodSeg103 z 20 razredi]{Distribucija razredov v zbirki FoodSeg103, poenostavljeni na 20 razredov.}
                 \label{fig:class_freq_20}
             \end{figure*}
         
@@ -1492,7 +1492,9 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                 \includegraphics[width=0.45\linewidth]{figures//mobilesam/input.png}
                 \includegraphics[width=0.45\linewidth]{figures//mobilesam/output.png}
                 % TODO: Manjkajo reference na posamezno sliko
-                \caption{Vhodna slika z mrežo točk ospredja ter izhod modela MobileSAM. MobileSAM vrne toliko instanc objektov, kolikor dobi vhodnih točk, zato za naš pristop ni ustrezen.}
+                \caption[Primer izhoda modela MobileSAM]{Primer vhodne slike z mrežo točk ospredja ter pripadajočega izhoda modela
+                MobileSAM. MobileSAM vrne toliko instanc objektov, kolikor dobi
+                vhodnih točk, zato za naš pristop ni ustrezen.}
                 \label{fig:mobilesam}
             \end{figure}
                 
@@ -1577,7 +1579,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
 
                 \end{tabular}
                 % TODO: vsak graf na sliki mora biti enoznačno označen kot npr. (a) (b). Oznake moraš potem uporabiti v opisu slike.
-                \caption{Potek kriterijske funkcije in metrike $F1_r$ skozi namerno prenaučenje z namenom validacije učnega okolja.}
+                \caption[Potek namernega prenaučenja za validacijo učenga okolja]{Potek kriterijske funkcije in metrike $F1_r$ skozi namerno prenaučenje z namenom validacije učnega okolja.}
                 \label{fig:overfit_one_batch_plots}
             \end{figure}
 
@@ -1586,7 +1588,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                 \includegraphics[width=\linewidth]{figures/single_batch_test/overfit_one_batch_example.png}
                 % TODO: preveri odmik med opisom in sliko
                 % TODO: vsak graf na sliki mora biti enoznačno označen kot npr. (a) (b). Oznake moraš potem uporabiti v opisu slike.
-                \caption{Primer inference na modelu, namenjenemu validaciji okolja z namernim prenaučenjem. Od leve proti desni: vhodna slika, izhod modela in referenčna maska.}
+                \caption[Primer inference pri namernemu prenaučenju za validacijo okolja]{Primer inference na modelu, namenjenemu validaciji okolja z namernim prenaučenjem. Od leve proti desni: vhodna slika, izhod modela in referenčna maska.}
                 \label{fig:overfit_one_batch_example}
             \end{figure}
 
@@ -1629,7 +1631,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                         \end{axis}
                     \end{tikzpicture}
                 \end{tabular}
-                \caption{Rezultati preizkusa za določanje optimalne stopnje učenja. Graf prikazuje potek kriterijske funkcije skozi naraščujoč faktor učenja $\eta$.}
+                \caption[Rezultati eksperimenta za določanje optimalne stopnje učenja]{Rezultati eksperimenta za določanje optimalne stopnje učenja. Graf prikazuje potek kriterijske funkcije skozi naraščujoč faktor učenja $\eta$.}
                 \label{fig:lr_finder_plots}
             \end{figure}
 
@@ -1717,7 +1719,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                         \end{axis}
                     \end{tikzpicture}
                 \end{tabular}
-                \caption{Spreminjanje kriterijske funkcije tekom učenja na izvirni, nepoenostavljeni zbirki FoodSeg103. Levo je izvedba z uniformno uteženimi razredi, desno pa z utežmi na podlagi frekvence razredov.}
+                \caption[Kriterijska funkcija pri učenju FOMO na izvirni zbirki]{Spreminjanje kriterijske funkcije tekom učenja na izvirni, nepoenostavljeni zbirki FoodSeg103. Levo je izvedba z uniformno uteženimi razredi, desno pa z utežmi na podlagi frekvence razredov.}
                 \label{fig:experiment_full_foodseg103_dataset_loss}
             \end{figure}
 
@@ -1729,7 +1731,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                 \includegraphics[width=0.8\linewidth]{figures/full_foodseg103_dataset/weights_from_stats/example1.png}
                 \includegraphics[width=0.8\linewidth]{figures/full_foodseg103_dataset/weights_from_stats/example2.png}
                 % TODO: Manjkajo reference posamezne grafike, uporabi a b c d
-                \caption{Kvalitativni rezultati na izvirni, nepoenostavljeni zbirki FoodSeg103. Od leve proti desni: vhodna slika, referenčna maska, predikcija modela. Zgornji dve sliki sta rezultat izvedbe z uniformnimi utežmi, spodnji dve pa rezultat izvedbe na podlagi frekvence razredov.}
+                \caption[Kvalitativni rezultati učenja FOMO na izvirni zbirki]{Kvalitativni rezultati na izvirni, nepoenostavljeni zbirki FoodSeg103. Od leve proti desni: vhodna slika, referenčna maska, predikcija modela. Zgornji dve sliki sta rezultat izvedbe z uniformnimi utežmi, spodnji dve pa rezultat izvedbe na podlagi frekvence razredov.}
                 \label{fig:experiment_full_foodseg103_dataset_qualitative}
             \end{figure*}
             
@@ -1744,7 +1746,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                     Frekvenca razredov & 11{,}4 & 7{,}6 & 4{,}3 \\
                     \bottomrule
                 \end{tabular}
-                \caption{Rezultati učenja na izvirni, nepoenostavljeni zbirki FoodSeg103.}
+                \caption{Rezultati učenja na izvirni, nepoenostavljeni zbirki.}
                 \label{tab:experiment_full_foodseg103_dataset_table}
             \end{table}
 
@@ -1825,7 +1827,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
 
                 \end{tabular}
                 % TODO: Manjkajo reference na posamezno sliko. Verjetno lahko uporabis abcd oznake
-                \caption{Spreminjanje kriterijske funkcije tekom učenja modela FOMO na poenostavljeni zbirki FoodSeg103. Levo je izvedba z uniformno uteženimi razredi, desno pa z utežmi na podlagi frekvence razredov.}
+                \caption[Kriterijska funkcija pri učenju FOMO na poenostavljeni zbirki]{Spreminjanje kriterijske funkcije tekom učenja modela FOMO na poenostavljeni zbirki FoodSeg103. Levo je izvedba z uniformno uteženimi razredi, desno pa z utežmi na podlagi frekvence razredov.}
                 \label{fig:experiment_simplified_foodseg103_dataset_loss}
             \end{figure*}
 
@@ -1840,7 +1842,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                     Frekvenca razredov & 37{,}1 & 28{,}3  & 18{,}0  \\
                     \bottomrule
                 \end{tabular}
-                \caption{Rezultati učenja na poenostavljeni FoodSeg103 zbirki.}
+                \caption{Rezultati učenja na poenostavljeni zbirki.}
                 \label{tab:experiment_simplified_foodseg103_dataset_table}
             \end{table}
 
@@ -1896,7 +1898,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                     224x224 & 14x14 & 16  &  34{,}2 & 27{,}9 & 17{,}7 \\
                     \bottomrule
                 \end{tabular}
-                \caption{Primerjava različnih kombinacij vhodne ločljivosti in faktorja zmanjšanja v glavi modela.}
+                \caption[Primerjava kombinacij vhodne ločljivosti in faktorja zmanjšanja]{Primerjava različnih kombinacij vhodne ločljivosti in faktorja zmanjšanja v glavi modela.}
                 \label{tab:res-combos}
             \end{table}
 
@@ -1997,7 +1999,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                     Cake         & 10{,}0 & 17{,}2 & 8{,}4 & 22{,}2 \\
                     \bottomrule
                 \end{tabular}
-                \caption{Primerjava referenčnega modela in specializiranih enorazrednih FOMO modelov po dveh metrikah.}
+                \caption[Uspešnost specializiranih enorazrednih modelov FOMO]{Primerjava referenčnega modela in specializiranih enorazrednih modelov FOMO po dveh metrikah.}
                 \label{tab:moe-results}
             \end{table}
 
@@ -2080,7 +2082,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                     1{,}0  & 286{,}2 & 1643{,}4 & 118{,}1  &  418{,}1  \\
                     \bottomrule
                 \end{tabular}
-                \caption{Velikost modela in poraba RAM pomnilnika v kB glede na \(\alpha\) pred in po kvantizaciji.}
+                \caption[Velikost modela in poraba pomnilnika pred in po kvantizaciji]{Velikost modela in poraba pomnilnika v kB glede na \(\alpha\) pred in po kvantizaciji.}
                 \label{tab:alpha-size-ram}
             \end{table}
 
@@ -2209,7 +2211,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
 
                 \end{tabular}
                 % TODO: Dodaj reference na posamezne grafike, mogoce uporabi abcd
-                \caption{Spreminjanje kriterijske funkcije tekom učenja modelov YOLO11-seg na FoodSeg103. Levo je učenje na izvirni zbirki s 103 razredi, desno pa na poenostavljeni s 30 razredi. Zgornja vrsta predstavlja različico \mbox{\textit{nano}}, spodnja pa različico \mbox{\textit{extra large}}.}
+                \caption[Kriterijska funkcija pri učenju modelov YOLO11-seg]{Spreminjanje kriterijske funkcije tekom učenja modelov YOLO11-seg na FoodSeg103. Levo je učenje na izvirni zbirki s 103 razredi, desno pa na poenostavljeni s 30 razredi. Zgornja vrsta predstavlja različico \mbox{\textit{nano}}, spodnja pa različico \mbox{\textit{extra large}}.}
                 \label{fig:yolo11-loss}
             \end{figure}
 
@@ -2224,7 +2226,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                     YOLOv11x-seg & 28{,}4 & 44{,}2 \\
                     \bottomrule
                 \end{tabular}
-                \caption{Dosežene mIoU metrike modelov YOLOv11-seg, za izviren FoodSeg103 s 103 razredi ter poenostavljeno različico s 30 razredi.}
+                \caption[Rezultati modelov YOLOv11-seg]{Dosežene metrike mIoU modelov YOLOv11-seg za izviren FoodSeg103 s 103 razredi ter poenostavljeno različico s 30 razredi.}
                 \label{tab:yolo11-iou-table}
             \end{table}
 
@@ -2306,7 +2308,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                 \end{tikzpicture}
                 
                 % TODO: Manjkajo reference na posamezno grafiko
-                \caption{Primerjava med \textit{nano} in \textit{extra large} izvedbo modelov YOLO11-seg po posameznih razredih. Zgoraj je prikazan model za poenostavljen FoodSeg103 s 30 razredi, spodaj pa model za izviren FoodSeg103 z vsemi 103 razredi.}
+                \caption[Primerjava \textit{nano} in \textit{extra large} različic modela YOLO11-n]{Primerjava med \textit{nano} in \textit{extra large} izvedbo modelov YOLO11-seg po posameznih razredih. Zgoraj je prikazan model za poenostavljen FoodSeg103 s 30 razredi, spodaj pa model za izviren FoodSeg103 z vsemi 103 razredi.}
                 \label{fig:yolo11-bars}
             \end{figure}
 
@@ -2374,7 +2376,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                 \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg/306_mask.png} \\
                 \end{tabular}
                 % TODO: Oblika - katere slike sodijo skupaj?
-                \caption{Vzorec rezultatov segmentacije z modelom FastSAM in pozivom v obliki točk, ki označijo ospredje. Vrstici z modrimi maskami predstavljata izhod modela.}
+                \caption[Rezultati FastSAM s pozivom točk, ki označujejo ospredje]{Vzorec rezultatov segmentacije z modelom FastSAM in pozivom v obliki točk, ki označijo ospredje. Vrstici z modrimi maskami predstavljata izhod modela.}
                 \label{fig:fastsam-points-fg}
             \end{figure}
 
@@ -2405,7 +2407,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                 \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg_bg/306_mask.png} \\
                 \end{tabular}
                 % TODO: Oblika - katere slike sodijo skupaj?
-                \caption{Vzorec rezultatov segmentacije z modelom FastSAM in pozivom v obliki točk, ki označijo ospredje (rdeče) in ozadje (modro). Vrstici z modrimi maskami predstavljata izhod modela FastSAM.}
+                \caption[Rezultati FastSAM s pozivom točk, ki označujejo ospredje in ozadje]{Vzorec rezultatov segmentacije z modelom FastSAM in pozivom v obliki točk, ki označijo ospredje (rdeče) in ozadje (modro). Vrstici z modrimi maskami predstavljata izhod modela FastSAM.}
                 \label{fig:fastsam-points-fg-bg}
             \end{figure}
 
@@ -2436,7 +2438,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                 \includegraphics[width=0.24\linewidth]{figures/fastsam/bbox/306_mask.png} \\
                 \end{tabular}
                 % TODO: Oblika - katere slike sodijo skupaj?
-                \caption{Vzorec rezultatov segmentacije z modelom FastSAM in pozivom v obliki okvirjev, pridobljenih z enostavno pretvorbo iz izvirnih segmentacijskih mask. Vrstici z modrimi maskami predstavljata izhod modela FastSAM.}
+                \caption[Rezultati FastSAM s pozivom v obliki okvirjev]{Vzorec rezultatov segmentacije z modelom FastSAM in pozivom v obliki okvirjev, pridobljenih z enostavno pretvorbo iz izvirnih segmentacijskih mask. Vrstici z modrimi maskami predstavljata izhod modela FastSAM.}
                 \label{fig:fastsam-bbox}
             \end{figure}
     
