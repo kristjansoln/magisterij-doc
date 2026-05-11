@@ -747,48 +747,144 @@ V pričujočem magistrskem delu so uporabljene naslednje kratice:
             UEC-Food100~\cite{src:matsuda2012recognition} so metriko mIoU
             izboljšali za 5{,}7 odstotne točke in dosegli 55{,}4~\%.
 
+            % -----------------
+
             % Okamoto 2021 - DeepLabV3+, uvedli FoodPix Complete
-            Okamoto~\etal~\cite{src:okamoto2021uec} so predstavili zbirko UEC FoodPix Complete in jo evalvirali z modelom DeepLab V3+~\cite{src:chen2017deeplab}. Dosegli so 55{,}5~\% po metriki mIoU.
+            Okamoto~\etal~\cite{src:okamoto2021uec} so predstavili zbirko UEC
+            FoodPix Complete in jo ovrednotili z modelom DeepLab
+            V3+~\cite{src:chen2017deeplab}. Dosegli so 55{,}5~\% po metriki
+            mIoU.
             % Poply - something something instance segmentation
-            Poply~\etal~\cite{src:poply2021refined} so semantično segmentacijo uporabili pri estimaciji prehranske vrednosti živil na krožniku. V grobem so posnemali instančno segmentacijo, saj so uporabili detekcijski model za določanje kandidatov v koraku segmentacije. V njihovem pristopu so uporabljali zasebno podatkovno zbirko.
+            Poply~\etal~\cite{src:poply2021refined} so semantično segmentacijo
+            uporabili pri ocenjevanju prehranske vrednosti živil na krožniku. V
+            grobem so posnemali instančno segmentacijo, saj so uporabili
+            detekcijski model za določanje kandidatov v koraku segmentacije. V
+            njihovem pristopu so uporabljali zasebno podatkovno zbirko.
 
             % Wu 2021 - ReLeM semantic segmentation (+ recipe embeddings)
-            Wu~\etal~\cite{src:wu2021large} so objavili podatkovno zbirko FoodSeg103 za segmentacijo sestavin hrane v nenadzorovanem okolju ter predstavili večmodalni model ReLeM, ki je poleg slik uporabil tudi tekstovne recepte v obliki jezikovnih vektorjev. Z ReLeM so na FoodSeg103 dosegli do 43{,}2~\% mIoU in na isti zbirki ovrednotili še več obstoječih modelov (DeepLab V3~\cite{src:chen2017deeplab}, CCNet~\cite{src:huang2019ccnet}, FPN~\cite{src:kirillov2019panoptic} in SeTR~\cite{src:zheng2021rethinking}). Najboljši rezultat 43{,}2~\% mIoU so dosegli z modelom ReLeM. Rezultate na njihovi podatkovni zbirki so primerjali z rezultati na zbirki Cityscapes~\cite{src:cordts2016cityscapes}, kjer so dosegli bistveno boljše rezultate, kar je nakazalo na zahtevnost zbirke FoodSeg103.
+            Wu~\etal~\cite{src:wu2021large} so objavili podatkovno zbirko
+            FoodSeg103 za segmentacijo sestavin hrane v nenadzorovanem okolju
+            ter predstavili večmodalni model ReLeM, ki je poleg slik uporabil
+            tudi besedilne zapise receptov v obliki jezikovnih vektorjev. Z modelom ReLeM so na
+            FoodSeg103 dosegli do 43{,}2~\% mIoU in na isti zbirki ovrednotili
+            še več obstoječih modelov (DeepLab V3~\cite{src:chen2017deeplab},
+            CCNet~\cite{src:huang2019ccnet},
+            FPN~\cite{src:kirillov2019panoptic} in
+            SeTR~\cite{src:zheng2021rethinking}). Najboljši rezultat 43{,}2~\%
+            mIoU so dosegli z modelom ReLeM. Rezultate na tej podatkovni
+            zbirki so primerjali z rezultati na zbirki
+            Cityscapes~\cite{src:cordts2016cityscapes}, kjer so dosegli
+            bistveno boljše rezultate, kar je nakazalo na zahtevnost zbirke
+            FoodSeg103.
 
             % Park 2021 - Mask RCNN, pretrained on synthetic data
-            Park~\etal~\cite{src:park2021deep} so za segmentacijo učili model Mask R-CNN~\cite{src:he2017mask}, pri čemer so učenje osnovali na sintetičnih slikah, generiranih v orodju Blender. Model so nato doučili na resničnih posnetkih hrane iz lastne podatkovne zbirke.
+            Park~\etal~\cite{src:park2021deep} so za segmentacijo učili model
+            Mask R-CNN~\cite{src:he2017mask}, pri čemer so učenje zasnovali na
+            sintetičnih slikah, generiranih v orodju Blender. Model so nato
+            doučili na resničnih posnetkih hrane iz lastne podatkovne zbirke.
             % Javadi 2024 - Mask R-CNN
-            V~\cite{src:javadi2024smart} so predstavili pametni skener hrane, ki je z združevanjem senzorjev (kamera, tehtnica), modela Mask R-CNN za segmentacijo~\cite{src:he2017mask}, razvrščevalnika sestavin in globinske ocene omogočil samodejno določanje mase sestavin ter izračun hranilnih vrednosti. Zajem in predobdelava sta potekala na robni napravi, računsko zahtevnejši del obdelave pa v oblaku.
+            V~\cite{src:javadi2024smart} so predstavili pametni skener hrane,
+            ki je z združevanjem senzorjev (kamere, tehtnice), modela Mask
+            R-CNN za segmentacijo~\cite{src:he2017mask}, razvrščevalnika
+            sestavin in globinske ocene omogočil samodejno določanje mase
+            sestavin ter izračun hranilnih vrednosti. Zajem in predobdelava sta
+            potekala na robni napravi, računsko zahtevnejši del obdelave pa v
+            oblaku.
             % FoodSAM
-            Lan~\etal~\cite{src:lan2023foodsam} so predstavili FoodSAM, ki je izhajal iz modelov Segment Anything (SAM)~\cite{src:kirillov2023segment}, namenjenih segmentaciji poljubnih objektov brez potrebe, da bi bili ti v učni množici (angl. zero-shot segmentation). Ker SAM sam po sebi praviloma vrne le segmentacijske maske brez razrednih oznak, so avtorji~\cite{src:lan2023foodsam} vzporedno dodali model SeTR~\cite{src:zheng2021rethinking}, ki je ustvaril grobe semantične maske z oznakami razredov. Rezultate obeh modelov so združili z mehanizmom glasovanja. Na FoodSeg103~\cite{src:wu2021large} so dosegli 46{,}4~\% mIoU na FoodSeg103 in 66{,}1~\% na UECFoodPix Complete~\cite{src:okamoto2021uec}.
+            Lan~\etal~\cite{src:lan2023foodsam} so predstavili FoodSAM, ki je
+            izhajal iz modelov Segment Anything
+            (SAM)~\cite{src:kirillov2023segment}, namenjenih segmentaciji
+            poljubnih objektov brez potrebe, da bi bili ti v učni množici
+            (angl. zero-shot segmentation). Ker SAM sam po sebi praviloma vrne
+            le segmentacijske maske brez razrednih oznak, so
+            avtorji~\cite{src:lan2023foodsam} vzporedno dodali model
+            SeTR~\cite{src:zheng2021rethinking}, ki je ustvaril grobe
+            semantične maske z oznakami razredov. Rezultate obeh modelov so
+            združili z mehanizmom glasovanja. Na
+            FoodSeg103~\cite{src:wu2021large} so dosegli 46{,}4~\% mIoU na
+            FoodSeg103 in 66{,}1~\% na UECFoodPix
+            Complete~\cite{src:okamoto2021uec}.
 
     \section{Izvajanje na robnih napravah} \label{sct:izvajanje-na-robnih-napravah}
 
         % Early efforts
-        Za področje izvajanja modelov na robnih napravah se pogosto uporablja termin TinyML~\cite{src:abadade2023comprehensive}. Med začetke teh pristopov na področju razpoznavanja hrane sodijo Kawano~~\etal~\cite{src:kawano2014foodcam} z modelom FoodCam-256, ki je bil pripravljen za izvajanje na mobilnih napravah, a je uporabljal tradicionalne pristope za klasifikacijo. Med pomembnejše pristope na tem področju sodita tudi SqueezeNet~\cite{src:iandola2016squeezenet} ter MobileNetV1~\cite{src:howard2017mobilenets}, ki sta v primerjavi z AlexNet~\cite{src:krizhevsky2012imagenet} ohranila oz. izboljšata natančnost, hkrati pa močno zmanjšala število parametrov.
+        Za področje izvajanja modelov na robnih napravah se pogosto uporablja
+        izraz TinyML~\cite{src:abadade2023comprehensive}. Med začetke teh
+        pristopov na področju razpoznavanja hrane sodi delo
+        Kawano~~\etal~\cite{src:kawano2014foodcam} z modelom FoodCam-256, ki je
+        bil pripravljen za izvajanje na mobilnih napravah, a je uporabljal
+        tradicionalne pristope za klasifikacijo. Med pomembnejše pristope na
+        tem področju sodita tudi SqueezeNet~\cite{src:iandola2016squeezenet}
+        ter MobileNetV1~\cite{src:howard2017mobilenets}, ki sta v primerjavi z
+        AlexNet~\cite{src:krizhevsky2012imagenet} ohranila oziroma izboljšala
+        natančnost, hkrati pa močno zmanjšala število parametrov.
 
-        Izvedbe družine modelov MobileNet s SSD (angl. Single Shot Detection) ter FPN (angl. Feature Pyramid Network)~\cite{src:lin2017feature} omogočajo uporabo izbranih klasifikacijskih modelov tudi v kontekstu detekcije.
+        Izvedbe družine modelov MobileNet s SSD (angl. Single Shot Detection)
+        ter FPN (angl. Feature Pyramid Network)~\cite{src:lin2017feature}
+        omogočajo uporabo izbranih klasifikacijskih modelov tudi za detekcijo.
         % ST YOLO X
-        Prav tako je možno nekatere bolj znane detekcijske modele, na primer YOLOX~\cite{src:ge2021yolox}, prirediti za izvajanje na mikrokrmilnikih~\cite{src:stm32modelzoo}.
+        Prav tako je možno nekatere bolj znane detekcijske modele, na primer
+        YOLOX~\cite{src:ge2021yolox}, prirediti za izvajanje na
+        mikrokrmilnikih~\cite{src:stm32modelzoo}.
 
         % FOMO
-        Platforma Edge Impulse je predstavila model Faster Objects More Objects (FOMO)~\cite{src:fomodocs}, detekcijski model, namenjen izvajanju na mikrokrmilnikih. Sestavljen je iz začetnih plasti modela MobileNetV2~\cite{src:sandler2018mobilenetv2}, glava pa je zgolj konvolucijska plast, kar rezultira v mreži značilk oz. aktivacij za vsako kategorijo. To lahko interpretiramo tudi kot segmentacijsko masko z zelo nizko resolucijo. Na takšnem izhodu so avtorji izvedli algoritem rojenja, kjer je vsak roj predstavljal en objekt. Tako so izhod modela bila središča detektiranih rojev, kar je posnemalo izhode klasičnih detekcijskih modelov. Metoda je sicer zahtevala zelo malo pomnilnika in imela nizko računsko kompleksnost, slabosti pa so se skrivale v majhnem receptivnem polju (angl. low receptive field), združevanju sosednjih objektov tekom rojenja ter nižji kapaciteti modela~\cite{src:boyle2024dsort}.
+        Platforma Edge Impulse je predstavila model Faster Objects More Objects
+        (FOMO)~\cite{src:fomodocs}, detekcijski model, namenjen izvajanju na
+        mikrokrmilnikih. Sestavljen je iz začetnih plasti modela
+        MobileNetV2~\cite{src:sandler2018mobilenetv2}, glava pa je zgolj
+        konvolucijska plast, zato na izhodu nastane mreža značilk oziroma aktivacij za
+        vsako kategorijo. To lahko interpretiramo tudi kot segmentacijsko masko
+        z zelo nizko ločljivostjo. Na takšnem izhodu so avtorji izvedli algoritem
+        rojenja, pri katerem je vsak roj predstavljal en objekt. Tako je model na izhodu podal središča
+        detektiranih rojev, kar je posnemalo izhode klasičnih
+        detekcijskih modelov. Metoda je sicer zahtevala zelo malo pomnilnika in
+        imela nizko računsko kompleksnost, slabosti pa so bile majhno
+        receptivno polje (angl. low receptive field), združevanje sosednjih
+        objektov med rojenjem ter nizka kapaciteta
+        modela~\cite{src:boyle2024dsort}.
         % Edge Impulse se ponaša predvsem s poenostavljanjem postopka zajema in obdelave podatkovne zbirke, učenja modela ter priprave modela za izvajanje na mikrokrmilnikih. Platforma omogoča popolnoma on line workflow, kompleksnost naloge pa zmanjšajo na račun fleksibilnosti pri načrtovanju. Načeloma je možno generirane skripte tudi urejati, kar omogoči boljši nadzor nad workflovom.
  
         % DSORT-MCU
-        Problem združevanja objektov med rojenjem so deloma razrešili Boyle~\etal v DSORT-MCU~\cite{src:boyle2024dsort}, kjer so predstavili adaptivno deljenje slike. Sliko so najprej razdelili na prekrivajoče odseke, nato pa vsak odsek ločeno poslali skozi model FOMO~\cite{src:fomodocs}. Rezultate vseh so nato združili v končni izhod. S tem so izboljšali sposobnost modela FOMO~\cite{src:fomodocs} za štetje objektov.
+        Problem združevanja objektov med rojenjem so deloma razrešili
+        Boyle~\etal v DSORT-MCU~\cite{src:boyle2024dsort}, kjer so predstavili
+        adaptivno deljenje slike. Sliko so najprej razdelili na prekrivajoče
+        odseke, nato pa vsak odsek ločeno poslali skozi model
+        FOMO~\cite{src:fomodocs}. Rezultate vseh odsekov so nato združili v končni
+        izhod. S tem so izboljšali sposobnost modela FOMO~\cite{src:fomodocs}
+        za štetje objektov.
         
-        Čeprav obstaja precej pristopov za izvajanje na mikrokrmilnikih~\cite{src:abadade2023comprehensive}, je raziskav, ki njihovo uporabo obravnavajo v kontekstu razpoznavanja hrane, razmeroma malo~\cite{src:moumane2023food, src:Nikodinovska_2024}.
+        Čeprav obstaja precej pristopov za izvajanje na
+        mikrokrmilnikih~\cite{src:abadade2023comprehensive}, je raziskav, ki
+        njihovo uporabo obravnavajo v kontekstu razpoznavanja hrane, razmeroma
+        malo~\cite{src:moumane2023food, src:Nikodinovska_2024}.
         % Klasifikacija
-        Gutti~\etal~\cite{src:gutti2022real} so izdelali prototip za razvrščanje sadja in zelenjave na podlagi slik na ESP-32 mikrokrmilniku. Izvedli so primerjavo treh modelov -- prilagojen CNN, MobileNetV1~\cite{src:howard2017mobilenets} ter MobileNetV2~\cite{src:sandler2018mobilenetv2}. Izmerili so hitrost inference do 51 ms in porabe do 66 kB pomnilnika. Lin~\etal~\cite{src:lin2020mcunet} so predstavili MCUNet, primeren za izvajanje na mikrokrmilnikih. Na ImageNet~\cite{src:russakovsky2015imagenet} so z njim dosegli 70{,}7~\% natančnost. Modela MobileNetV1~\cite{src:howard2017mobilenets} in MobileNetV2~\cite{src:sandler2018mobilenetv2} sta na isti zbirki dosegla 72{,}0~\% in 74{,}2~\% natančnost s 3{,}4 in 6{,}9 milijoni parametrov. 
+        Gutti~\etal~\cite{src:gutti2022real} so izdelali prototip za
+        razvrščanje sadja in zelenjave na podlagi slik na ESP-32
+        mikrokrmilniku. Izvedli so primerjavo treh modelov -- prilagojeni model CNN,
+        MobileNetV1~\cite{src:howard2017mobilenets} ter
+        MobileNetV2~\cite{src:sandler2018mobilenetv2}. Izmerili so čas
+        inference do 51 ms in porabo pomnilnika do 66 kB.
+        Lin~\etal~\cite{src:lin2020mcunet} so predstavili MCUNet, primeren za
+        izvajanje na mikrokrmilnikih. Na
+        ImageNet~\cite{src:russakovsky2015imagenet} so z njim dosegli 70{,}7~\%
+        natančnost. Modela MobileNetV1~\cite{src:howard2017mobilenets} in
+        MobileNetV2~\cite{src:sandler2018mobilenetv2} sta na isti zbirki
+        dosegla 72{,}0~\% in 74{,}2~\% natančnost s 3{,}4 in 6{,}9 milijoni
+        parametrov. 
 
         % Razpoznava hrane
         % Tipično avtorji ciljajo vsaj mobilne telefone.
         % Klasifikacija
-        V STM32 Model Zoo~\cite{src:stm32modelzoo} na zbirki \mbox{Food-101}~\cite{src:bossard2014food} navajajo do 77{,}1~\% natančnost z MobileNetV1 ter do 80{,}38~\% natančnost z MobileNetV2. V realnosti je natančnost tipično nižja, saj je potrebno zmanjšati velikost modela glede na izbrano strojno opremo.
+        V STM32 Model Zoo~\cite{src:stm32modelzoo} na zbirki
+        \mbox{Food-101}~\cite{src:bossard2014food} navajajo do 77{,}1~\%
+        natančnost z modelom MobileNetV1 ter do 80{,}38~\% natančnost z modelom MobileNetV2. V
+        realnosti je natančnost tipično nižja, saj je potrebno zmanjšati
+        velikost modela glede na izbrano strojno opremo.
         Nikodinovska~\cite{src:Nikodinovska_2024} je na platformi STM32 implementirala model za klasifikacijo zapečenosti piškotov. 
         % Detekcija in segmentacija?
-        Prednosti izvedbe na robnih napravah so jasne -- hitrejši in preprostejši modeli, cenejša izvedba, naprav pa ni potrebno povezovati v oblak.
+        Prednosti izvedbe na robnih napravah so jasne -- hitrejši in
+        preprostejši modeli, cenejša izvedba, naprav pa ni potrebno povezovati
+        v oblak.
 
         % TODO: Po napisanem uvodu tu argumentiraj kaj ostalim pristopom manjka v primerjavi s tvojo idejo. Na objektiven način skritiziraj dela (uporabi to kar si že napisal). Lahko tut iz obeh podpoglavij v sorodnih delih. Nej bo to mini mini diskusija sorodnih del.
 
