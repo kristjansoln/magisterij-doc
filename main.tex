@@ -925,7 +925,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             Pred razmahom globokega učenja so klasifikacijski pristopi večinoma temeljili na ročno izluščenih slikovnih značilkah in klasičnih metodah razvrščanja~\cite{src:min2019survey}. Med pogosto uporabljenimi opisniki sta bila SIFT, ki je temeljil na lokalnih invariantnih značilkah, in HOG, ki je opisoval porazdelitev usmerjenih gradientov v sliki~\cite{src:lowe2004sift, src:dalal2005hog}. Tako pridobljene predstavitve so raziskovalci nato uporabljali v razvrščevalnikih, kot je metoda SVM~\cite{src:cortes1995svm}. Tudi pri razpoznavanju jedi so bili uporabljeni podobni pristopi; primer takšnega sistema je podatkovna zbirka Food-101~\cite{src:bossard2014food}, kjer so avtorji uporabili diskriminativne slikovne komponente in naključne gozdove~\cite{src:bossard2014food}. Čeprav so takšne metode dosegle uporabne rezultate, je bila njihova uspešnost praviloma omejena zaradi odvisnosti od ročno načrtovanih značilk~\cite{src:min2019survey}.
 
             % Moderne metode (Modern methods)
-            V sodobnih pristopih h klasifikaciji slik prevladujejo konvolucijske nevronske mreže, ki značilk ne izluščijo ročno, temveč se jih naučijo neposredno iz podatkov~\cite{src:krizhevsky2012imagenet}. Takšni modeli so se izkazali za zelo uspešne tudi pri razpoznavanju jedi, saj bolje obvladujejo veliko vizualno raznolikost jedi, podobnost med različnimi kategorijami ter prisotnost več sestavin na isti sliki~\cite{src:kagaya2014food, src:min2019survey, src:konstantakopoulos2023review}. Z razvojem globljih in učinkovitejših arhitektur, kot so rezidualne mreže in modeli EfficientNet, so se dodatno izboljšali tako klasifikacijska točnost kot računska učinkovitost~\cite{src:he2016deep, src:tan2019efficientnet}. Na področju hrane so se zato uveljavili tako specializirani modeli za razpoznavanje jedi kot tudi večoznačni pristopi za razpoznavanje sestavin~\cite{src:martinel2018wide, src:bolanos2017food}.
+            V sodobnih pristopih h klasifikaciji slik prevladujejo konvolucijske nevronske mreže, ki značilk ne izluščijo ročno, temveč se jih naučijo neposredno iz podatkov~\cite{src:krizhevsky2012imagenet}. Takšni modeli so se izkazali za zelo uspešne tudi pri razpoznavanju jedi, saj bolje obvladujejo veliko vizualno raznolikost jedi, podobnost med različnimi kategorijami ter prisotnost več sestavin na isti sliki~\cite{src:kagaya2014food, src:min2019survey, src:konstantakopoulos2023review}. Z razvojem globljih in učinkovitejših arhitektur, kot so residualne mreže in modeli EfficientNet, so se dodatno izboljšali tako klasifikacijska točnost kot računska učinkovitost~\cite{src:he2016deep, src:tan2019efficientnet}. Na področju hrane so se zato uveljavili tako specializirani modeli za razpoznavanje jedi kot tudi večoznačni pristopi za razpoznavanje sestavin~\cite{src:martinel2018wide, src:bolanos2017food}.
 
             % Metode s komponentami (spustimo)
 
@@ -943,14 +943,14 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             Pred razširitvijo globokega učenja so segmentacijski pristopi večinoma temeljili na grafovskih, regijskih in optimizacijskih metodah. Slike so segmentirali na podlagi podobnosti barve, teksture, robov in prostorske povezanosti med slikovnimi elementi~\cite{src:felzenszwalb2004efficient, src:yu2023techniques}.
 
             % Moderni pristopi
-            Sodobni segmentacijski pristopi večinoma temeljijo na globokem učenju~\cite{src:minaee2021image, src:yu2023techniques}. Nadaljnji razvoj je večinoma potekal v smeri arhitektur tipa enkoder--dekoder, pri katerih kodirni del izlušči semantično bogate značilke, dekodirni del pa jih preslika nazaj v prostorsko ločljiv prikaz segmentacijske maske~\cite{src:ronneberger2015unet, src:minaee2021image, src:yu2023techniques}. Pri tem imajo pogosto pomembno vlogo tudi preskočne povezave, ki pomagajo ohraniti fine podrobnosti in natančnejše robove segmentov. Pri instančni segmentaciji se takim pristopom pridružijo še mehanizmi za lokalizacijo posameznih objektov, tako da model ne določi le razreda posameznega piksla, temveč loči tudi posamezne primerke iste kategorije in jim priredi ločene maske~\cite{src:he2017mask, src:minaee2021image}.
+            Sodobni segmentacijski pristopi večinoma temeljijo na globokem učenju~\cite{src:minaee2021image, src:yu2023techniques}. Nadaljnji razvoj je večinoma potekal v smeri arhitektur tipa enkoder-dekoder, pri katerih kodirni del izlušči semantično bogate značilke, dekodirni del pa jih preslika nazaj v prostorsko ločljiv prikaz segmentacijske maske~\cite{src:ronneberger2015unet, src:minaee2021image, src:yu2023techniques}. Pri tem imajo pogosto pomembno vlogo tudi preskočne povezave, ki pomagajo ohraniti fine podrobnosti in natančnejše robove segmentov. Pri instančni segmentaciji se takim pristopom pridružijo še mehanizmi za lokalizacijo posameznih objektov, tako da model ne določi le razreda posameznega piksla, temveč loči tudi posamezne primerke iste kategorije in jim priredi ločene maske~\cite{src:he2017mask, src:minaee2021image}.
 
     \section{Izvajanje na robnih napravah in optimizacija}  \label{sct:teorija-robnenaprave}
 
         % Uvod, early efforts
-        Izvajanje modelov globokega učenja na robnih napravah je zahtevno zaradi strogih omejitev strojne opreme, predvsem razpoložljivega RAM pomnilnika ter Flash (programskega) pomnilnika. Izraz \enquote{robna naprava} zajema širok nabor naprav, od mobilnih telefonov in zmogljivejših namenskih platform, kot sta Nvidia Jetson~\cite{src:nvidiajetson} in Coral Edge TPU (angl. Tensor Processing Unit)~\cite{src:coraledgetpu}, pa vse do mikrokrmilnikov brez specializirane strojne opreme za pospeševanje inferenc. V tem delu se omejujemo na mikrokrmilnike brez specializirane strojne opreme, ker so ti praviloma nizkocenovni in bolj razširjeni~\cite{src:abadade2023comprehensive}.
+        Izvajanje modelov globokega učenja na robnih napravah je zahtevno zaradi strogih omejitev strojne opreme, predvsem razpoložljivega RAM pomnilnika ter Flash (programskega) pomnilnika. Izraz \enquote{robna naprava} zajema širok nabor naprav, od mobilnih telefonov in zmogljivejših namenskih platform, kot sta Nvidia Jetson~\cite{src:nvidiajetson} in Coral Edge TPU (angl. Tensor Processing Unit)~\cite{src:coraledgetpu}, pa vse do mikrokrmilnikov brez specializirane strojne opreme za pospeševanje inference. V tem delu se omejujemo na mikrokrmilnike brez specializirane strojne opreme, ker so ti praviloma nizkocenovni in bolj razširjeni~\cite{src:abadade2023comprehensive}.
 
-        Mikrokrmilniki imajo pogosto na voljo do 16~MB Flash pomnilnika in do 8~MB delovnega (RAM) pomnilnika, kar je bistveno manj od običajne strojne opreme za izvajanje modelov globokega učenja~\cite{src:abadade2023comprehensive}.
+        Mikrokrmilniki imajo pogosto na voljo do 16~MB pomnilnika Flash in do 8~MB delovnega pomnilnika, kar je bistveno manj od običajne strojne opreme za izvajanje modelov globokega učenja~\cite{src:abadade2023comprehensive}.
 
         % TFLite (LiteRT), TFLite Micro (LiteRT for microcontrollers), ONNX, Edge Impulse thing,  ostali ... CMSIS-NN, CubeX-AI.
         % Glej tudi software optimization v surveyu
@@ -971,7 +971,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
         V literaturi najdemo ločevanje tudi med dinamično in statično kvantizacijo. Dinamična kvantizacija praviloma označuje pristop, pri katerem se razpon aktivacij določa sproti med izvajanjem, medtem ko je pri statični kvantizaciji ta razpon določen vnaprej~\cite{src:gholami2022survey, src:jacob2018quantization}. Za določitev razponov pri statični kvantizaciji v kombinaciji s PTQ zato pogosto uporabimo tudi t.~i. reprezentativno podatkovno zbirko, na podlagi katere izvedemo kalibracijo.
 
         % Kvantizacija - dynamic & full v tflite micro
-        V dokumentaciji orodja LiteRT Micro~\cite{src:litertmicro, src:david2021tensorflowlitemicro} ločimo dinamično in polno kvantizacijo. Dinamična kvantizacija v tem kontekstu predstavlja postopek, pri katerem statično kvantiziramo predvsem uteži in prage, medtem ko se aktivacijski ter vhodno-izhodni medpomnilniki kvantizirajo dinamično oziroma ostanejo v prvotni obliki. Polna kvantizacija pa pomeni, da poleg uteži in pragov statično kvantiziramo tudi aktivacijske ter vhodno-izhodne medpomnilnike.
+        V dokumentaciji orodja LiteRT Micro~\cite{src:litertmicro, src:david2021tensorflowlitemicro} ločimo dinamično in polno kvantizacijo. Dinamična kvantizacija v tem kontekstu predstavlja postopek, pri katerem statično kvantiziramo predvsem uteži in prage, medtem ko se aktivacijski ter vhodno-izhodni medpomnilniki kvantizirajo dinamično oziroma ostanejo v prvotni obliki. Polna kvantizacija pomeni, da poleg uteži in pragov statično kvantiziramo tudi aktivacijske ter vhodno-izhodne medpomnilnike.
         V knjižnici LiteRT Micro so tenzorji uteži in pragov shranjeni kot konstante, zato so na mikrokrmilnikih običajno v pomnilniku Flash/ROM, medtem ko se vmesni rezultati oziroma aktivacije shranjujejo v vnaprej rezerviranem prostoru v RAM-u~\cite{src:litertmicro}. Posledično kvantizacija zgolj uteži in pragov praviloma zmanjša predvsem porabo Flash pomnilnika, medtem ko je prihranek v RAM-u omejen. Pri polni kvantizaciji, kjer se kvantizirajo tudi aktivacije in po potrebi vhodni ter izhodni tenzorji, pa se lahko zmanjša tudi velikost aktivacijskih medpomnilnikov in s tem potrebna količina RAM-a.
 
         % Pruning
@@ -1600,7 +1600,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             \(w_{\mathrm{bg}}=1{,}0\).
 
             Za večjo kapaciteto modela smo nastavili parameter \(\alpha\) na
-            \(1{,}0\), prag \(\tau\) nastavili na \(0{,}2\), prag \(\nu\) pa na
+            \(1{,}0\), prag \(\tau\) na \(0{,}2\), prag \(\nu\) pa na
             \(3\). Vhodno ločljivost smo nastavili na \(128 \times 128\) pikslov,
             izhodno masko pa pomanjšali za faktor $16$, kar pomeni ločljivost
             \(8 \times 8\) pikslov. V predprocesiranju smo uporabili knjižnico
@@ -2113,7 +2113,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             tabeli~\ref{tab:experiment_simplified_foodseg103_dataset_table}.
             Na grafih je razvidno, da se validacijski krivulji po začetnem padcu v
             približno 15. epohi obrneta navzgor, vendar je rast na desnem grafu
-            počasnejša kot pa v prejšnjem eksperimentu na izvirni podatkovni
+            počasnejša kot v prejšnjem eksperimentu na izvirni podatkovni
             zbirki. Razlika med levim in desnim grafom je manjša kot med
             grafoma v prejšnjem eksperimentu. V primerjavi z eksperimentom na
             izvirni podatkovni zbirki je model dosegel izboljšanje v doseženih
@@ -3084,7 +3084,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             %rezultati.
 
             % --- nova diskusija ---
-            V primerjavi z eksperimenti na izvirni zbirki doseže ta eksperiment
+            V primerjavi z eksperimenti na izvirni zbirki ta doseže
             boljše rezultate. V tem eksperimentu imajo različna uteževanja
             precej manj vpliva na dosežene rezultate: validacijske krivulje na
             grafih~\ref{fig:experiment_simplified_foodseg103_dataset_loss} si
@@ -3173,7 +3173,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
 
             Izbira faktorja zmanjšanja in resolucije vpliva predvsem na
             velikost receptivnega polja za posamezno celico na izhodu modela.
-            Ker na vsaki celici vbistvu ločneno izvajamo klasifikacijo, je
+            Ker na vsaki celici ločeno izvajamo klasifikacijo, je
             pomembno, kolikšen del slike lahko posamezna celica zajame.
             Sklepali bi lahko, da smo z izbrano kombinacijo izbrali receptivno
             polje, ki je dovolj majhno, da pogosto zajame zgolj en razred
@@ -3369,15 +3369,15 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             % uporabe.
             Arhitekturno je model omejen z majhnim receptivnim poljem in
             nizkoločljivostnim izhodom. Posamezne celice se klasificirajo
-            skoraj neodvisno, zato se model primarno opira na lokalne teksturne
-            in barvne pozive znotraj posamezne celice. To pojasni dobre
+            skoraj neodvisno, zato se model opira predvsem na lokalne teksture
+            in barvo znotraj posamezne celice. To pojasni dobre
             rezultate pri razredih z izrazito teksturo in barvo (npr.\
             \emph{broccoli}) ter težave pri razredih z vizualno podobnimi
             teksturami, kjer je za razlikovanje potrebna informacija o obliki
             (npr.\ \emph{pork} proti \emph{chicken duck}). Kratek izluščevalnik
             značilk dodatno omeji kapaciteto: v našem izrezu ohranimo le
-            4{,}8~\% parametrov in 36{,}6~\% plasti iz izvornega MobileNetV2,
-            kot je opisano v
+            4{,}8~\% parametrov in 36{,}6~\% plasti izvornega MobileNetV2,
+            kot opisano v
             poglavju~\ref{sct:fomo-ekstraktor-znacilk}.
             Prednost tako majhne arhitekture je sicer preprostejše izvajanje na
             robnih napravah, slabost pa je nižja kapaciteta modela. Rezultati
@@ -3481,7 +3481,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
         razredu objekta. Določanje razredov posameznim segmentom bi
         zahtevalo dodatno procesiranje in v nekaterih primerih tudi ročno
         anotiranje. SAM torej ni celotna rešitev za izbrano
-        nalogo, lahko pa poenostavi najzahtevnejši del -- risanje mask na
+        nalogo, lahko pa poenostavi najzahtevnejši del, torej risanje mask na
         objekt.
 
         \paragraph{MobileSAM.}
@@ -3532,7 +3532,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
         se kot avtorji zbirke odločili za specifična pravila združevanja, bi
         uporabniki te zbirke lahko pričakovali drugačno razmejitev za njihovo
         specifično aplikacijo. Robustno določitev pravil bi bilo težko doseči
-        brez  vključitve več anotatorjev in namenske evalvacije. To je še eden
+        brez dodatnih anotatorjev in namenske evalvacije. To je še eden
         izmed razlogov, zakaj pristopa SAM v tej fazi ni bilo smiselno
         nadaljevati.
     
@@ -3617,8 +3617,8 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
     \section{Praktične smernice in prihodnje delo}
 
         \paragraph{Formulacija naloge, izbira podatkovne zbirke in nadzor okolja.}
-        Zahtevnost izbrane podatkovne zbirke mogoče ni preveč optimalna za
-        probleme, ki zajemajo izvajanje na robnih napravah. Zbirka FoodSeg103
+        Izbrana podatkovna zbirka je prezahtevna za
+        probleme, ki vključujejo izvajanje na robnih napravah. Zbirka FoodSeg103
         predstavlja odprt problem, kjer je okolje nenadzorovano. V kontekstu
         praktične oz. industrijske uporabe je smiselno vložiti trud tudi v
         nadzorovanje okolja, kar lahko vključuje konstantno osvetlitev,
@@ -3671,7 +3671,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
         poenostavitev, saj bi bila prisotnost razreda neposreden izhod modela,
         s tem pa bi se izognili zapleteni, nestandardni naknadni obdelavi
         izhoda FOMO modela. Tak pristop bi bolje sledil cilju naloge, čeprav
-        modela morda ne bi neposredno spodbujal k lokalizaciji na vmesnih plastih.
+        modela morda ne bi neposredno spodbujal k lokalizaciji na vmesnih plasteh.
 
         Alternativno bi lahko namesto FOMO-arhitekture vhodno sliko razdelili
         na dele in vsak del ločeno obdelali s klasifikacijskim modelom. S tem
