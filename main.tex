@@ -130,26 +130,37 @@
 
 \selectlanguage{slovene}
 
+%******************************* PLATNICA ************************************
+\thispagestyle{empty}
+\includepdf[pages=1,pagecommand={}]{figures/platnica.pdf}
+\praznastran
+
 %******************************* NASLOVNICA ************************************
 \maketitle
+
+%******************************* TEMA ************************************
+\thispagestyle{empty}
+\includepdf[pages=1,pagecommand={}]{figures/tema.pdf}
+\thispagestyle{empty}
+\includepdf[pages=2,pagecommand={}]{figures/tema.pdf}
 
 %******************************* ZAHVALA ***************************************
 \zahvala
 
-Iskreno se zahvaljujem podjetju Gorenje d.o.o. in sodelavcem za priložnost za raziskovanje izbrane tematike ter za vso pomoč in podporo pri izdelavi magistrske naloge.
-Posebna zahvala gre somentorju as. dr. Gregorju Koporcu za strokovne nasvete, usmeritve in vsakodnevno podporo med nastajanjem dela.
+Iskreno se zahvaljujem podjetju Gorenje d.o.o. in sodelavcem za priložnost za raziskovanje izbrane tematike ter za vso pomoč in podporo pri izdelavi magistrskega dela.
+Posebej se zahvaljujem somentorju as. dr. Gregorju Koporcu za strokovne nasvete, usmeritve in vsakodnevno podporo med nastajanjem dela.
 Zahvaljujem se tudi mentorju izr. prof. dr. Janezu Peršu za strokovno vodenje in dragocene nasvete, ko sem naletel na težave.
-Nazadnje se iskreno zahvaljujem svoji punci, družini in prijateljem za potrpežljivost, razumevanje in spodbudo skozi celoten študij.
+Nazadnje se iskreno zahvaljujem moji punci, družini in prijateljem za potrpežljivost, razumevanje in spodbudo skozi celoten študij.
 
 %******************************* POVZETEK IN KLJUČNE BESEDE ********************
 \povzetek
 
-Razpoznava sestavin hrane na slikah predstavlja zahteven problem, posebej kadar
+Razpoznava sestavin hrane na slikah je zahteven problem, zlasti kadar
 želimo modele izvajati neposredno na mikrokrmilnikih. Večina sorodnih pristopov
 problem obravnava kot semantično ali instančno segmentacijo, kar praviloma
-zahteva modele z večjo računsko in pomnilniško zahtevnostjo, zato so takšne
-rešitve za zelo omejene robne naprave pogosto neprimerne. V tem delu
-zato obravnavamo možnost izvedbe z uporabo lahkega modela FOMO,
+zahteva računsko in pomnilniško zahtevnejše modele, zato so takšne
+rešitve za robne naprave z zelo omejenimi viri pogosto neprimerne. V tem delu
+zato obravnavamo možnost uporabe lahkega modela FOMO,
 ki je bil prvotno zasnovan kot detekcijski model za
 mikrokrmilnike. Uporabili smo podatkovno zbirko FoodSeg103, model prilagodili
 za ugotavljanje prisotnosti sestavin na sliki ter ovrednotili vpliv
@@ -160,7 +171,7 @@ YOLOv11-seg, kvalitativno pa smo preverili tudi uporabnost metod SAM. Ugotovili
 smo, da je FOMO z vidika velikosti, porabe pomnilnika in izvedljivosti na
 mikrokrmilnikih ustrezen, vendar je njegova uspešnost pri zahtevnejši razpoznavi
 sestavin omejena. Med pomembnejšimi omejitvami so majhno receptivno
-polje, nizkoločljivostni izhod, omejena kapaciteta modela ter občutljivost na
+polje, izhod z nizko ločljivostjo, omejena kapaciteta modela ter občutljivost na
 pripravo podatkov in naknadno obdelavo. Prispevek dela je eksperimentalna ocena
 primernosti takšnega pristopa za mikrokrmilnike ter izpeljava smernic za
 nadaljnje izboljšave.
@@ -193,7 +204,7 @@ qualitatively.
 We found that FOMO is suitable in terms of model size, memory
 consumption, and feasibility of deployment on microcontrollers, but its
 performance remains limited for more demanding ingredient recognition tasks.
-The main limitations include small receptive field, low-resolution output,
+The main limitations include a small receptive field, low-resolution output,
 limited model capacity, and sensitivity to data preparation and
 post-processing. The contribution of this thesis is an experimental assessment
 of the suitability of such an approach for microcontrollers and the derivation
@@ -237,7 +248,7 @@ food ingredient recognition, edge devices, microcontrollers, lightweight models,
 
 \seznamkratic
 
-V pričujočem zaključnem delu so uporabljene naslednje kratice:
+V pričujočem magistrskem delu so uporabljene naslednje kratice:
 
 % TODO: Konsistentno uporabljaj isti stil tabel skozi celoten dokument
 \begin{center}
@@ -251,7 +262,7 @@ V pričujočem zaključnem delu so uporabljene naslednje kratice:
         SOTA    & Vodilni pristop (angl. State of the Art) \\
         PTQ     & Kvantizacija po učenju (angl. Post-Training Quantization) \\
         QAT     & Ozaveščeno učenje (angl. Quantization-Aware Training) \\
-        IoU     & Jaccardov indeks oz. presečišče nad unijo (angl. Intersection over Union) \\
+        IoU     & Jaccardov indeks oz. presek nad unijo (angl. Intersection over Union) \\
         mIoU    & Srednji Jaccardov indeks (angl. Mean Intersection over Union) \\
         \bottomrule
     \end{tabular}
@@ -267,7 +278,7 @@ V pričujočem zaključnem delu so uporabljene naslednje kratice:
     % Tekom zgodovine je bila glavna skrb povezana s hrano predvsem količina; priprava in uživanje hrane sta vsakodnevni dejavnosti in del kulture, kjer iz osnovnih sestavin z različnimi postopki ustvarimo jedi. V preteklosti je bil temeljni poudarek, da postopki hrano naredijo lažje prebavljivo in varno za uživanje; danes, v obdobju izobilja, pa se težišče pogosteje premakne k okusu, konsistenci, ponovljivosti in preprostosti priprave. V tem okviru se vse pogosteje pojavlja tudi vidik zdrave priprave: izbira tehnik, ki ohranijo hranila in zmanjšajo nepotrebne dodatke.
 
     % - peka/priprava hrane na splošno
-    Kuhanje je staro skoraj toliko kot človeška civilizacija - po arheoloških
+    Kuhanje spremlja človeka že zelo dolgo -- po arheoloških
     ocenah so zgodnji ljudje že pred približno 1,5 milijona let obvladali rabo
     ognja in ga začeli uporabljati pri pripravi
     hrane~\cite{src:myhrvold_cooking_2025}.
@@ -276,23 +287,28 @@ V pričujočem zaključnem delu so uporabljene naslednje kratice:
     Toplotna obdelava živil praviloma poveča njihovo prebavljivost in s tem
     olajša izrabo energije ter nekaterih hranil. Tako je kuhanje našim zgodnjim
         prednikom omogočilo izkoriščanje širšega nabora prehranskih virov in
-    pridobivanje več hranil~\cite{src:myhrvold_cooking_2025}. Živila kot mleko,
-    govedina in jajca se pred uživanjem toplotno obdelajo, da se uničijo
-    patogeni mikroorganizmi in izboljša okus, tekstura in podobno. Tehnološki
+    pridobivanje več hranil~\cite{src:myhrvold_cooking_2025}. Živila, kot so mleko,
+    govedina in jajca, se pred uživanjem toplotno obdelajo, da se uničijo
+    patogeni mikroorganizmi ter izboljšata okus in tekstura. Tehnološki
     postopki predelave spremenijo mikrostrukturo živil, bogatih z
-    beljakovinami, s čimer spremenijo postopek prebave in absorpcije beljakovin
+    beljakovinami, s čimer spremenijo potek prebave in absorpcije beljakovin
     v želodcu in tankem črevesu~\cite{src:Loveday_2023}.
 
     % Povezava z zdravjem in okoljem, avtomatizacijo
-    Prehrana močno vpliva na zdravje, hkrati pa je pomemben faktor za zmanjšanje vpliva na okolje~\cite{src:eat2019food}.
+    Prehrana pomembno vpliva na zdravje, hkrati pa je pomemben dejavnik za
+    zmanjšanje vpliva na okolje~\cite{src:eat2019food}.
     % Povezava s tehnologijo.
-    Pametni kuhinjski aparati lahko optimizirajo našo prehrano in omogočijo večjo natančnost ter ponovljivost pri kuhanju, medtem ko pametni hladilniki z upravljanjem zalog zmanjšajo količino zavržene hrane~\cite{src:GOLSHANY2025116557}. Nekatere raziskave kažejo, da lahko pametne kuhinje prinesejo tudi do 15~\% prihranka električne energije.
+    Pametni kuhinjski aparati lahko optimizirajo pripravo hrane in omogočijo
+    večjo natančnost ter ponovljivost pri kuhanju, medtem ko pametni hladilniki
+    z upravljanjem zalog zmanjšajo količino zavržene
+    hrane~\cite{src:GOLSHANY2025116557}. Nekatere raziskave kažejo, da lahko
+    pametne kuhinje omogočijo do 15~\% prihranka električne energije~\cite{src:GOLSHANY2025116557}.
 
     % Zakaj je razpoznavanje hrane pomembno (zdravje debelost, ostalo zdravje, tut ostali izdelki kot kuhinjski aparati)
-    Nove tehnologije – zlasti računalniški vid na napravah z omejenimi viri –
-    lahko proces priprave hrane standardizirajo in olajšajo: zmanjšajo napake,
+    Nove tehnologije -- zlasti računalniški vid na napravah z omejenimi viri --
+    lahko standardizirajo in olajšajo pripravo hrane: zmanjšajo napake,
     skrajšajo čas ter razbremenijo uporabnika pri načrtovanju in izvedbi
-    korakov. Že zgodnji poskusi nadzora peke so vključevali optične sisteme z
+    korakov~\cite{src:GOLSHANY2025116557}. Že zgodnji poskusi nadzora peke so vključevali optične sisteme za
     obdelavo slik v pečici za spremljanje vizualnih značilnosti (barvni ton,
     teksturo, obliko) in s tem postavili temelje za samodejno vodenje
     procesa~\cite{src:paquet2012monitoring}. V zadnjih letih so se metode
@@ -301,27 +317,40 @@ V pričujočem zaključnem delu so uporabljene naslednje kratice:
     poenostavijo ali deloma avtomatizirajo~\cite{src:SEDEJ_2023,
     src:Nikodinovska_2024}.
     Razpoznava jedi je tako ključen gradnik, s katerim sistemu omogočimo, da v
-    realnem času določi, katera jed je prisotna na sliki, na tej osnovi
-    prilagodi naslednje korake in tako naredi pripravo bolj zanesljivo in
-    enostavno.
+    realnem času določi, katera jed je prisotna na sliki, na tej podlagi
+    prilagodi naslednje korake ter tako izboljša zanesljivost in enostavnost priprave.
 
     % Zakaj je razpoznavanje sestavin hrane (ne samo celih jedi) pomembno
-    Identifikacija jedi je v literaturi precej pogosto obravnavana naloga~\cite{src:vlachopoulou2023food, src:mohanty2022food, src:bolanos2017food, src:hassannejad2016food, src:martinel2018wide, src:tan2019efficientnet} na raznih podatkovnih zbirkah~\cite{src:bossard2014food, src:matsuda2012recognition, src:kawano2014automatic, src:chen2016deep}. Pri tem večina pristopov tipično predpostavlja zaprt, vnaprej določen seznam jedi. Takšna predpostavka pogosto vodi v slabšo fleksibilnost sistema, saj brez dodatnega učenja težko spreminjamo izbran nabor jedi.
-    Nasprotno pa razpoznavanje samih sestavin omogoči, da tip jedi določimo na podlagi zaznanih komponent: nove jedi lahko dodajamo kot kombinacije sestavin (npr. z enostavno preslikavo med kombinacijami in jedmi), brez širjenja podatkovne zbirke ali ponovnega učenja modela.
-    S takim pristopom bolje prenašamo visoko vizualno varianco in omogočamo razpoznavanje kompleksnih jedi z več komponentami, kjer se izgled med primeri močno razlikuje.
-    S tem hkrati bistveno zmanjšamo prostor label, saj lahko iz manjšega nabora sestavin tvorimo veliko število jedi~\cite{src:bolanos2017food}.
-    Zato je pristop s sestavinami bolj univerzalen od neposredne klasifikacije jedi, še posebej ko moramo sistem enostavno širiti in prilagajati.
+    Razpoznavanje jedi je v literaturi pogosto obravnavana
+    naloga~\cite{src:vlachopoulou2023food, src:mohanty2022food,
+    src:bolanos2017food, src:hassannejad2016food, src:martinel2018wide,
+    src:tan2019efficientnet} na različnih podatkovnih
+    zbirkah~\cite{src:bossard2014food, src:matsuda2012recognition,
+    src:kawano2014automatic, src:chen2016deep}. Pri tem večina pristopov
+    tipično predpostavlja zaprt, vnaprej določen seznam jedi. Takšna
+    predpostavka pogosto zmanjša prilagodljivost sistema, saj brez
+    dodatnega učenja težko spreminjamo izbran nabor jedi. Nasprotno pa
+    razpoznavanje samih sestavin omogoči, da vrsto jedi določimo na podlagi
+    zaznanih komponent: nove jedi lahko dodajamo kot kombinacije sestavin (npr.
+    z enostavno preslikavo med kombinacijami in jedmi), brez širjenja
+    podatkovne zbirke ali ponovnega učenja modela. S takim pristopom bolje
+    obvladujemo veliko vizualno variabilnost in omogočamo razpoznavanje kompleksnih
+    jedi z več komponentami, pri katerih se videz med primeri močno razlikuje. S tem
+    hkrati bistveno zmanjšamo prostor oznak, saj lahko iz manjšega nabora
+    sestavin tvorimo veliko število jedi~\cite{src:bolanos2017food}. Zato je
+    pristop s sestavinami bolj univerzalen od neposredne klasifikacije jedi, še
+    posebej, ko moramo sistem enostavno širiti in prilagajati.
 
     % Novejši pristopi se tipično lotijo segmentacije sestavin hrane
-    Raziskovalci se danes razpoznavanja sestavin pogosto lotijo kot segmentacijski problem~\cite{src:wu2021large, src:lan2023foodsam, src:bolanos2016simultaneous, src:pfisterer2019segmentation, src:poply2021refined}. Pri tem pogosto uporabijo zbirke, kot je FoodSeg103~\cite{src:wu2021large}.
-    % TODO: Pikselno natančne maske - prevod
-    Segmentacija (semantična ali instančna) deluje na podlagi pikselno natančnih mask, s čimer lahko dosežemo tudi ocenjevanje količin ter hranilnih vrednosti. Pripadajoče arhitekture so načeloma računsko in pomnilniško zahtevne, zato jih težje uporabljamo na napravah z omejenimi viri.
+    Raziskovalci danes razpoznavanje sestavin pogosto obravnavajo kot segmentacijski problem~\cite{src:wu2021large, src:lan2023foodsam, src:bolanos2016simultaneous, src:pfisterer2019segmentation, src:poply2021refined}. Pri tem pogosto uporabljajo zbirke, kot je FoodSeg103~\cite{src:wu2021large}.
+    % TODO: Pikselno natančne maske - prevod?
+    Segmentacija (semantična ali instančna) deluje na podlagi pikselno natančnih mask, s čimer lahko dosežemo tudi ocenjevanje količin ter hranilnih vrednosti. Takšne arhitekture so praviloma računsko in pomnilniško zahtevne, zato jih težje uporabljamo na napravah z omejenimi viri.
 
     % Primerjava izvajanja v oblaku in na robnih napravah
     Če ciljna naprava ni dovolj zmogljiva za izvajanje modela, je
     pogosta rešitev izvajanje modela v oblaku. S tem zagotovimo ustrezno
-    strojno opremo za izvajanje modela, vendar hkrati vnesemo dodatne probleme
-    v povezavi z latenco, stroški, povezljivostjo naprav ter zasebnostjo. Trend
+    strojno opremo za izvajanje modela, vendar hkrati uvedemo dodatne težave,
+    povezane z latenco, stroški, povezljivostjo naprav in zasebnostjo. Trend
     v praksi je zato optimizacija in izvajanje neposredno na robnih
     napravah~\cite{src:abadade2023comprehensive}.
     % Kaj je robna naprava
@@ -332,39 +361,47 @@ V pričujočem zaključnem delu so uporabljene naslednje kratice:
     src:moosmann2024ultra_tinyissimoyolo, src:boyle2024dsort,
     src:lin2021memory, src:hymel2022edgeimpulse}. Za robne naprave z omejeno
     zmogljivostjo to pomeni iskanje kompromisov med natančnostjo in
-    kompleksnostjo algoritmov, dobro pa je premisliti tudi, če lahko zahtevne
-    algoritme, kot recimo segmentacijski algoritmi, nadomestimo s
-    preprostejšimi pristopi.
+    kompleksnostjo algoritmov, smiselno pa je premisliti tudi, ali lahko zahtevne
+    pristope, kot so segmentacijski algoritmi, nadomestimo s
+    preprostejšimi.
 
     % PROBLEMATIKA NA TEM PODROČJU
 
     % Opredeli problem na tem področju - segmentacijski algoritmi so računsko zahtevni in robne naprave imajo določene omejitve, in ker je razpoznavanje sestavin je ekstra zahtevno področje.
     % Omejitve in izzivi
-    Zastavljen problem razpoznavanja sestavin hrane je zahteven zaradi odprtosti okolja, tipične neenakomerne porazdelitve razredov v podatkovnih zbirkah sestavin, prekrivanj objektov na sliki, visoke znotrajrazredne variabilnosti ter nizke medrazredne variabilnosti~\cite{src:wu2021large, src:bossard2014food}.
-    Problem dodatno otežuje kompleksnost segmentacijskih algoritmov in omejitve strojne opreme. Izbrane platforme omejuje predvsem pomnilnik, ki je pogosto v rangu nekaj megabajtov ali celo kilobajtov. To neposredno določa največjo velikost modela, ki se še lahko izvaja na napravi. Dodatno omejitev predstavlja podpora izvajalnega okolja, saj ta za robne naprave načeloma podpirajo precej ožji nabor operacij.
-    Navedene omejitve uporabo modelov na takšnih napravah bistveno otežijo, še posebej, če želimo ohraniti natančnost, primerljivo z oblačnimi modeli.
+    Zastavljen problem razpoznavanja sestavin hrane je zahteven zaradi
+    odprtosti okolja, tipične neenakomerne porazdelitve razredov v podatkovnih
+    zbirkah sestavin, prekrivanj objektov na sliki, visoke znotrajrazredne
+    variabilnosti ter nizke medrazredne variabilnosti~\cite{src:wu2021large,
+    src:bossard2014food}. Problem dodatno otežuje kompleksnost segmentacijskih
+    algoritmov in omejitve strojne opreme. Izbrane platforme omejuje predvsem
+    pomnilnik, ki pogosto obsega le nekaj megabajtov ali celo kilobajtov. To
+    neposredno določa največjo velikost modela, ki se še lahko izvaja na
+    napravi. Dodatno omejitev predstavlja podpora izvajalnega okolja, saj ta za
+    robne naprave praviloma podpirajo precej ožji nabor operacij. Navedene
+    omejitve uporabo modelov na takšnih napravah bistveno otežijo, še posebej,
+    če želimo ohraniti natančnost, primerljivo z oblačnimi modeli.
     % Glej Mohanty2021 D.5. Negative Results da vidis kak so pocasi zgubljali frnikule in kaj vse so probali, pa ni uspelo.
 
     % NAMEN TEGA DELA - segmentacija, ki bi delovala na robnih napravah?
 
     % TODO: Koporec pravi da sem sodi: najdimo pristop razpoznavanja sestavin s segmentacijskimi algoritmi, ki bo deloval na robnih napravah.
     % TODO: Restrukturiraj? - Na kaksen nacin, s kaksnimi nalogami, s kaksnimi opravili smo eksperimentalno preverili izvedljivost razpoznave sestavin
-    Namen te naloge je, da eksperimentalno preverimo izvedljivost razpoznave
-    sestavin hrane na izbranih robnih napravah z izbranim pristopom
-    FOMO~\cite{src:announcingfomo}, pri čemer uporabimo podatkovno zbirko
+    Namen te naloge je eksperimentalno preveriti izvedljivost razpoznave
+    sestavin hrane na izbranih robnih napravah s pristopom
+    FOMO~\cite{src:announcingfomo}, pri čemer smo uporabili podatkovno zbirko
     FoodSeg103~\cite{src:wu2021large}. Želeli smo izpeljati smernice za
     industrijsko rabo, kjer so ključne zahteve strojna oprema in robustnost v
     realnih pogojih. Problema smo se lotili kot razpoznave sestavin hrane, ki
-    predstavlja osnovo za nadaljnje delo, z vizijo kot razpoznavo kompleksnih
-    jedi na osnovi sestavin. Uporabili smo alternativen pristop razpoznave
-    sestavin namesto klasičnih segmentacijskih modelov, da je izvedba na ciljni
-    strojni opremi lažja.
+    predstavlja osnovo za nadaljnje delo, z dolgoročnim ciljem razpoznavanja kompleksnih
+    jedi na osnovi sestavin. Uporabili smo alternativni pristop k razpoznavi
+    sestavin, ki ne temelji na klasičnih segmentacijskih modelih, kar olajša izvedbo na ciljni strojni opremi.
     Izbran pristop smo ovrednotili na zbirki FoodSeg103~\cite{src:wu2021large}
     ter analizirali njegove omejitve.
     Prikazati smo želeli vpliv priprave modela za izvajanje na robnih napravah,
     kar zajema predvsem vpliv kvantizacije na velikost in uspešnost modela.
     Preučili smo tudi potencialne poenostavitve podatkovne zbirke, da lahko
-    problem zastavimo drugače (npr. kot detekcijski problem). Na koncu smo na
+    problem zastavimo drugače, na primer kot detekcijski problem. Na koncu smo na
     podlagi ugotovitev oblikovali jasne smernice in predloge za nadaljnje delo.
 
     % Opisi svojo resitev
@@ -375,45 +412,83 @@ V pričujočem zaključnem delu so uporabljene naslednje kratice:
     % Ne obravnavamo [npr. večmodalnih modelov z besedilom/recepti] zaradi [razlog], prav tako ne [npr. kompleksnih segmentacijskih arhitektur], ker [omejitve].
 
     % Omejitev strojne opreme in izbor platforme STM32
-    Omejili smo se na naslednjo strojno opremo: kot platformo izberemo mikrokrmilnike~STM32, ki imajo pomnilnik in shranjevalni prostor omejen na do nekaj megabajtov. Četudi so te omejitve stroge, so drugi pokazali, da je sorodne modele možno uporabljati tudi na takšnih napravah~\cite{src:Nikodinovska_2024}. Pristop dodatno podpira orodje X-CUBE-AI za izvajanje modelov~\cite{src:stxcubeai-docs} ter nabor referenčnih modelov, dokumentiranih in pripravljenih za izvajanje na izbrani platformi~\cite{src:stm32modelzoo}.
-    Zaradi strogih omejitev pomnilnika, računske moči in porabe energije moramo globoke modele primerno optimizirati, kar je danes aktivno področje raziskav in razvoja.
-    V tem delu uporabimo model Faster Objects, More Objects (FOMO) platforme Edge Impulse~\cite{src:announcingfomo}, detekcijski pristop za mikrokrmilnike, ki se izogne klasični strukturi detektorjev in na izhodu ustvari grobo segmentacijsko masko. Slednja se običajno naknadno obdela (npr. z združevanjem/rojenjem), da na izhodu dobimo lokacije objektov.
-    % TODO: Razširi. Povej prednosti in slabosti modela.
+    Kot ciljno platformo smo izbrali
+    mikrokrmilnike~STM32, ki imajo pomnilnik in shranjevalni prostor omejen na
+    največ nekaj megabajtov. Čeprav so te omejitve stroge, so drugi pokazali, da je
+    sorodne modele mogoče uporabljati tudi na takšnih
+    napravah~\cite{src:Nikodinovska_2024}. Pristop dodatno podpira orodje
+    X-CUBE-AI za izvajanje modelov~\cite{src:stxcubeai-docs} ter nabor
+    referenčnih modelov, dokumentiranih in pripravljenih za izvajanje na
+    izbrani platformi~\cite{src:stm32modelzoo}. Zaradi strogih omejitev
+    pomnilnika, računske moči in porabe energije moramo globoke modele primerno
+    optimizirati, kar je danes aktivno področje raziskav in razvoja. V tem delu
+    uporabimo model Faster Objects, More Objects (FOMO) platforme Edge
+    Impulse~\cite{src:announcingfomo}, detekcijski pristop za mikrokrmilnike,
+    ki se izogne klasični strukturi detektorjev in na izhodu ustvari grobo
+    segmentacijsko masko. Slednja se običajno naknadno obdela (npr. z
+    združevanjem/rojenjem), da na izhodu dobimo lokacije objektov.
 
-    % TODO: Tole verjetno paše kam drugam
-    V kontekstu tega dela nas zanima prisotnost sestavin, zato smo postopek priredili tako, da smo informacijo o lokalizaciji opustili in gledali zgolj zadostno prisotnost sestavin na maski. Z eksperimenti smo ugotovili, da je model učinkovit na robnih napravah z omejeno zmogljivostjo, vendar se je izkazalo, da ima tudi določene slabosti. Med njih sodijo majhno receptivno polje in omejena kapaciteta modela, kar omeji končno uspešnost pristopa~\cite{src:boyle2024dsort}.
+    V kontekstu tega dela nas zanima prisotnost sestavin, zato smo postopek
+    priredili tako, da smo informacijo o lokalizaciji opustili in upoštevali
+    zgolj prisotnost sestavin na maski. Z eksperimenti smo ugotovili, da je
+    model učinkovit na robnih napravah z omejeno zmogljivostjo, vendar se je
+    izkazalo, da ima tudi določene slabosti. Med njih sodijo majhno receptivno
+    polje in omejena kapaciteta modela, kar omeji končno uspešnost
+    pristopa~\cite{src:boyle2024dsort}.
 
     % Kratek opis rezultatov
-    Z izbrano rešitvijo smo dosegli zgolj omejene rezultate. Metoda FOMO je pomanjkljiva in ima težave predvsem z velikostjo receptivnega polja ter zahteva precej naknadne obdelave rezultatov. Težavo je predstavljala tudi odprta narava podatkovne zbirke in neugodna distribucija razredov, tipična za problematiko razpoznavanja sestavin hrane. Pristopi drugih avtorjev na podatkovni zbirki FoodSeg103~\cite{src:wu2021large} se večinoma ukvarjajo s semantično segmentacijo in ne ciljajo na izvajanje na mikrokrmilnikih, zaradi česar so njihove rešitve večinoma neprimerne za naš namen. Ovire, na katere smo naleteli tekom eksperimentov, kažejo, da je razpoznavanje sestavin hrane zahtevno področje, ki v mnogih pogledih še ni zadovoljivo rešeno.
+    Z izbrano rešitvijo smo dosegli zgolj omejene rezultate. Metoda FOMO je
+    pomanjkljiva in ima težave predvsem z velikostjo receptivnega polja ter
+    zahteva precej naknadne obdelave rezultatov. Težavo je predstavljala tudi
+    odprta narava podatkovne zbirke in neugodna distribucija razredov, tipična
+    za problematiko razpoznavanja sestavin hrane. Pristopi drugih avtorjev na
+    podatkovni zbirki FoodSeg103~\cite{src:wu2021large} se večinoma ukvarjajo s
+    semantično segmentacijo in ne ciljajo na izvajanje na mikrokrmilnikih,
+    zaradi česar njihove rešitve praviloma niso primerne za neposredno
+    izvajanje na mikrokrmilnikih. Ovire, na katere smo naleteli tekom
+    eksperimentov, nakazujejo, da je razpoznavanje sestavin hrane zahtevno
+    področje, ki še ni zadovoljivo rešeno.
 
     % Struktura dokumenta.
     Delo se začne s pregledom sorodnih del v
     poglavju~\ref{sct:sorodna-dela}. V
-    poglavju~\ref{sct:metodologija} predstavimo
-    teoretično ozadje izbranih pristopov ter podrobneje opišemo arhitekturo
-    modela FOMO in teoretične osnove pristopov YOLOv11-seg in SAM. V
-    poglavju~\ref{sct:eir} opišemo
-    uporabljeno podatkovno
-    zbirko in izvedene eksperimente, v poglavju~\ref{sct:diskusija}
-    pa komentiramo rezultate in iz njih izpeljemo
-    smernice za nadaljnje delo. Delo zaključimo v
-    poglavju~\ref{sct:zakljucek}, kjer povzamemo
-    ključne ugotovitve.
+    poglavju~\ref{sct:teoreticno-ozadje}
+    predstavimo teoretično ozadje razpoznavanja
+    na podlagi slikovnih vzorcev ter izvajanja modelov na robnih napravah. V
+    poglavju~\ref{sct:metodologija} opišemo
+    metodologijo dela, kjer podrobneje predstavimo model FOMO, referenčni
+    pristop YOLOv11-seg ter vlogo metod SAM pri pretvorbi segmentacijskih mask.
+    V poglavju~\ref{sct:eir} opišemo
+    uporabljeno podatkovno zbirko, izbrane metrike in izvedene eksperimente, v
+    poglavju~\ref{sct:diskusija} pa rezultate kritično
+    ovrednotimo in iz njih izpeljemo smernice za nadaljnje delo. Delo
+    zaključimo v poglavju~\ref{sct:zakljucek}, kjer
+    povzamemo ključne ugotovitve.
 
 \chapter{Sorodna dela} \label{sct:sorodna-dela}
 
-    V tem poglavju predstavimo sorodna dela s področja razpoznavanja jedi ter izvajanja modelov globokega učenja na robnih napravah. Razpoznavanje jedi podrobneje obravnavamo v poglavju~\ref{sct:razpoznavanje-jedi-na-slikah}, kjer predstavimo zgodnje pristope razpoznavanja jedi, uveljavljene pristope globokega učenja, novejše večmodalne metode, ki upoštevajo dodatne informacije o sestavinah, ter naredimo pregled pristopov za klasifikacijo, detekcijo in segmentacijo jedi ter sestavin. Nato v poglavju~\ref{sct:izvajanje-na-robnih-napravah} podrobneje predstavimo pregled obstoječih pristopov, ki modele globokega učenja izvajajo na robnih napravah ter tam uporabljeno strojno opremo.
+    V tem poglavju predstavimo sorodna dela s področja razpoznavanja jedi ter
+    izvajanja modelov globokega učenja na robnih napravah. Razpoznavanje jedi
+    podrobneje obravnavamo v
+    poglavju~\ref{sct:razpoznavanje-jedi-na-slikah},
+    kjer predstavimo zgodnje pristope razpoznavanja jedi, uveljavljene pristope
+    globokega učenja, novejše večmodalne metode, ki upoštevajo dodatne
+    informacije o sestavinah, ter podamo pregled pristopov za klasifikacijo,
+    detekcijo in segmentacijo jedi ter sestavin. Nato v
+    poglavju~\ref{sct:izvajanje-na-robnih-napravah}
+    podrobneje predstavimo obstoječe pristope za izvajanje modelov globokega
+    učenja na robnih napravah ter pri tem uporabljeno strojno opremo.
 
     \section{Razpoznavanje hrane iz slikovnih vzorcev} \label{sct:razpoznavanje-jedi-na-slikah}
 
-        Med zgodnjimi pristopi k razpoznavanju jedi iz slik so prevladovale
-        ročno izluščene značilnice, predvsem SIFT (angl. \emph{Scale-Invariant
+        Med zgodnjimi pristopi k razpoznavanju jedi na slikah so prevladovale
+        ročno izluščene značilke, predvsem SIFT (angl. \emph{Scale-Invariant
         Feature Transform})~\cite{src:lowe2004sift}, HOG (histogram
         orientiranih gradientov)~\cite{src:dalal2005hog} in barvni
         histogrami~\cite{src:min2019survey}.
         V nekaterih zgodnjih delih~\cite{src:wang2003assessment,
-        src:segnini1999low} so avtorji povprečili svetlosti slikovnih elementov
-        na sivinskih slikah ter na tej osnovi določali lastnosti sira med peko
+        src:segnini1999low} so avtorji povprečili svetlost slikovnih elementov
+        na sivinskih slikah ter na tej podlagi določali lastnosti sira med peko
         in ocenjevali kakovost čipsa.
         V novejših pristopih avtorji pogosto uporabljajo metode globokega
         učenja, s katerimi dosegajo boljše rezultate~\cite{src:min2019survey,
@@ -422,7 +497,7 @@ V pričujočem zaključnem delu so uporabljene naslednje kratice:
         Pristope za razpoznavanje hrane na slikah v grobem delimo na
         klasifikacijske in
         segmentacijske~\cite{src:konstantakopoulos2023review,
-        src:min2019survey}. Klasifikacijski izvajajo enoznačno ali večznačno
+        src:min2019survey}. Klasifikacijski pristopi izvajajo enoznačno ali večznačno
         klasifikacijo jedi oziroma sestavin~\cite{src:martinel2018wide,
         src:tan2019efficientnet, src:bolanos2017food, src:fu2024recognizing},
         segmentacijski pa lokalizirajo in razmejujejo posamezne komponente ter
@@ -432,118 +507,395 @@ V pričujočem zaključnem delu so uporabljene naslednje kratice:
 
         \subsection{Klasifikacija jedi}
 
-            Med temeljne naloge razpoznavanja hrane sodi klasifikacija, pri kateri z metodami strojnega učenja iz slikovnih podatkov napovemo kategorijo jedi ali posameznih sestavin~\cite{src:min2019survey}.
+            Med temeljne naloge razpoznavanja hrane sodi klasifikacija, pri
+            kateri z metodami strojnega učenja iz slikovnih podatkov napovemo
+            kategorijo jedi ali posameznih sestavin~\cite{src:min2019survey}.
             % Klasični pristopi, začetki
-            V tradicionalnih klasifikacijski pristopih značilke tipično izluščimo ročno, nato pa jih uporabimo v razvrščevalniku~\cite{src:min2019survey}.
+            V tradicionalnih klasifikacijskih pristopih značilke tipično
+            izluščimo ročno, nato pa jih uporabimo v
+            razvrščevalniku~\cite{src:min2019survey}.
             % TODO: Prevedi superpiksle?
-            V~\cite{src:bossard2014food} so avtorji uporabili metodo naključnega gozda~(angl. random forest)~\cite{src:breiman2001randomforest} ter metodo superpikslov~\cite{src:ren2003superpixels} za identifikacijo ključnih področij oz. komponent slike jedi. Značilke identificiranih komponent so nato razvrstili z metodo podpornih vektorjev (angl. support vector machine, SVM)~\cite{src:cortes1995svm} in tako določili tipa jedi.
-            Podobno so v~\cite{src:yang2010food} avtorji na slikah jedi identificirali lokalne lastnosti slikovnih elementov in njihove soodvisnosti ter jih zajeli v histogramu. Tega so nato uporabili kot vektor značilk v razvrščevalniku SVM~\cite{src:cortes1995svm}.
-            V~\cite{src:pouladzadeh2015cloud} so avtorji združili značilke na podlagi barve, teksture, velikosti in oblike, nato pa v oblaku z metodo SVM~\cite{src:cortes1995svm} razvrščali 30 vrst hrane in dosegli 94,5-odstotno natančnost. 
+            V~\cite{src:bossard2014food} so avtorji uporabili metodo
+            naključnega gozda~(angl. random
+            forest)~\cite{src:breiman2001randomforest} ter metodo
+            superpikslov~\cite{src:ren2003superpixels} za identifikacijo
+            ključnih področij oziroma komponent slike jedi. Značilke
+            identificiranih komponent so nato razvrstili z metodo podpornih
+            vektorjev (angl. support vector machine,
+            SVM)~\cite{src:cortes1995svm} in tako določili vrsto jedi. Podobno
+            so v~\cite{src:yang2010food} avtorji na slikah jedi identificirali
+            lokalne lastnosti slikovnih elementov in njihove soodvisnosti ter
+            jih zajeli v histogramu. Tega so nato uporabili kot vektor značilk
+            v razvrščevalniku SVM~\cite{src:cortes1995svm}.
+            V~\cite{src:pouladzadeh2015cloud} so avtorji združili značilke na
+            podlagi barve, teksture, velikosti in oblike, nato pa v oblaku z
+            metodo SVM~\cite{src:cortes1995svm} razvrščali 30 vrst hrane in
+            dosegli 94,5-odstotno natančnost. 
 
             % Deep learning era - začetki
-            Z uporabo globokega učenja in konvolucijskih nevronskih mrež je prišlo do precejšnih izboljšav tudi na področju razpoznavanja hrane.
+            Uporaba globokega učenja in konvolucijskih nevronskih mrež je
+            prinesla opazne izboljšave tudi na področju razpoznavanja hrane.
             % Kagaya 2014 - Among the first to try DNN on food datasets.
-            V~\cite{src:kagaya2014food} so avtorji primerjali klasične pristope z metodami na podlagi konvolucijskih nevronskih mrež (angl. Convolutional Neural Networks, CNN)~\cite{src:krizhevsky2012imagenet} in s slednjimi dosegli veliko boljše rezultate. Navajajo še, da se je tako naučena mreža med klasifikacijo zanašala predvsem na barvo objektov na sliki.
+            V~\cite{src:kagaya2014food} so avtorji primerjali klasične pristope
+            z metodami na podlagi konvolucijskih nevronskih mrež (angl.
+            Convolutional Neural Networks,
+            CNN)~\cite{src:krizhevsky2012imagenet} in s slednjimi dosegli
+            veliko boljše rezultate. Navajajo še, da se je tako naučena mreža
+            med klasifikacijo zanašala predvsem na barvo objektov na sliki.
             % Hassannejad 2016 [90] - Inception V3
-            Hassannejad~\etal~\cite{src:hassannejad2016food} so model Inception~V3~\cite{src:szegedy2016rethinking} doučili na zbirkah UEC-Food100~\cite{src:matsuda2012recognition}, UEC-Food256~\cite{src:kawano2014automatic} in Food-101~\cite{src:bossard2014food}. Na posameznih zbirkah so dosegli natančnosti 81{,}5~\%, 76{,}2~\% ter 88{,}3~\%. Dobre rezultate so dosegli s precej manj parameteri kot konkurenca, vendar njihov pristop še vedno ni bil primeren za izvajanje na robnih napravah.
+            Hassannejad~\etal~\cite{src:hassannejad2016food} so model
+            Inception~V3~\cite{src:szegedy2016rethinking} doučili na zbirkah
+            UEC-Food100~\cite{src:matsuda2012recognition},
+            UEC-Food256~\cite{src:kawano2014automatic} in
+            Food-101~\cite{src:bossard2014food}. Na posameznih zbirkah so
+            dosegli natančnosti 81{,}5~\%, 76{,}2~\% ter 88{,}3~\%. Dobre
+            rezultate so dosegli s precej manj parameteri kot konkurenca,
+            vendar njihov pristop še vedno ni bil primeren za izvajanje na
+            robnih napravah.
             % Matrinel 2018 - WISeR
-            V~\cite{src:martinel2018wide} so avtorji predstavili arhitekturo WISeR, globoki model za klasifikacijo slik hrane, kjer so uporabili novo plast, namenjeno zaznavanju navpičnih struktur v jedeh, kjer se komponente prekrivajo in so naložene vertikalno. Njihov pristop je presegel obstoječe CNN-modele na zbirkah Food-101~\cite{src:bossard2014food} z več kot 90~\% natančnostjo. Kljub visoki natančnosti kompleksnost modela omejuje njegovo uporabnost na napravah z omejeno strojno opremo.
-            % Tan 2019 [91] - EfficientNetB7 - among the best solutions to Food-101 according to the 2024 review
-            Tan~\etal~\cite{src:tan2019efficientnet} so uvedli družino modelov EfficientNet, s katerim so dosegli zelo dobre rezultate na več podatkovnih zbirkah. Med drugim so na Food-101~\cite{src:bossard2014food} z EfficientNetB7 dosegli 93~\% natančnost.
-            % TODO: Naslednji dve povedi mogoče prestavi v odsek kjer govoriš o izvajanju na robnih napravah.
-            % VijayaKumari 2022 [80] - EfficientNetB0
-            Nekateri avtorji so ocenjevali tudi druge modele iz te družine. V~\cite{src:vijayakumari2022food} so z EfficientNetB0 na Food-101 dosegli 80~\% natančnost. Izbrana različica uporablja zgolj 11 milijonov parametrov, kar omogoča izvajanje na precej širšem naboru strojne opreme.
+            V~\cite{src:martinel2018wide} so avtorji predstavili arhitekturo
+            WISeR, globoki model za klasifikacijo slik hrane, kjer so uporabili
+            novo plast za zaznavanje navpičnih struktur v jedeh, pri katerih
+            se komponente prekrivajo in so naložene vertikalno. Njihov pristop
+            je presegel obstoječe CNN-modele na zbirkah
+            Food-101~\cite{src:bossard2014food} z več kot 90~\% natančnostjo.
+            Kljub visoki natančnosti kompleksnost modela omejuje njegovo
+            uporabnost na napravah z omejeno strojno opremo.
+            % Tan 2019 [91] - EfficientNetB7 - among the best solutions to
+            % Food-101 according to the 2024 review
+            Tan~\etal~\cite{src:tan2019efficientnet} so uvedli družino modelov
+            EfficientNet, s katerimi so dosegli zelo dobre rezultate na več
+            podatkovnih zbirkah. Med drugim so na
+            Food-101~\cite{src:bossard2014food} z EfficientNetB7 dosegli 93~\%
+            natančnost.
+            % TODO: Naslednji dve povedi mogoče prestavi v odsek kjer govoriš o
+            % izvajanju na robnih napravah. VijayaKumari 2022 [80] -
+            % EfficientNetB0
+            Nekateri avtorji so ocenjevali tudi druge modele iz te družine.
+            V~\cite{src:vijayakumari2022food} so z EfficientNetB0 na Food-101
+            dosegli 80~\% natančnost. Izbrana različica uporablja zgolj 11
+            milijonov parametrov, kar omogoča izvajanje na precej širšem naboru
+            strojne opreme.
             % Moumane 2023 - MobileNetV2 on mobile phone
-            V~\cite{src:moumane2023food} so avtorji  uporabili MobileNetV2~\cite{src:sandler2018mobilenetv2} za klasifikacijo zbirke Food-101~\cite{src:bossard2014food}. Avtorji so izbran model implementirali v mobilni aplikaciji za izvajanje na pametnih telefonih.
-            % Izbran model je zaradi svoje učinkovitosti primeren tudi za izvajanje na robnih napravah.
-            % Ta članek izgleda precej nekvaliteten, vendar je eden redkih, ki poskuša uporabiti MobileNetV2 na Food-101 oz. ostalih food-related datasetih. Ne zaupam         % Prav detekcija/klasifikacija sestavin
-            Bolanos~\etal se v delu~\cite{src:bolanos2017food} namesto klasifikacije samih jedi lotijo klasifikacije sestavin, prisotnih na sliki. Uporabili so zbirko Food-101~\cite{src:bossard2014food}, ki sicer vsebuje oznake jedi, a so jih ročno zamenjali z oznakami sestavin. Uporabili so standarden večznačen pristop razvrščanja z InceptionV3~\cite{src:szegedy2016rethinking} in ResNet50~\cite{src:he2016deep} ter dosegli do 80~\% natančnosti po metriki razvrščanja F1. % večznačen - multi-label
-            Preverili so tudi sposobnost generalizacije modela na nove slike jedi, kjer so na modificirani zbirki Recipes5k~\cite{src:bolanos2017food} dosegli do 47~\% po metriki F1. Slabost njihovega pristopa je, da so vsakemu receptu pripisali množico sestavin, ne glede na to, ali je dana sestavina vidna ali ne.
-            V~\cite{src:fu2024recognizing} so avtorji raziskovali uporabo principa drsečega okna (angl. \textit{sliding window}). Klasifikacijo izrezanih delov slike so izvajali s prilagojenim EfficientNetB0~\cite{src:tan2019efficientnet}. Tako so v končnem sistemu z razvrščevalnikom za vsak izrezek predvideli en tip sestavine, nato pa rezultate vseh izrezkov združili po principu glasovanja. Na tak način so rekonstruirali seznam vseh prisotnih sestavin. Učenje so avtorji v~\cite{src:fu2024recognizing} sicer izvajali na zasebni podatkovni zbirki, vendar so evalvacijo izvedli tudi na poenostavljeni zbirki FoodSeg103~\cite{src:wu2021large}. Poenostavitev so izvedli tako, da so med testiranjem upoštevali rezultate le za 35 razredov, ki so se prekrivali z njihovo zasebno podatkovno zbirko.
-            % (kjer so dosegli do 53~\% po metriki mAcc) - rezultat ni relevanten, ker ne vem točno kaj so delali z metriko, imajo malo citatov, in uporabljajo poenostavljeno/spremenjeno zbirko.
+            V~\cite{src:moumane2023food} so avtorji  uporabili
+            MobileNetV2~\cite{src:sandler2018mobilenetv2} za klasifikacijo
+            zbirke Food-101~\cite{src:bossard2014food}. Avtorji so izbran model
+            implementirali v mobilni aplikaciji za pametne telefone.
+            % Izbran model je zaradi svoje učinkovitosti primeren tudi za
+            % izvajanje na robnih napravah. Ta članek izgleda precej
+            % nekvaliteten, vendar je eden redkih, ki poskuša uporabiti
+            % MobileNetV2 na Food-101 oz. ostalih food-related datasetih. Ne
+            % zaupam         % Prav detekcija/klasifikacija sestavin
+            Bolanos~\etal se v delu~\cite{src:bolanos2017food} namesto
+            klasifikacije samih jedi lotijo klasifikacije sestavin, prisotnih
+            na sliki. Uporabili so zbirko Food-101~\cite{src:bossard2014food},
+            ki sicer vsebuje oznake jedi, a so jih ročno zamenjali z oznakami
+            sestavin. Uporabili so standarden pristop večoznačnega razvrščanja z
+            InceptionV3~\cite{src:szegedy2016rethinking} in
+            ResNet50~\cite{src:he2016deep} ter dosegli do 80~\% po
+            metriki F1. % večznačen - multi-label
+            Preverili so tudi
+            sposobnost generalizacije modela na nove slike jedi, kjer so na
+            modificirani zbirki Recipes5k~\cite{src:bolanos2017food} dosegli do
+            47~\% po metriki F1. Slabost njihovega pristopa je, da so vsakemu
+            receptu pripisali množico sestavin, ne glede na to, ali je dana
+            sestavina vidna ali ne. V~\cite{src:fu2024recognizing} so avtorji
+            raziskovali uporabo principa drsečega okna (angl. \textit{sliding
+            window}). Klasifikacijo izrezanih delov slike so izvajali s
+            prilagojenim EfficientNetB0~\cite{src:tan2019efficientnet}. Tako so
+            v končnem sistemu z razvrščevalnikom za vsak izrezek predvideli en
+            tip sestavine, nato pa rezultate vseh izrezkov združili po principu
+            glasovanja. Na tak način so rekonstruirali seznam vseh prisotnih
+            sestavin. Učenje so avtorji v~\cite{src:fu2024recognizing} sicer
+            izvajali na zasebni podatkovni zbirki, vendar so vrednotenje izvedli
+            tudi na poenostavljeni zbirki FoodSeg103~\cite{src:wu2021large}.
+            Poenostavitev so izvedli tako, da so med testiranjem upoštevali
+            rezultate le za 35 razredov, ki so se prekrivali z njihovo zasebno
+            podatkovno zbirko.
+            % (kjer so dosegli do 53~\% po metriki mAcc) - rezultat ni
+            % relevanten, ker ne vem točno kaj so delali z metriko, imajo malo
+            % citatov, in uporabljajo poenostavljeno/spremenjeno zbirko.
 
             % Upoštevanje informacije o sestavinah
-            Že v zgodnjih pristopih~\cite{src:bossard2014food} so si raziskovalci pri razpoznavi slik pomagali s t.i. komponentami, t.j. lokalnimi regijami slike podobne teksture in barve. % To malo spominja na sestavine
+            Že v zgodnjih pristopih~\cite{src:bossard2014food} so si
+            raziskovalci pri razpoznavi slik pomagali s komponentami, tj.
+            lokalnimi regijami slike podobne teksture in barve. % To malo spominja na sestavine
             % Maybe cite Mao2021, also see the Multiple Food recognition section in related work
             % Maybe cite Matsuda, Y., Hoashi, H., Yanai, K.: Recognition of multiple-food images by detecting candidate regions. (2012)
             % See Wang2022 related work
             %Wu et al.~\cite{src:wu2021large} proposed a food image segmentation framework, which consists of two modules: Recipe Learning Module (ReLeM) and Image Segmentation module. Specially, ReLeM incorporates recipe information and integrates recipe embedding with the visual representation of a food image to enhance the visual representation of an ingredient.
             % Salvador 2017 - Recipe1M
-            Salvador~\etal~\cite{src:salvador2017learning} so predstavili podatkovno zbirko Recipe1M in večmodalen pristop k določanju jedi.
-            V njihovem pristopu so najprej implicitno predvideli sestavine, na podlagi tega pa določili ime jedi oziroma recepta na sliki. Razpoznavanje sestavin je bil tu pomemben vmesni korak za razpoznavo same jedi.
-            V delu~\cite{src:min2019ingredient} so avtorji predstavili IG-CMAN (angl. Ingredient-Guided Cascaded Multi-Attention Network), kjer so uporabili t.i. Spatial Transformer model~\cite{src:jaderberg2015spatialtransformer} % TODO: Prevod za spatial transformer?
-            ter LSTM (angl. Long Short-term Memory)~\cite{src:hochreiter1997lstm} za šibko nadzorovano lokalizacijo regij na sliki~\cite{src:wang2017multi}. Čeprav je model izvajal razvrščanje na nivoju jedi, je med učenjem uporabljal tudi informacijo o sestavinah jedi na sliki. Avtorji so za izbrano metodo navedli 90~\% Top-1 natančnost na zbirki Food-101~\cite{src:bossard2014food}.
+            Salvador~\etal~\cite{src:salvador2017learning} so predstavili
+            podatkovno zbirko Recipe1M in večmodalen pristop k določanju jedi.
+            V njihovem pristopu so najprej implicitno predvideli sestavine, na
+            podlagi tega pa določili ime jedi oziroma recepta na sliki.
+            Razpoznavanje sestavin je bilo pri tem pomemben vmesni korak za
+            razpoznavo same jedi.
+            V delu~\cite{src:min2019ingredient} so avtorji predstavili IG-CMAN
+            (angl. Ingredient-Guided Cascaded Multi-Attention Network), kjer so
+            uporabili t.i. model Spatial Transformer~\cite{src:jaderberg2015spatialtransformer} % TODO: Prevod za spatial transformer?
+            ter LSTM (angl. Long Short-term
+            Memory)~\cite{src:hochreiter1997lstm} za šibko nadzorovano
+            lokalizacijo regij na sliki~\cite{src:wang2017multi}. Čeprav je
+            model izvajal razvrščanje na ravni jedi, je med učenjem uporabljal
+            tudi informacijo o sestavinah jedi na sliki. Avtorji so za izbrano
+            metodo navedli 90~\% natančnost top-1 na zbirki
+            Food-101~\cite{src:bossard2014food}.
             % Multi-label Image Recognition by Recurrently Discovering Attentional Regions - tu se grejo tut nek attention, ampak klasifikacija. Ni z jedmi. Je direktni inspiration za min2019ingredient, ampak se se zmeraj razlikujejo.
             % Food detection with YOLO: "Radeva, P.: Grab, pay, and eat: Semantic food detection for smart restaurants."
             % Relevant for FOMO: "MCUNetV2: Memory-Efficient Patch-based Inference for Tiny Deep Learning"
-            Poleg večmodalnosti so se v nekaterih pristopih pojavili tudi VT (angl. Vision Transformer)~\cite{src:dosovitskiy2020image} modeli. Liu~\etal~\cite{src:liu2024convolution} so predstavili dvodelno arhitekturo, kjer so na podlagi slike predvideli kategorijo hrane in sestavine, prisotne na sliki. Pri tem so uporabljali prilagojen VT model za pridobivanje značilk na več nivojih, nato pa so s prilagojenim modulom z adaptivno pozornostjo poskrbeli za deljenje informacij med razvrščevalniki. Pristop je dosegel 92~\% in 93~\% natančnosti na zbirkah \mbox{Food-101}~\cite{src:bossard2014food} in \mbox{VireoFood-172}~\cite{src:chen2016deep}.
+            Poleg večmodalnosti so se v nekaterih pristopih pojavili tudi modeli VT
+            (angl. Vision Transformer)~\cite{src:dosovitskiy2020image}.
+            Liu~\etal~\cite{src:liu2024convolution} so predstavili dvodelno
+            arhitekturo, kjer so na podlagi slike predvideli kategorijo hrane
+            in sestavine, prisotne na sliki. Pri tem so uporabljali prilagojen
+            model VT za pridobivanje značilk na več ravneh, nato pa so s
+            prilagojenim modulom z adaptivno pozornostjo poskrbeli za deljenje
+            informacij med razvrščevalniki. Pristop je dosegel 92~\% in 93~\%
+            natančnosti na zbirkah \mbox{Food-101}~\cite{src:bossard2014food}
+            in \mbox{VireoFood-172}~\cite{src:chen2016deep}.
 
         % Weakly supervised ingredient segmentation/detection
-            Nekateri pristopi so uporabili tudi t. i. šibko nadzorovano učenje, s katerim so se poskusili izogniti potrebi po segmentacijskih podatkovnih zbirkah, saj so s tem pristopom potrebovali le informacijo o prisotnosti sestavine na sliki (t.i. anotacije na nivoju slike), pri čemer so še vedno skušali v model vključiti vizualne predstave sestavin~\cite{src:zhu2023new}.
-            Vlachopoulou~\etal~\cite{src:vlachopoulou2023food} so tako uporabili šibko nadzorovane pristope iz sorodnih področij, med drugim iz medicine, za razpoznavo sestavin jedi: sliko so razbili v posamezne zaplate, za vsako zaplato so z ResNet-34~\cite{src:he2016deep} izračunali značilnice, mehanizem za pozornost (angl. attention mechanism)~\cite{src:ilse2018attention} pa jih je utežil in združil. Tako združen predstavitveni vektor so nato peljali v razvrščevalnik. Modele so učili na FoodSeg103~\cite{src:bossard2014food}, vendar so zbirko močno poenostavili. Poenostavljena zbirka je imela zgolj dve kategoriji (meso in pekovski izdelki), anotacije pa so pretvorili iz nivoja slikovnih elementov na nivo slike. Avtorji~\cite{src:vlachopoulou2023food} so za vsako kategorijo naučili povsem ločen model, da so se čim bolj izognili medsebojnemu vplivu sestavin. Dosegli so uspešnost 71{,}3~\% po metriki razvrščanja F1, vendar njihovi rezultati niso neposredno primerljivi z drugimi deli zaradi omenjenih poenostavitev podatkovne zbirke.
-            Sorodno so Zhu~\etal~\cite{src:zhu2023new} predstavili arhitekturo AttNet. Posamezne sestavine so razdelili v štiri nivoje kategorij, AttNet pa je za dano sliko poskušal napovedati vse štiri nivoje. Tako kot v prejšnjem pristopu~\cite{src:vlachopoulou2023food} so tudi tu za vsako sestavino naučili lasten model. Kasneje so v~\cite{src:zhu2023new} uporabili značilke iz konvolucijskih plasti v mreži in s filtri ter rojenjem izrazili približek segmentacijske maske. Model se ni neposredno učil ločevanja meje med sestavinami, le ločevanje globalnega videza posamezne sestavine. Ker so konvolucijske značilke lokalne, se je ista aktivacija pojavila točno tam, kjer so bili slikovni elementi te sestavine, kar je omogočilo kasnejšo rekonstrukcijo maske. S tako pridobljenimi segmentacijskimi maskami so poročali do 65{,}3~\% po metriki mIoU na FoodSeg103~\cite{src:wu2021large}. Njihovi rezultati, čeprav zelo dobri, niso bili neposredno primerljivi z drugimi metodami, saj so avtorji omenjeno zbirko modificirali - ozadje so zamenjali z modro barvo. %Slabosti te metode?
+            Nekateri pristopi so uporabili tudi t. i. šibko nadzorovano učenje,
+            s katerim so se poskusili izogniti potrebi po segmentacijskih
+            podatkovnih zbirkah, saj so s tem pristopom potrebovali le
+            informacijo o prisotnosti sestavine na sliki (t.i. anotacije na
+            ravni slike), pri čemer so še vedno skušali v model vključiti
+            vizualne predstavitve sestavin~\cite{src:zhu2023new}.
+            Vlachopoulou~\etal~\cite{src:vlachopoulou2023food} so tako
+            uporabili šibko nadzorovane pristope iz sorodnih področij, med
+            drugim iz medicine, za razpoznavo sestavin jedi: sliko so razdelili v
+            posamezne zaplate, za vsako zaplato so z
+            modelom ResNet-34~\cite{src:he2016deep} izračunali značilke, mehanizem za
+            pozornost (angl. attention mechanism)~\cite{src:ilse2018attention}
+            pa jih je utežil in združil. Tako združen predstavitveni vektor so
+            nato podali v razvrščevalnik. Modele so učili na
+            FoodSeg103~\cite{src:bossard2014food}, vendar so zbirko močno
+            poenostavili. Poenostavljena zbirka je imela zgolj dve kategoriji
+            (meso in pekovski izdelki), anotacije pa so pretvorili z ravni slikovnih elementov na raven slike.
+            Avtorji~\cite{src:vlachopoulou2023food} so za vsako kategorijo
+            naučili povsem ločen model, da so se čim bolj izognili medsebojnemu
+            vplivu sestavin. Dosegli so uspešnost 71{,}3~\% po metriki
+            razvrščanja F1, vendar njihovi rezultati niso neposredno
+            primerljivi z drugimi deli zaradi omenjenih poenostavitev
+            podatkovne zbirke.
+            Sorodno so Zhu~\etal~\cite{src:zhu2023new} predstavili arhitekturo
+            AttNet. Posamezne sestavine so razdelili v štiri nivoje kategorij,
+            AttNet pa je za dano sliko poskušal napovedati vse štiri nivoje.
+            Tako kot v prejšnjem pristopu~\cite{src:vlachopoulou2023food} so
+            tudi tu za vsako sestavino naučili lasten model. Kasneje so
+            v~\cite{src:zhu2023new} uporabili značilke iz konvolucijskih plasti
+            v mreži in s filtri ter rojenjem izrazili približek segmentacijske
+            maske. Model se ni neposredno učil ločevanja mej med sestavinami,
+            temveč le ločevanja globalnega videza posamezne sestavine. Ker so
+            konvolucijske značilke lokalne, se je ista aktivacija pojavila
+            točno tam, kjer so bili slikovni elementi te sestavine, kar je
+            omogočilo kasnejšo rekonstrukcijo maske. S tako pridobljenimi
+            segmentacijskimi maskami so na FoodSeg103~\cite{src:wu2021large}
+            dosegli uspešnost 65{,}3~\% po metriki mIoU. Njihovi rezultati,
+            čeprav zelo dobri, niso bili neposredno primerljivi z drugimi
+            metodami, saj so avtorji omenjeno zbirko modificirali -- ozadje so
+            zamenjali
+            z modro barvo. %Slabosti te metode?
 
         \subsection{Segmentacija jedi}
 
-            Za nekatere namene, kot na primer napovedovanje prehranske vrednosti jedi, sama klasifikacija ni dovolj. V primerjavi z običajno klasifikacijo segmentacija poda bistveno več informacij o vsebini slike, vendar je praviloma tudi zahtevnejša naloga, saj zahteva napoved oznak na nivoju slikovnih elementov~\cite{src:konstantakopoulos2023review, src:minaee2021image}. Razpoznavanje jedi oziroma sestavin predstavlja dodatno oviro, ker je za to področje značilna visoka varianca znotraj razredov in nizka varianca med razredi~\cite{src:wu2021large}. Namen segmentacije jedi je lokalizacija jedi oziroma posameznih območij na sliki, njihovo ločevanje od preostalih območij oziroma ozadja ter pripisovanje kategorije izločenemu območju~\cite{src:konstantakopoulos2023review}.
-            Med bistvenimi podatkovnimi zbirkami, ki se pogosto uporabljajo v tovrstnih pristopih, so FoodSeg103~\cite{src:wu2021large}, UECFoodPix~\cite{src:ege2019new} ter UECFoodPix Complete~\cite{src:okamoto2021uec}.
+            Za nekatere namene, kot je na primer napovedovanje prehranske
+            vrednosti jedi, sama klasifikacija ni dovolj. V primerjavi z
+            običajno klasifikacijo segmentacija poda bistveno več informacij o
+            vsebini slike, vendar je praviloma tudi zahtevnejša naloga, saj
+            zahteva napoved oznak na ravni slikovnih
+            elementov~\cite{src:konstantakopoulos2023review,
+            src:minaee2021image}. Razpoznavanje jedi oziroma sestavin
+            predstavlja dodatno oviro, ker je za to področje značilna visoka
+            varianca znotraj razredov in nizka varianca med
+            razredi~\cite{src:wu2021large}. Namen segmentacije jedi je
+            lokalizacija jedi oziroma posameznih območij na sliki, njihovo
+            ločevanje od preostalih območij oziroma ozadja ter pripisovanje
+            kategorije segmentiranemu
+            območju~\cite{src:konstantakopoulos2023review}.
+            Med bistvenimi podatkovnimi zbirkami, ki se pogosto uporabljajo v
+            tovrstnih pristopih, so FoodSeg103~\cite{src:wu2021large},
+            UECFoodPix~\cite{src:ege2019new} ter UECFoodPix
+            Complete~\cite{src:okamoto2021uec}.
 
             % Konstantakopoulos~\textit{et al.}~\cite{src:konstantakopoulos2023review} ločijo segmentacijske metode na pol-avtomatske, avtomatske s tradicionalnimi pristopi za ekstrakcijo značilk ter avtomatske z globokim učenjem. 
-            Tradicionalni segmentacijski pristopi so uporabljali teksturo, obliko ter ročno izpeljane značilke na podlagi barve za določanje področij~\cite{src:konstantakopoulos2023review}. 
+            Tradicionalni segmentacijski pristopi so uporabljali teksturo,
+            obliko ter ročno izpeljane značilke na podlagi barve za določanje
+            področij~\cite{src:konstantakopoulos2023review}. 
             % Anthimopoulos 2013 - early food segmentations
-            Anthimopoulos~\etal~\cite{src:anthimopoulos2013segmentation} so uporabili pet-koračni algoritem na podlagi značilk, izpeljanih iz barve, združevanja regij ter detekcije krožnika.
+            Anthimopoulos~\etal~\cite{src:anthimopoulos2013segmentation} so
+            uporabili petstopenjski algoritem na podlagi barvnih značilk, združevanja regij in detekcije krožnika.
             % Pouladzadeh 2014 - neka tradicionalna segmentacija 
-            Pouladzadeh~\etal~\cite{src:pouladzadeh2014using} so uporabili metodo reza v grafu (angl. graph cut)~\cite{src:boykov2001interactive-graphcut} za določanje regij, te pa so razvrstili z metodo SVM~\cite{src:cortes1995svm}.
+            Pouladzadeh~\etal~\cite{src:pouladzadeh2014using} so uporabili
+            metodo reza v grafu (angl. graph
+            cut)~\cite{src:boykov2001interactive-graphcut} za določanje regij,
+            te pa so razvrstili z metodo SVM~\cite{src:cortes1995svm}.
 
             % Deep learning segmentation - intro
-            Pristopi, ki uporabljajo globoko učenje, so dosegali bistveno boljše rezultate~\cite{src:minaee2021image}.
+            Pristopi, ki uporabljajo globoko učenje, so dosegali bistveno
+            boljše rezultate~\cite{src:minaee2021image}.
             % Bolanos 2016 - deep learning segmentacija
-            Bolanos~\etal~\cite{src:bolanos2016simultaneous} so uporabili model GoogleNet~\cite{src:szegedy2015going-googlenet} in rezultate združili v sliko aktivacij (angl. heatmap), nato pa posamezne aktivacije še kategorizirali.
+            Bolanos~\etal~\cite{src:bolanos2016simultaneous} so uporabili model
+            GoogleNet~\cite{src:szegedy2015going-googlenet} in rezultate
+            združili v sliko aktivacij (angl. heatmap), nato pa posamezne
+            aktivacije še kategorizirali.
             % Shimoda 2020 - class activation mapping
-            Shimoda~\etal~\cite{src:shimoda2020weakly} so predstavili šibko nadzorovano metodo za segmentacijo krožnika na sliki. Pri tem so iz barvne slike hrane najprej izpeljali psevdo-segmentacijsko masko, v kateri so bili slikovni elementi razvrščeni v kategorije \enquote{hrana}, \enquote{krožnik} ali \enquote{ozadje}, ter z njo učili model za segmentacijo krožnika. Ključni del pristopa je temeljil na preslikavi aktivacij razredov (angl. Class Activation Mapping, CAM)~\cite{src:zhou2016learning-cam}, ki se tipično uporablja za vizualizacijo diskriminativnih regij v CNN modelih; avtorji so iz razlike med CAM klasifikatorja kategorije jedi in CAM binarnega klasifikatorja ocenili področje krožnika. V nadaljevanju so tako pridobljeni model uporabili pri regularizaciji šibko nadzorovane semantične segmentacije hrane ter s tem izboljšali delovanje osnovnega pristopa. Na zbirki UEC-Food100~\cite{src:matsuda2012recognition} so metriko mIoU izboljšali za 5{,}7 odstotne točke in dosegli 55{,}4~\%.
+            Shimoda~\etal~\cite{src:shimoda2020weakly} so predstavili šibko
+            nadzorovano metodo za segmentacijo krožnika na sliki. Pri tem so iz
+            barvne slike hrane najprej izpeljali psevdo-segmentacijsko masko, v
+            kateri so bili slikovni elementi razvrščeni v kategorije
+            \enquote{hrana}, \enquote{krožnik} ali \enquote{ozadje}, ter z njo
+            učili model za segmentacijo krožnika. Ključni del pristopa je
+            temeljil na preslikavi aktivacij razredov (angl. Class Activation
+            Mapping, CAM)~\cite{src:zhou2016learning-cam}, ki se tipično
+            uporablja za vizualizacijo diskriminativnih regij v modelih CNN;
+            avtorji so iz razlike med preslikavo CAM klasifikatorja kategorije jedi in preslikavo CAM
+            binarnega klasifikatorja ocenili območje krožnika. V nadaljevanju
+            so tako pridobljeni model uporabili pri regularizaciji šibko
+            nadzorovane semantične segmentacije hrane ter s tem izboljšali
+            delovanje osnovnega pristopa. Na zbirki
+            UEC-Food100~\cite{src:matsuda2012recognition} so metriko mIoU
+            izboljšali za 5{,}7 odstotne točke in dosegli 55{,}4~\%.
+
+            % -----------------
 
             % Okamoto 2021 - DeepLabV3+, uvedli FoodPix Complete
-            Okamoto~\etal~\cite{src:okamoto2021uec} so predstavili zbirko UEC FoodPix Complete in jo evalvirali z modelom DeepLab V3+~\cite{src:chen2017deeplab}. Dosegli so 55{,}5~\% po metriki mIoU.
+            Okamoto~\etal~\cite{src:okamoto2021uec} so predstavili zbirko UEC
+            FoodPix Complete in jo ovrednotili z modelom DeepLab
+            V3+~\cite{src:chen2017deeplab}. Dosegli so 55{,}5~\% po metriki
+            mIoU.
             % Poply - something something instance segmentation
-            Poply~\etal~\cite{src:poply2021refined} so semantično segmentacijo uporabili pri estimaciji prehranske vrednosti živil na krožniku. V grobem so posnemali instančno segmentacijo, saj so uporabili detekcijski model za določanje kandidatov v koraku segmentacije. V njihovem pristopu so uporabljali zasebno podatkovno zbirko.
+            Poply~\etal~\cite{src:poply2021refined} so semantično segmentacijo
+            uporabili pri ocenjevanju prehranske vrednosti živil na krožniku. V
+            grobem so posnemali instančno segmentacijo, saj so uporabili
+            detekcijski model za določanje kandidatov v koraku segmentacije. V
+            njihovem pristopu so uporabljali zasebno podatkovno zbirko.
 
             % Wu 2021 - ReLeM semantic segmentation (+ recipe embeddings)
-            Wu~\etal~\cite{src:wu2021large} so objavili podatkovno zbirko FoodSeg103 za segmentacijo sestavin hrane v nenadzorovanem okolju ter predstavili večmodalni model ReLeM, ki je poleg slik uporabil tudi tekstovne recepte v obliki jezikovnih vektorjev. Z ReLeM so na FoodSeg103 dosegli do 43{,}2~\% mIoU in na isti zbirki ovrednotili še več obstoječih modelov (DeepLab V3~\cite{src:chen2017deeplab}, CCNet~\cite{src:huang2019ccnet}, FPN~\cite{src:kirillov2019panoptic} in SeTR~\cite{src:zheng2021rethinking}). Najboljši rezultat 43{,}2~\% mIoU so dosegli z modelom ReLeM. Rezultate na njihovi podatkovni zbirki so primerjali z rezultati na zbirki Cityscapes~\cite{src:cordts2016cityscapes}, kjer so dosegli bistveno boljše rezultate, kar je nakazalo na zahtevnost zbirke FoodSeg103.
+            Wu~\etal~\cite{src:wu2021large} so objavili podatkovno zbirko
+            FoodSeg103 za segmentacijo sestavin hrane v nenadzorovanem okolju
+            ter predstavili večmodalni model ReLeM, ki je poleg slik uporabil
+            tudi besedilne zapise receptov v obliki jezikovnih vektorjev. Z modelom ReLeM so na
+            FoodSeg103 dosegli do 43{,}2~\% mIoU in na isti zbirki ovrednotili
+            še več obstoječih modelov (DeepLab V3~\cite{src:chen2017deeplab},
+            CCNet~\cite{src:huang2019ccnet},
+            FPN~\cite{src:kirillov2019panoptic} in
+            SeTR~\cite{src:zheng2021rethinking}). Najboljši rezultat 43{,}2~\%
+            mIoU so dosegli z modelom ReLeM. Rezultate na tej podatkovni
+            zbirki so primerjali z rezultati na zbirki
+            Cityscapes~\cite{src:cordts2016cityscapes}, kjer so dosegli
+            bistveno boljše rezultate, kar je nakazalo na zahtevnost zbirke
+            FoodSeg103.
 
             % Park 2021 - Mask RCNN, pretrained on synthetic data
-            Park~\etal~\cite{src:park2021deep} so za segmentacijo učili model Mask R-CNN~\cite{src:he2017mask}, pri čemer so učenje osnovali na sintetičnih slikah, generiranih v orodju Blender. Model so nato doučili na resničnih posnetkih hrane iz lastne podatkovne zbirke.
+            Park~\etal~\cite{src:park2021deep} so za segmentacijo učili model
+            Mask R-CNN~\cite{src:he2017mask}, pri čemer so učenje zasnovali na
+            sintetičnih slikah, generiranih v orodju Blender. Model so nato
+            doučili na resničnih posnetkih hrane iz lastne podatkovne zbirke.
             % Javadi 2024 - Mask R-CNN
-            V~\cite{src:javadi2024smart} so predstavili pametni skener hrane, ki je z združevanjem senzorjev (kamera, tehtnica), modela Mask R-CNN za segmentacijo~\cite{src:he2017mask}, razvrščevalnika sestavin in globinske ocene omogočil samodejno določanje mase sestavin ter izračun hranilnih vrednosti. Zajem in predobdelava sta potekala na robni napravi, računsko zahtevnejši del obdelave pa v oblaku.
+            V~\cite{src:javadi2024smart} so predstavili pametni skener hrane,
+            ki je z združevanjem senzorjev (kamere, tehtnice), modela Mask
+            R-CNN za segmentacijo~\cite{src:he2017mask}, razvrščevalnika
+            sestavin in globinske ocene omogočil samodejno določanje mase
+            sestavin ter izračun hranilnih vrednosti. Zajem in predobdelava sta
+            potekala na robni napravi, računsko zahtevnejši del obdelave pa v
+            oblaku.
             % FoodSAM
-            Lan~\etal~\cite{src:lan2023foodsam} so predstavili FoodSAM, ki je izhajal iz modelov Segment Anything (SAM)~\cite{src:kirillov2023segment}, namenjenih segmentaciji poljubnih objektov brez potrebe, da bi bili ti v učni množici (angl. zero-shot segmentation). Ker SAM sam po sebi praviloma vrne le segmentacijske maske brez razrednih oznak, so avtorji~\cite{src:lan2023foodsam} vzporedno dodali model SeTR~\cite{src:zheng2021rethinking}, ki je ustvaril grobe semantične maske z oznakami razredov. Rezultate obeh modelov so združili z mehanizmom glasovanja. Na FoodSeg103~\cite{src:wu2021large} so dosegli 46{,}4~\% mIoU na FoodSeg103 in 66{,}1~\% na UECFoodPix Complete~\cite{src:okamoto2021uec}.
+            Lan~\etal~\cite{src:lan2023foodsam} so predstavili FoodSAM, ki je
+            izhajal iz modelov Segment Anything
+            (SAM)~\cite{src:kirillov2023segment}, namenjenih segmentaciji
+            poljubnih objektov brez potrebe, da bi bili ti v učni množici
+            (angl. zero-shot segmentation). Ker SAM sam po sebi praviloma vrne
+            le segmentacijske maske brez razrednih oznak, so
+            avtorji~\cite{src:lan2023foodsam} vzporedno dodali model
+            SeTR~\cite{src:zheng2021rethinking}, ki je ustvaril grobe
+            semantične maske z oznakami razredov. Rezultate obeh modelov so
+            združili z mehanizmom glasovanja. Na
+            FoodSeg103~\cite{src:wu2021large} so dosegli 46{,}4~\% mIoU na
+            FoodSeg103 in 66{,}1~\% na UECFoodPix
+            Complete~\cite{src:okamoto2021uec}.
 
     \section{Izvajanje na robnih napravah} \label{sct:izvajanje-na-robnih-napravah}
 
         % Early efforts
-        Za področje izvajanja modelov na robnih napravah se pogosto uporablja termin TinyML~\cite{src:abadade2023comprehensive}. Med začetke teh pristopov na področju razpoznavanja hrane sodijo Kawano~~\etal~\cite{src:kawano2014foodcam} z modelom FoodCam-256, ki je bil pripravljen za izvajanje na mobilnih napravah, a je uporabljal tradicionalne pristope za klasifikacijo. Med pomembnejše pristope na tem področju sodita tudi SqueezeNet~\cite{src:iandola2016squeezenet} ter MobileNetV1~\cite{src:howard2017mobilenets}, ki sta v primerjavi z AlexNet~\cite{src:krizhevsky2012imagenet} ohranila oz. izboljšata natančnost, hkrati pa močno zmanjšala število parametrov.
+        Za področje izvajanja modelov na robnih napravah se pogosto uporablja
+        izraz TinyML~\cite{src:abadade2023comprehensive}. Med začetke teh
+        pristopov na področju razpoznavanja hrane sodi delo
+        Kawano~~\etal~\cite{src:kawano2014foodcam} z modelom FoodCam-256, ki je
+        bil pripravljen za izvajanje na mobilnih napravah, a je uporabljal
+        tradicionalne pristope za klasifikacijo. Med pomembnejše pristope na
+        tem področju sodita tudi SqueezeNet~\cite{src:iandola2016squeezenet}
+        ter MobileNetV1~\cite{src:howard2017mobilenets}, ki sta v primerjavi z
+        AlexNet~\cite{src:krizhevsky2012imagenet} ohranila oziroma izboljšala
+        natančnost, hkrati pa močno zmanjšala število parametrov.
 
-        Izvedbe družine modelov MobileNet s SSD (angl. Single Shot Detection) ter FPN (angl. Feature Pyramid Network)~\cite{src:lin2017feature} omogočajo uporabo izbranih klasifikacijskih modelov tudi v kontekstu detekcije.
+        Izvedbe družine modelov MobileNet s SSD (angl. Single Shot Detection)
+        ter FPN (angl. Feature Pyramid Network)~\cite{src:lin2017feature}
+        omogočajo uporabo izbranih klasifikacijskih modelov tudi za detekcijo.
         % ST YOLO X
-        Prav tako je možno nekatere bolj znane detekcijske modele, na primer YOLOX~\cite{src:ge2021yolox}, prirediti za izvajanje na mikrokrmilnikih~\cite{src:stm32modelzoo}.
+        Prav tako je možno nekatere bolj znane detekcijske modele, na primer
+        YOLOX~\cite{src:ge2021yolox}, prirediti za izvajanje na
+        mikrokrmilnikih~\cite{src:stm32modelzoo}.
 
         % FOMO
-        Platforma Edge Impulse je predstavila model Faster Objects More Objects (FOMO)~\cite{src:fomodocs}, detekcijski model, namenjen izvajanju na mikrokrmilnikih. Sestavljen je iz začetnih plasti modela MobileNetV2~\cite{src:sandler2018mobilenetv2}, glava pa je zgolj konvolucijska plast, kar rezultira v mreži značilk oz. aktivacij za vsako kategorijo. To lahko interpretiramo tudi kot segmentacijsko masko z zelo nizko resolucijo. Na takšnem izhodu so avtorji izvedli algoritem rojenja, kjer je vsak roj predstavljal en objekt. Tako so izhod modela bila središča detektiranih rojev, kar je posnemalo izhode klasičnih detekcijskih modelov. Metoda je sicer zahtevala zelo malo pomnilnika in imela nizko računsko kompleksnost, slabosti pa so se skrivale v majhnem receptivnem polju (angl. low receptive field), združevanju sosednjih objektov tekom rojenja ter nižji kapaciteti modela~\cite{src:boyle2024dsort}.
+        Platforma Edge Impulse je predstavila model Faster Objects More Objects
+        (FOMO)~\cite{src:fomodocs}, detekcijski model, namenjen izvajanju na
+        mikrokrmilnikih. Sestavljen je iz začetnih plasti modela
+        MobileNetV2~\cite{src:sandler2018mobilenetv2}, glava pa je zgolj
+        konvolucijska plast, zato na izhodu nastane mreža značilk oziroma aktivacij za
+        vsako kategorijo. To lahko interpretiramo tudi kot segmentacijsko masko
+        z zelo nizko ločljivostjo. Na takšnem izhodu so avtorji izvedli algoritem
+        rojenja, pri katerem je vsak roj predstavljal en objekt. Tako je model na izhodu podal središča
+        detektiranih rojev, kar je posnemalo izhode klasičnih
+        detekcijskih modelov. Metoda je sicer zahtevala zelo malo pomnilnika in
+        imela nizko računsko kompleksnost, slabosti pa so bile majhno
+        receptivno polje (angl. low receptive field), združevanje sosednjih
+        objektov med rojenjem ter nizka kapaciteta
+        modela~\cite{src:boyle2024dsort}.
         % Edge Impulse se ponaša predvsem s poenostavljanjem postopka zajema in obdelave podatkovne zbirke, učenja modela ter priprave modela za izvajanje na mikrokrmilnikih. Platforma omogoča popolnoma on line workflow, kompleksnost naloge pa zmanjšajo na račun fleksibilnosti pri načrtovanju. Načeloma je možno generirane skripte tudi urejati, kar omogoči boljši nadzor nad workflovom.
  
         % DSORT-MCU
-        Problem združevanja objektov med rojenjem so deloma razrešili Boyle~\etal v DSORT-MCU~\cite{src:boyle2024dsort}, kjer so predstavili adaptivno deljenje slike. Sliko so najprej razdelili na prekrivajoče odseke, nato pa vsak odsek ločeno poslali skozi model FOMO~\cite{src:fomodocs}. Rezultate vseh so nato združili v končni izhod. S tem so izboljšali sposobnost modela FOMO~\cite{src:fomodocs} za štetje objektov.
+        Problem združevanja objektov med rojenjem so deloma razrešili
+        Boyle~\etal v DSORT-MCU~\cite{src:boyle2024dsort}, kjer so predstavili
+        adaptivno deljenje slike. Sliko so najprej razdelili na prekrivajoče
+        odseke, nato pa vsak odsek ločeno poslali skozi model
+        FOMO~\cite{src:fomodocs}. Rezultate vseh odsekov so nato združili v končni
+        izhod. S tem so izboljšali sposobnost modela FOMO~\cite{src:fomodocs}
+        za štetje objektov.
         
-        Čeprav obstaja precej pristopov za izvajanje na mikrokrmilnikih~\cite{src:abadade2023comprehensive}, je raziskav, ki njihovo uporabo obravnavajo v kontekstu razpoznavanja hrane, razmeroma malo~\cite{src:moumane2023food, src:Nikodinovska_2024}.
+        Čeprav obstaja precej pristopov za izvajanje na
+        mikrokrmilnikih~\cite{src:abadade2023comprehensive}, je raziskav, ki
+        njihovo uporabo obravnavajo v kontekstu razpoznavanja hrane, razmeroma
+        malo~\cite{src:moumane2023food, src:Nikodinovska_2024}.
         % Klasifikacija
-        Gutti~\etal~\cite{src:gutti2022real} so izdelali prototip za razvrščanje sadja in zelenjave na podlagi slik na ESP-32 mikrokrmilniku. Izvedli so primerjavo treh modelov - prilagojen CNN, MobileNetV1~\cite{src:howard2017mobilenets} ter MobileNetV2~\cite{src:sandler2018mobilenetv2}. Izmerili so hitrost inference do 51 ms in porabe do 66 kB pomnilnika. Lin~\etal~\cite{src:lin2020mcunet} so predstavili MCUNet, primeren za izvajanje na mikrokrmilnikih. Na ImageNet~\cite{src:russakovsky2015imagenet} so z njim dosegli 70{,}7~\% natančnost. Modela MobileNetV1~\cite{src:howard2017mobilenets} in MobileNetV2~\cite{src:sandler2018mobilenetv2} sta na isti zbirki dosegla 72{,}0~\% in 74{,}2~\% natančnost s 3{,}4 in 6{,}9 milijoni parametrov. 
+        Gutti~\etal~\cite{src:gutti2022real} so izdelali prototip za
+        razvrščanje sadja in zelenjave na podlagi slik na ESP-32
+        mikrokrmilniku. Izvedli so primerjavo treh modelov -- prilagojeni model CNN,
+        MobileNetV1~\cite{src:howard2017mobilenets} ter
+        MobileNetV2~\cite{src:sandler2018mobilenetv2}. Izmerili so čas
+        inference do 51 ms in porabo pomnilnika do 66 kB.
+        Lin~\etal~\cite{src:lin2020mcunet} so predstavili MCUNet, primeren za
+        izvajanje na mikrokrmilnikih. Na
+        ImageNet~\cite{src:russakovsky2015imagenet} so z njim dosegli 70{,}7~\%
+        natančnost. Modela MobileNetV1~\cite{src:howard2017mobilenets} in
+        MobileNetV2~\cite{src:sandler2018mobilenetv2} sta na isti zbirki
+        dosegla 72{,}0~\% in 74{,}2~\% natančnost s 3{,}4 in 6{,}9 milijoni
+        parametrov. 
 
         % Razpoznava hrane
         % Tipično avtorji ciljajo vsaj mobilne telefone.
         % Klasifikacija
-        V STM32 Model Zoo~\cite{src:stm32modelzoo} na zbirki \mbox{Food-101}~\cite{src:bossard2014food} navajajo do 77{,}1~\% natančnost z MobileNetV1 ter do 80{,}38~\% natančnost z MobileNetV2. V realnosti je natančnost tipično nižja, saj je potrebno zmanjšati velikost modela glede na izbrano strojno opremo.
+        V STM32 Model Zoo~\cite{src:stm32modelzoo} na zbirki
+        \mbox{Food-101}~\cite{src:bossard2014food} navajajo do 77{,}1~\%
+        natančnost z modelom MobileNetV1 ter do 80{,}38~\% natančnost z modelom MobileNetV2. V
+        realnosti je natančnost tipično nižja, saj je potrebno zmanjšati
+        velikost modela glede na izbrano strojno opremo.
         Nikodinovska~\cite{src:Nikodinovska_2024} je na platformi STM32 implementirala model za klasifikacijo zapečenosti piškotov. 
         % Detekcija in segmentacija?
-        Prednosti izvedbe na robnih napravah so jasne - hitrejši in preprostejši modeli, cenejša izvedba, naprav pa ni potrebno povezovati v oblak.
+        Prednosti izvedbe na robnih napravah so jasne -- hitrejši in
+        preprostejši modeli, cenejša izvedba, naprav pa ni potrebno povezovati
+        v oblak.
 
         % TODO: Po napisanem uvodu tu argumentiraj kaj ostalim pristopom manjka v primerjavi s tvojo idejo. Na objektiven način skritiziraj dela (uporabi to kar si že napisal). Lahko tut iz obeh podpoglavij v sorodnih delih. Nej bo to mini mini diskusija sorodnih del.
 
@@ -567,13 +919,13 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
 
             %kaj je to klasifikacija, kako se to v splosnem dela
             Ena izmed osnovnih nalog pri razpoznavanju hrane je klasifikacija, tj. napoved kategorije jedi oziroma sestavin na podlagi slikovnih podatkov z metodami strojnega učenja~\cite{src:min2019survey}.
-            Klasifikacija slik hrane je zapleten proces, na katerega lahko vpliva več dejavnikov, med drugimi način priprave jedi, prekrivanje posameznih živil, ali so bile slike posnete v nadzorovanem okolju in število različnih kategorij hrane~\cite{src:konstantakopoulos2023review}. Bistven faktor je tudi kvaliteta podatkovne zbirke - objavljeno je bilo precej klasifikacijskih podatkovnih zbirk za različne kulinarike in namene~\cite{src:min2019survey}. Med najpomembnejše sodijo \mbox{Food-101}~\cite{src:bossard2014food}, \mbox{UEC-Food100}~\cite{src:matsuda2012recognition}, \mbox{UEC-Food256}~\cite{src:kawano2014automatic} ter \mbox{Vireo Food-172}~\cite{src:chen2016deep}.
+            Klasifikacija slik hrane je zapleten proces, na katerega lahko vpliva več dejavnikov, med drugimi način priprave jedi, prekrivanje posameznih živil, ali so bile slike posnete v nadzorovanem okolju in število različnih kategorij hrane~\cite{src:konstantakopoulos2023review}. Bistven faktor je tudi kvaliteta podatkovne zbirke -- objavljeno je bilo precej klasifikacijskih podatkovnih zbirk za različne kulinarike in namene~\cite{src:min2019survey}. Med najpomembnejše sodijo \mbox{Food-101}~\cite{src:bossard2014food}, \mbox{UEC-Food100}~\cite{src:matsuda2012recognition}, \mbox{UEC-Food256}~\cite{src:kawano2014automatic} ter \mbox{Vireo Food-172}~\cite{src:chen2016deep}.
 
             % Klasične metode
             Pred razmahom globokega učenja so klasifikacijski pristopi večinoma temeljili na ročno izluščenih slikovnih značilkah in klasičnih metodah razvrščanja~\cite{src:min2019survey}. Med pogosto uporabljenimi opisniki sta bila SIFT, ki je temeljil na lokalnih invariantnih značilkah, in HOG, ki je opisoval porazdelitev usmerjenih gradientov v sliki~\cite{src:lowe2004sift, src:dalal2005hog}. Tako pridobljene predstavitve so raziskovalci nato uporabljali v razvrščevalnikih, kot je metoda SVM~\cite{src:cortes1995svm}. Tudi pri razpoznavanju jedi so bili uporabljeni podobni pristopi; primer takšnega sistema je podatkovna zbirka Food-101~\cite{src:bossard2014food}, kjer so avtorji uporabili diskriminativne slikovne komponente in naključne gozdove~\cite{src:bossard2014food}. Čeprav so takšne metode dosegle uporabne rezultate, je bila njihova uspešnost praviloma omejena zaradi odvisnosti od ročno načrtovanih značilk~\cite{src:min2019survey}.
 
             % Moderne metode (Modern methods)
-            V sodobnih pristopih h klasifikaciji slik prevladujejo konvolucijske nevronske mreže, ki značilk ne izluščijo ročno, temveč se jih naučijo neposredno iz podatkov~\cite{src:krizhevsky2012imagenet}. Takšni modeli so se izkazali za zelo uspešne tudi pri razpoznavanju jedi, saj bolje obvladujejo veliko vizualno raznolikost jedi, podobnost med različnimi kategorijami ter prisotnost več sestavin na isti sliki~\cite{src:kagaya2014food, src:min2019survey, src:konstantakopoulos2023review}. Z razvojem globljih in učinkovitejših arhitektur, kot so rezidualne mreže in modeli EfficientNet, so se dodatno izboljšali tako klasifikacijska točnost kot računska učinkovitost~\cite{src:he2016deep, src:tan2019efficientnet}. Na področju hrane so se zato uveljavili tako specializirani modeli za razpoznavanje jedi kot tudi večoznačni pristopi za razpoznavanje sestavin~\cite{src:martinel2018wide, src:bolanos2017food}.
+            V sodobnih pristopih h klasifikaciji slik prevladujejo konvolucijske nevronske mreže, ki značilk ne izluščijo ročno, temveč se jih naučijo neposredno iz podatkov~\cite{src:krizhevsky2012imagenet}. Takšni modeli so se izkazali za zelo uspešne tudi pri razpoznavanju jedi, saj bolje obvladujejo veliko vizualno raznolikost jedi, podobnost med različnimi kategorijami ter prisotnost več sestavin na isti sliki~\cite{src:kagaya2014food, src:min2019survey, src:konstantakopoulos2023review}. Z razvojem globljih in učinkovitejših arhitektur, kot so residualne mreže in modeli EfficientNet, so se dodatno izboljšali tako klasifikacijska točnost kot računska učinkovitost~\cite{src:he2016deep, src:tan2019efficientnet}. Na področju hrane so se zato uveljavili tako specializirani modeli za razpoznavanje jedi kot tudi večoznačni pristopi za razpoznavanje sestavin~\cite{src:martinel2018wide, src:bolanos2017food}.
 
             % Metode s komponentami (spustimo)
 
@@ -591,14 +943,14 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             Pred razširitvijo globokega učenja so segmentacijski pristopi večinoma temeljili na grafovskih, regijskih in optimizacijskih metodah. Slike so segmentirali na podlagi podobnosti barve, teksture, robov in prostorske povezanosti med slikovnimi elementi~\cite{src:felzenszwalb2004efficient, src:yu2023techniques}.
 
             % Moderni pristopi
-            Sodobni segmentacijski pristopi večinoma temeljijo na globokem učenju~\cite{src:minaee2021image, src:yu2023techniques}. Nadaljnji razvoj je večinoma potekal v smeri arhitektur tipa enkoder--dekoder, pri katerih kodirni del izlušči semantično bogate značilke, dekodirni del pa jih preslika nazaj v prostorsko ločljiv prikaz segmentacijske maske~\cite{src:ronneberger2015unet, src:minaee2021image, src:yu2023techniques}. Pri tem imajo pogosto pomembno vlogo tudi preskočne povezave, ki pomagajo ohraniti fine podrobnosti in natančnejše robove segmentov. Pri instančni segmentaciji se takim pristopom pridružijo še mehanizmi za lokalizacijo posameznih objektov, tako da model ne določi le razreda posameznega piksla, temveč loči tudi posamezne primerke iste kategorije in jim priredi ločene maske~\cite{src:he2017mask, src:minaee2021image}.
+            Sodobni segmentacijski pristopi večinoma temeljijo na globokem učenju~\cite{src:minaee2021image, src:yu2023techniques}. Nadaljnji razvoj je večinoma potekal v smeri arhitektur tipa enkoder-dekoder, pri katerih kodirni del izlušči semantično bogate značilke, dekodirni del pa jih preslika nazaj v prostorsko ločljiv prikaz segmentacijske maske~\cite{src:ronneberger2015unet, src:minaee2021image, src:yu2023techniques}. Pri tem imajo pogosto pomembno vlogo tudi preskočne povezave, ki pomagajo ohraniti fine podrobnosti in natančnejše robove segmentov. Pri instančni segmentaciji se takim pristopom pridružijo še mehanizmi za lokalizacijo posameznih objektov, tako da model ne določi le razreda posameznega piksla, temveč loči tudi posamezne primerke iste kategorije in jim priredi ločene maske~\cite{src:he2017mask, src:minaee2021image}.
 
     \section{Izvajanje na robnih napravah in optimizacija}  \label{sct:teorija-robnenaprave}
 
         % Uvod, early efforts
-        Izvajanje modelov globokega učenja na robnih napravah je zahtevno zaradi strogih omejitev strojne opreme, predvsem razpoložljivega RAM pomnilnika ter Flash (programskega) pomnilnika. Izraz \enquote{robna naprava} zajema širok nabor naprav, od mobilnih telefonov in zmogljivejših namenskih platform, kot sta Nvidia Jetson~\cite{src:nvidiajetson} in Coral Edge TPU (angl. Tensor Processing Unit)~\cite{src:coraledgetpu}, pa vse do mikrokrmilnikov brez specializirane strojne opreme za pospeševanje inferenc. V tem delu se omejujemo na mikrokrmilnike brez specializirane strojne opreme, ker so ti praviloma nizkocenovni in bolj razširjeni~\cite{src:abadade2023comprehensive}.
+        Izvajanje modelov globokega učenja na robnih napravah je zahtevno zaradi strogih omejitev strojne opreme, predvsem razpoložljivega RAM pomnilnika ter Flash (programskega) pomnilnika. Izraz \enquote{robna naprava} zajema širok nabor naprav, od mobilnih telefonov in zmogljivejših namenskih platform, kot sta Nvidia Jetson~\cite{src:nvidiajetson} in Coral Edge TPU (angl. Tensor Processing Unit)~\cite{src:coraledgetpu}, pa vse do mikrokrmilnikov brez specializirane strojne opreme za pospeševanje inference. V tem delu se omejujemo na mikrokrmilnike brez specializirane strojne opreme, ker so ti praviloma nizkocenovni in bolj razširjeni~\cite{src:abadade2023comprehensive}.
 
-        Mikrokrmilniki imajo pogosto na voljo do 16~MB Flash pomnilnika in do 8~MB delovnega (RAM) pomnilnika, kar je bistveno manj od običajne strojne opreme za izvajanje modelov globokega učenja~\cite{src:abadade2023comprehensive}.
+        Mikrokrmilniki imajo pogosto na voljo do 16~MB pomnilnika Flash in do 8~MB delovnega pomnilnika, kar je bistveno manj od običajne strojne opreme za izvajanje modelov globokega učenja~\cite{src:abadade2023comprehensive}.
 
         % TFLite (LiteRT), TFLite Micro (LiteRT for microcontrollers), ONNX, Edge Impulse thing,  ostali ... CMSIS-NN, CubeX-AI.
         % Glej tudi software optimization v surveyu
@@ -619,7 +971,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
         V literaturi najdemo ločevanje tudi med dinamično in statično kvantizacijo. Dinamična kvantizacija praviloma označuje pristop, pri katerem se razpon aktivacij določa sproti med izvajanjem, medtem ko je pri statični kvantizaciji ta razpon določen vnaprej~\cite{src:gholami2022survey, src:jacob2018quantization}. Za določitev razponov pri statični kvantizaciji v kombinaciji s PTQ zato pogosto uporabimo tudi t.~i. reprezentativno podatkovno zbirko, na podlagi katere izvedemo kalibracijo.
 
         % Kvantizacija - dynamic & full v tflite micro
-        V dokumentaciji orodja LiteRT Micro~\cite{src:litertmicro, src:david2021tensorflowlitemicro} ločimo dinamično in polno kvantizacijo. Dinamična kvantizacija v tem kontekstu predstavlja postopek, pri katerem statično kvantiziramo predvsem uteži in prage, medtem ko se aktivacijski ter vhodno-izhodni medpomnilniki kvantizirajo dinamično oziroma ostanejo v prvotni obliki. Polna kvantizacija pa pomeni, da poleg uteži in pragov statično kvantiziramo tudi aktivacijske ter vhodno-izhodne medpomnilnike.
+        V dokumentaciji orodja LiteRT Micro~\cite{src:litertmicro, src:david2021tensorflowlitemicro} ločimo dinamično in polno kvantizacijo. Dinamična kvantizacija v tem kontekstu predstavlja postopek, pri katerem statično kvantiziramo predvsem uteži in prage, medtem ko se aktivacijski ter vhodno-izhodni medpomnilniki kvantizirajo dinamično oziroma ostanejo v prvotni obliki. Polna kvantizacija pomeni, da poleg uteži in pragov statično kvantiziramo tudi aktivacijske ter vhodno-izhodne medpomnilnike.
         V knjižnici LiteRT Micro so tenzorji uteži in pragov shranjeni kot konstante, zato so na mikrokrmilnikih običajno v pomnilniku Flash/ROM, medtem ko se vmesni rezultati oziroma aktivacije shranjujejo v vnaprej rezerviranem prostoru v RAM-u~\cite{src:litertmicro}. Posledično kvantizacija zgolj uteži in pragov praviloma zmanjša predvsem porabo Flash pomnilnika, medtem ko je prihranek v RAM-u omejen. Pri polni kvantizaciji, kjer se kvantizirajo tudi aktivacije in po potrebi vhodni ter izhodni tenzorji, pa se lahko zmanjša tudi velikost aktivacijskih medpomnilnikov in s tem potrebna količina RAM-a.
 
         % Pruning
@@ -635,7 +987,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
         % Povem da je open source, pa citiram opise iz dokumentacije in blog posta. Neki, kar bi pisalo v introductionu članka na spletu. Ne bi predolg tu, opiši bistvo. Dodaj tudi kako smo ga modificirali oz. interpretirali mi, high level motivacije.
         % TODO: Morajo biti linki na FOMO dokumentacijo citati ali footnoti? Kaj pa Arduino Nicla link?
 
-        Model FOMO (angl. Faster Objects, More Objects)~\cite{src:announcingfomo, src:fomodocs} je detekcijski model, namenjen realnočasovnemu izvajanju na mikrokrmilnikih. Na voljo je na platformi \mbox{Edge Impulse}~\cite{src:fomodocs}. Zanj je značilna nizka poraba pomnilnika in učinkovito izvajanje - avtorji v demonstraciji prikažejo izvajanje na Cortex M7 jedru razvojnega kompleta Arduino Nicla Vision, kjer dosežejo obdelavo do 28 sličic na sekundo ob porabi zgolj 245 kB pomnilnika~\cite{src:fomodocs}.
+        Model FOMO (angl. Faster Objects, More Objects)~\cite{src:announcingfomo, src:fomodocs} je detekcijski model, namenjen realnočasovnemu izvajanju na mikrokrmilnikih. Na voljo je na platformi \mbox{Edge Impulse}~\cite{src:fomodocs}. Zanj je značilna nizka poraba pomnilnika in učinkovito izvajanje -- avtorji v demonstraciji prikažejo izvajanje na Cortex M7 jedru razvojnega kompleta Arduino Nicla Vision, kjer dosežejo obdelavo do 28 sličic na sekundo ob porabi zgolj 245 kB pomnilnika~\cite{src:fomodocs}.
         Model je odprtokoden~\cite{src:fomodocs}, portal pa omogoča prenos kode z definicijami modelov ter postopki za učenje. To nam omogoča prilagajanje arhitekture modela, obdelave vhodnih in izhodnih podatkov ter postopka učenja glede na naravo izbranega problema.
 
         \subsection{Arhitektura} \label{sct:fomo-arhitektura}
@@ -740,7 +1092,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
 
         % Splošno o YOLOv11 (struktura in novosti)
         Modeli družine YOLO so sestavljeni iz treh glavnih komponent~\cite{src:khanam2024yolov11}: hrbtenice (angl. \textit{backbone}), vratu (angl. \textit{neck}) in glave (angl. \textit{head}). Hrbtenica modela s konvolucijskimi mrežami iz vhodnih slik izlušči večskalne preslikave značilk. Vrat modela kot vmesna stopnja z združevanjem prek različnih ločljivosti dodatno obogati značilke, glava pa iz tako prečiščenih značilk izračuna končne napovedi za lokalizacijo in klasifikacijo.
-        YOLOv11 v primerjavi z YOLOv8 ohrani osnovno zgradbo modela, vendar uvede nekaj arhitekturnih izboljšav~\cite{src:khanam2024yolov11, src:yolov11}. V hrbtenici in vratu zamenja blok C2f z učinkovitejšim blokom C3k2, ki zmanjša računsko zahtevnost ob ohranjanju primerljive kakovosti značilk. Obenem ohrani modul SPPF (angl. \textit{spatial pyramid pooling - fast}) in za njim doda modul C2PSA, ki izboljša prostorsko pozornost modela. Skupni namen teh sprememb je izboljšati razmerje med natančnostjo in učinkovitostjo.
+        YOLOv11 v primerjavi z YOLOv8 ohrani osnovno zgradbo modela, vendar uvede nekaj arhitekturnih izboljšav~\cite{src:khanam2024yolov11, src:yolov11}. V hrbtenici in vratu zamenja blok C2f z učinkovitejšim blokom C3k2, ki zmanjša računsko zahtevnost ob ohranjanju primerljive kakovosti značilk. Obenem ohrani modul SPPF (angl. \textit{Spatial Pyramid Pooling - Fast}) in za njim doda modul C2PSA, ki izboljša prostorsko pozornost modela. Skupni namen teh sprememb je izboljšati razmerje med natančnostjo in učinkovitostjo.
 
         % Opis segmentacijske različice (YOLOv11-seg)
         Modeli družine YOLOv11 podpirajo več različic, namenjenih različnim nalogam: poleg detekcije še instančno segmentacijo, klasifikacijo, oceno poz (angl. \textit{pose estimation}) in orientirano detekcijo~\cite{src:yolov11, src:khanam2024yolov11}.
@@ -872,7 +1224,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             \includegraphics[width=0.24\linewidth]{figures/FoodSeg103_examples/img8_mask.jpg} \\
             \end{tabular}
             % TODO: Ni jasno katera maska pripada kateri sliki
-            \caption{Primeri vzorcev in pripadajočih segmentacijskih mask iz
+            \caption[Primeri vzorcev in segmentacijskih mask iz zbirke FoodSeg103]{Primeri vzorcev in pripadajočih segmentacijskih mask iz
             podatkovne zbirke FoodSeg103~\cite{src:wu2021large}. Na maskah
             sivinska vrednost piksla predstavlja indeks razreda, ki mu piksel
             pripada.}
@@ -887,7 +1239,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             \centering
             \includegraphics[width=\linewidth]{figures/num_classes_per_image.pdf}
             % TODO: preveri odmik med opisom in sliko
-            \caption{Prikaz števila razredov na posamezni sliki v izvorni zbirki FoodSeg103.}
+            \caption[Porazdelitev števila razredov v zbirki FoodSeg103]{Prikaz števila razredov na posamezni sliki v izvorni zbirki FoodSeg103.}
             \label{fig:foodseg103_orig_num_classes_per_image}
         \end{figure*}
     
@@ -952,7 +1304,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                 \centering
                 \includegraphics[width=\linewidth]{figures/class_frequency_trimmed_30.pdf}
                 % TODO: Prevelik odmik med opisom in sliko
-                \caption{Distribucija razredov v zbirki FoodSeg103, poenostavljeni na 30 razredov.}
+                \caption[Distribucija razredov v zbirki FoodSeg103 s 30 razredi]{Distribucija razredov v zbirki FoodSeg103, poenostavljeni na 30 razredov.}
                 \label{fig:class_freq_30}
             \end{figure*}
             
@@ -960,7 +1312,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                 \centering
                 \includegraphics[width=\linewidth]{figures/class_frequency_trimmed_20.pdf}
                 % TODO: Prevelik odmik med opisom in sliko
-                \caption{Distribucija razredov v zbirki FoodSeg103, poenostavljeni na 20 razredov.}
+                \caption[Distribucija razredov v zbirki FoodSeg103 z 20 razredi]{Distribucija razredov v zbirki FoodSeg103, poenostavljeni na 20 razredov.}
                 \label{fig:class_freq_20}
             \end{figure*}
         
@@ -1248,7 +1600,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             \(w_{\mathrm{bg}}=1{,}0\).
 
             Za večjo kapaciteto modela smo nastavili parameter \(\alpha\) na
-            \(1{,}0\), prag \(\tau\) nastavili na \(0{,}2\), prag \(\nu\) pa na
+            \(1{,}0\), prag \(\tau\) na \(0{,}2\), prag \(\nu\) pa na
             \(3\). Vhodno ločljivost smo nastavili na \(128 \times 128\) pikslov,
             izhodno masko pa pomanjšali za faktor $16$, kar pomeni ločljivost
             \(8 \times 8\) pikslov. V predprocesiranju smo uporabili knjižnico
@@ -1348,7 +1700,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
 
             %\paragraph{Specializirani enorazredni modeli}
             Za učenje posameznega enorazrednega modela smo morali pripraviti
-            podatkovno zbirko, da je vsebovala zgolj dva razreda - ciljni
+            podatkovno zbirko, da je vsebovala zgolj dva razreda -- ciljni
             razred ter razred ozadja. Kot omenjeno v
             poglavju~\ref{sct:eir-podatkovnazbirka-poenostavitev},
             je to mogoče na več načinov. Kot izhodišče smo uporabili
@@ -1489,10 +1841,12 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             
             \begin{figure}
                 \centering
-                \includegraphics[width=0.45\linewidth]{figures//mobilesam/input.png}
-                \includegraphics[width=0.45\linewidth]{figures//mobilesam/output.png}
+                \includegraphics[width=0.42\linewidth]{figures//mobilesam/input.png}
+                \includegraphics[width=0.42\linewidth]{figures//mobilesam/output.png}
                 % TODO: Manjkajo reference na posamezno sliko
-                \caption{Vhodna slika z mrežo točk ospredja ter izhod modela MobileSAM. MobileSAM vrne toliko instanc objektov, kolikor dobi vhodnih točk, zato za naš pristop ni ustrezen.}
+                \caption[Primer izhoda modela MobileSAM]{Primer vhodne slike z mrežo točk ospredja ter pripadajočega izhoda modela
+                MobileSAM. MobileSAM vrne toliko instanc objektov, kolikor dobi
+                vhodnih točk, zato za naš pristop ni ustrezen.}
                 \label{fig:mobilesam}
             \end{figure}
                 
@@ -1513,9 +1867,9 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
     \FloatBarrier
 
     \section{Rezultati} \label{sct:rezultati}
-    
-        V tem poglavju predstavimo rezultate izvedenih eksperimentov in njihovo
-        primerjavo. Najprej podamo rezultate za model FOMO, kjer primerjamo
+
+        V tem poglavju predstavimo rezultate izvedenih
+        eksperimentov. Najprej podamo rezultate za model FOMO, kjer primerjamo
         vpliv različnih nastavitev učenja, ločljivosti, strategij učenja in
         kvantizacije, nato pa predstavimo še rezultate modelov YOLOv11-seg in
         SAM.
@@ -1528,12 +1882,22 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             in~\ref{fig:overfit_one_batch_example}
             nakazujejo,
             da model popolnoma reši izbran majhen nabor podatkov.
-            Vrednost kriterijske funkcije se zmanjša proti 0, medtem ko
-            vrednost metrike $F1_r$ približa vrednosti 1. Na
+            Vrednost kriterijske funkcije se zmanjša proti 0,
+            metrika $F1_r$ pa se približa vrednosti 1. Na
             sliki~\ref{fig:overfit_one_batch_example}
-            je razvidno, da se predikcija modela popolnoma ujema z referenčno masko.
+            je razvidno, da se predikcija modela popolnoma ujema z referenco.
 
-            \begin{figure}[!htbp]
+            \begin{figure}[hbt]
+                \centering
+                \includegraphics[width= \linewidth]{figures/single_batch_test/overfit_one_batch_example.png}
+                % TODO: preveri odmik med opisom in sliko
+                % TODO: vsak graf na sliki mora biti enoznačno označen kot npr. (a) (b). Oznake moraš potem uporabiti v opisu slike.
+                \caption[Primer inference pri namernemu prenaučenju za validacijo okolja]{Primer inference na modelu, namenjenemu validaciji okolja z namernim prenaučenjem. Od leve proti desni: vhodna slika, izhod modela in referenčna maska.}
+                \label{fig:overfit_one_batch_example}
+            \end{figure}
+
+
+            \begin{figure}[!htb]
                 \centering
                 \setlength{\tabcolsep}{2pt} % space between columns
                 \renewcommand{\arraystretch}{1} % no extra row padding
@@ -1577,20 +1941,11 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
 
                 \end{tabular}
                 % TODO: vsak graf na sliki mora biti enoznačno označen kot npr. (a) (b). Oznake moraš potem uporabiti v opisu slike.
-                \caption{Potek kriterijske funkcije in metrike $F1_r$ skozi namerno prenaučenje z namenom validacije učnega okolja.}
+                \caption[Potek namernega prenaučenja za validacijo učenga okolja]{Potek kriterijske funkcije in metrike $F1_r$ skozi namerno prenaučenje z namenom validacije učnega okolja.}
                 \label{fig:overfit_one_batch_plots}
             \end{figure}
 
-            \begin{figure}[h]
-                \centering
-                \includegraphics[width=\linewidth]{figures/single_batch_test/overfit_one_batch_example.png}
-                % TODO: preveri odmik med opisom in sliko
-                % TODO: vsak graf na sliki mora biti enoznačno označen kot npr. (a) (b). Oznake moraš potem uporabiti v opisu slike.
-                \caption{Primer inference na modelu, namenjenemu validaciji okolja z namernim prenaučenjem. Od leve proti desni: vhodna slika, izhod modela in referenčna maska.}
-                \label{fig:overfit_one_batch_example}
-            \end{figure}
-
-            \FloatBarrier
+            %\FloatBarrier
 
             \paragraph{Določanje optimalnih vrednosti za stopnjo učenja}
 
@@ -1599,13 +1954,12 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             FOMO. V prvem eksperimentu je bila vrednost parametra
             $\alpha=0{,}35$, v drugem pa $\alpha=1{,}0$. V obeh eksperimentih
             smo uporabili izhodno plast za 30 razredov sestavin.
-
             Iz krivulj lahko razberemo, da se najstrmejše območje upadanja začne
             pri okrog $10^{-5}$, konča pa pri okrog $10^{-1}$. Razvidno je
             tudi, da parameter $\alpha$ v razponu $[0{,}35, 1{,}0]$ ne vpliva
             bistveno strmino krivulje.
 
-            \begin{figure}[t]
+            \begin{figure}[hbt]
                 \centering
                 \setlength{\tabcolsep}{2pt} % space between columns
                 \renewcommand{\arraystretch}{1} % no extra row padding
@@ -1629,11 +1983,10 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                         \end{axis}
                     \end{tikzpicture}
                 \end{tabular}
-                \caption{Rezultati preizkusa za določanje optimalne stopnje učenja. Graf prikazuje potek kriterijske funkcije skozi naraščujoč faktor učenja $\eta$.}
+                \caption[Rezultati eksperimenta za določanje optimalne stopnje učenja]{Rezultati eksperimenta za določanje optimalne stopnje učenja. Graf prikazuje potek kriterijske funkcije skozi naraščujoč faktor učenja $\eta$.}
                 \label{fig:lr_finder_plots}
             \end{figure}
 
-            \FloatBarrier
 
             \paragraph{Učenje na izvirni zbirki}
 
@@ -1645,6 +1998,8 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             in v tabeli~\ref{tab:experiment_full_foodseg103_dataset_table}.
             Nekaj kvalitativnih rezultatov je prikazano na
             sliki~\ref{fig:experiment_full_foodseg103_dataset_qualitative}.
+
+            \FloatBarrier
 
             Na obeh grafih je razvidno, da učna kriterijska funkcija skozi
             celotno učenje monotono pada. Pri izvedbi z uniformno uteženimi
@@ -1673,7 +2028,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
 
 
             % Grafi kriterijske funkcije
-            \begin{figure}[t]
+            \begin{figure}[hbt]
                 \centering
                 \setlength{\tabcolsep}{2pt} % space between columns
                 \renewcommand{\arraystretch}{1} % no extra row padding
@@ -1717,24 +2072,24 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                         \end{axis}
                     \end{tikzpicture}
                 \end{tabular}
-                \caption{Spreminjanje kriterijske funkcije tekom učenja na izvirni, nepoenostavljeni zbirki FoodSeg103. Levo je izvedba z uniformno uteženimi razredi, desno pa z utežmi na podlagi frekvence razredov.}
+                \caption[Kriterijska funkcija pri učenju FOMO na izvirni zbirki]{Spreminjanje kriterijske funkcije tekom učenja na izvirni, nepoenostavljeni zbirki FoodSeg103. Levo je izvedba z uniformno uteženimi razredi, desno pa z utežmi na podlagi frekvence razredov.}
                 \label{fig:experiment_full_foodseg103_dataset_loss}
             \end{figure}
 
             % Kvalitativno
-            \begin{figure*}[h!]
+            \begin{figure*}[hbt]
                 \centering
-                \includegraphics[width=0.8\linewidth]{figures/full_foodseg103_dataset/uniform_weights/example1.png}
-                \includegraphics[width=0.8\linewidth]{figures/full_foodseg103_dataset/uniform_weights/example2.png}
-                \includegraphics[width=0.8\linewidth]{figures/full_foodseg103_dataset/weights_from_stats/example1.png}
-                \includegraphics[width=0.8\linewidth]{figures/full_foodseg103_dataset/weights_from_stats/example2.png}
+                \includegraphics[width=\linewidth]{figures/full_foodseg103_dataset/uniform_weights/example1.png}
+                \includegraphics[width=\linewidth]{figures/full_foodseg103_dataset/uniform_weights/example2.png}
+                \includegraphics[width=\linewidth]{figures/full_foodseg103_dataset/weights_from_stats/example1.png}
+                \includegraphics[width=\linewidth]{figures/full_foodseg103_dataset/weights_from_stats/example2.png}
                 % TODO: Manjkajo reference posamezne grafike, uporabi a b c d
-                \caption{Kvalitativni rezultati na izvirni, nepoenostavljeni zbirki FoodSeg103. Od leve proti desni: vhodna slika, referenčna maska, predikcija modela. Zgornji dve sliki sta rezultat izvedbe z uniformnimi utežmi, spodnji dve pa rezultat izvedbe na podlagi frekvence razredov.}
+                \caption[Kvalitativni rezultati učenja FOMO na izvirni zbirki]{Kvalitativni rezultati na izvirni, nepoenostavljeni zbirki FoodSeg103. Od leve proti desni: vhodna slika, referenčna maska, predikcija modela. Zgornji dve sliki sta rezultat izvedbe z uniformnimi utežmi, spodnji dve pa rezultat izvedbe na podlagi frekvence razredov.}
                 \label{fig:experiment_full_foodseg103_dataset_qualitative}
             \end{figure*}
             
             % Tabela rezultatov (f1 class presence, f1 per pixel, iou)
-            \begin{table}[t]
+            \begin{table}[hbt]
                 \centering
                 \begin{tabular}{lccc}
                     \toprule
@@ -1744,11 +2099,10 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                     Frekvenca razredov & 11{,}4 & 7{,}6 & 4{,}3 \\
                     \bottomrule
                 \end{tabular}
-                \caption{Rezultati učenja na izvirni, nepoenostavljeni zbirki FoodSeg103.}
+                \caption{Rezultati učenja na izvirni, nepoenostavljeni zbirki.}
                 \label{tab:experiment_full_foodseg103_dataset_table}
             \end{table}
 
-            \FloatBarrier
 
             \paragraph{Učenje na poenostavljeni zbirki}
 
@@ -1759,15 +2113,16 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             tabeli~\ref{tab:experiment_simplified_foodseg103_dataset_table}.
             Na grafih je razvidno, da se validacijski krivulji po začetnem padcu v
             približno 15. epohi obrneta navzgor, vendar je rast na desnem grafu
-            počasnejša kot pa v prejšnjem eksperimentu na izvirni podatkovni
+            počasnejša kot v prejšnjem eksperimentu na izvirni podatkovni
             zbirki. Razlika med levim in desnim grafom je manjša kot med
             grafoma v prejšnjem eksperimentu. V primerjavi z eksperimentom na
             izvirni podatkovni zbirki je model dosegel izboljšanje v doseženih
-            metrikah - mIoU smo izboljšali za $11{,}6$ in $13{,}7$ odstotnih
+            metrikah -- mIoU smo izboljšali za $11{,}6$ in $13{,}7$ odstotnih
             točk, metriko $F1_r$ pa za $24{,}3$ ter $25{,}7$ odstotnih točk.
             Razlika med posameznima pristopoma uteževanja vzorcev znaša med
             $0{,}4$ in $1{,}0$ odstotkov.
 
+            \FloatBarrier
             % TODO: Diskusija
             %V primerjavi z rezultati v poglavju~\ref{sct:eir-ucenje-na-izvirnem-datasetu} doseže ta eksperiment izrazito boljše rezultate. Poenostavitev podatkovne zbirke izboljša dosežene metrike, kar bi lahko nakazovalo, da je podatkovna zbirka prezahtevna za izbran model.
             % TODO: Diskusija
@@ -1775,7 +2130,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             %Odstranitev slabo reprezentiranih razredov mogoče tudi zmanjša stopnjo prenaučenosti, ko uporabljamo uteževanje na podlagi frekvence. Najslabše reprezentirani razredi tako nimajo tako velikih uteži, vzorcev v teh razredih pa je več, kar reši problem z izrazito rastjo validacijske krivulje pri učenju na izvirni podatkovni zbirki.
 
             % Grafi kriterijske funkcije
-            \begin{figure*}[t]
+            \begin{figure*}[hbt]
                 \centering
                 \setlength{\tabcolsep}{2pt} % space between columns
                 \renewcommand{\arraystretch}{1} % no extra row padding
@@ -1825,12 +2180,12 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
 
                 \end{tabular}
                 % TODO: Manjkajo reference na posamezno sliko. Verjetno lahko uporabis abcd oznake
-                \caption{Spreminjanje kriterijske funkcije tekom učenja modela FOMO na poenostavljeni zbirki FoodSeg103. Levo je izvedba z uniformno uteženimi razredi, desno pa z utežmi na podlagi frekvence razredov.}
+                \caption[Kriterijska funkcija pri učenju FOMO na poenostavljeni zbirki]{Spreminjanje kriterijske funkcije tekom učenja modela FOMO na poenostavljeni zbirki FoodSeg103. Levo je izvedba z uniformno uteženimi razredi, desno pa z utežmi na podlagi frekvence razredov.}
                 \label{fig:experiment_simplified_foodseg103_dataset_loss}
             \end{figure*}
 
             % Tabela rezultatov (f1 class presence, f1 per pixel, iou)
-            \begin{table}[t]
+            \begin{table}[hbt]
                 \centering
                 \begin{tabular}{lccc}
                     \toprule
@@ -1840,7 +2195,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                     Frekvenca razredov & 37{,}1 & 28{,}3  & 18{,}0  \\
                     \bottomrule
                 \end{tabular}
-                \caption{Rezultati učenja na poenostavljeni FoodSeg103 zbirki.}
+                \caption{Rezultati učenja na poenostavljeni zbirki.}
                 \label{tab:experiment_simplified_foodseg103_dataset_table}
             \end{table}
 
@@ -1862,6 +2217,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             % TODO: Rezultati so še vedno precej slabi, vendar na podlagi tega
             % eksperimenta lahko določimo najbolj ustrezno vhodno ločljivost in
             % izhodno ločljivost.
+
 
             %- primerjava med istimi faktorji in različnimi vhodi
             % Nevem točno kak bi to primerjal
@@ -1896,7 +2252,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                     224x224 & 14x14 & 16  &  34{,}2 & 27{,}9 & 17{,}7 \\
                     \bottomrule
                 \end{tabular}
-                \caption{Primerjava različnih kombinacij vhodne ločljivosti in faktorja zmanjšanja v glavi modela.}
+                \caption[Primerjava kombinacij vhodne ločljivosti in faktorja zmanjšanja]{Primerjava različnih kombinacij vhodne ločljivosti in faktorja zmanjšanja v glavi modela.}
                 \label{tab:res-combos}
             \end{table}
 
@@ -1997,7 +2353,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                     Cake         & 10{,}0 & 17{,}2 & 8{,}4 & 22{,}2 \\
                     \bottomrule
                 \end{tabular}
-                \caption{Primerjava referenčnega modela in specializiranih enorazrednih FOMO modelov po dveh metrikah.}
+                \caption[Uspešnost specializiranih enorazrednih modelov FOMO]{Primerjava referenčnega modela in specializiranih enorazrednih modelov FOMO po dveh metrikah.}
                 \label{tab:moe-results}
             \end{table}
 
@@ -2080,7 +2436,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                     1{,}0  & 286{,}2 & 1643{,}4 & 118{,}1  &  418{,}1  \\
                     \bottomrule
                 \end{tabular}
-                \caption{Velikost modela in poraba RAM pomnilnika v kB glede na \(\alpha\) pred in po kvantizaciji.}
+                \caption[Velikost modela in poraba pomnilnika pred in po kvantizaciji]{Velikost modela in poraba pomnilnika v kB glede na \(\alpha\) pred in po kvantizaciji.}
                 \label{tab:alpha-size-ram}
             \end{table}
 
@@ -2209,7 +2565,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
 
                 \end{tabular}
                 % TODO: Dodaj reference na posamezne grafike, mogoce uporabi abcd
-                \caption{Spreminjanje kriterijske funkcije tekom učenja modelov YOLO11-seg na FoodSeg103. Levo je učenje na izvirni zbirki s 103 razredi, desno pa na poenostavljeni s 30 razredi. Zgornja vrsta predstavlja različico \mbox{\textit{nano}}, spodnja pa različico \mbox{\textit{extra large}}.}
+                \caption[Kriterijska funkcija pri učenju modelov YOLO11-seg]{Spreminjanje kriterijske funkcije tekom učenja modelov YOLO11-seg na FoodSeg103. Levo je učenje na izvirni zbirki s 103 razredi, desno pa na poenostavljeni s 30 razredi. Zgornja vrsta predstavlja različico \mbox{\textit{nano}}, spodnja pa različico \mbox{\textit{extra large}}.}
                 \label{fig:yolo11-loss}
             \end{figure}
 
@@ -2224,7 +2580,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                     YOLOv11x-seg & 28{,}4 & 44{,}2 \\
                     \bottomrule
                 \end{tabular}
-                \caption{Dosežene mIoU metrike modelov YOLOv11-seg, za izviren FoodSeg103 s 103 razredi ter poenostavljeno različico s 30 razredi.}
+                \caption[Rezultati modelov YOLOv11-seg]{Dosežene metrike mIoU modelov YOLOv11-seg za izviren FoodSeg103 s 103 razredi ter poenostavljeno različico s 30 razredi.}
                 \label{tab:yolo11-iou-table}
             \end{table}
 
@@ -2306,7 +2662,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                 \end{tikzpicture}
                 
                 % TODO: Manjkajo reference na posamezno grafiko
-                \caption{Primerjava med \textit{nano} in \textit{extra large} izvedbo modelov YOLO11-seg po posameznih razredih. Zgoraj je prikazan model za poenostavljen FoodSeg103 s 30 razredi, spodaj pa model za izviren FoodSeg103 z vsemi 103 razredi.}
+                \caption[Primerjava \textit{nano} in \textit{extra large} različic modela YOLO11-n]{Primerjava med \textit{nano} in \textit{extra large} izvedbo modelov YOLO11-seg po posameznih razredih. Zgoraj je prikazan model za poenostavljen FoodSeg103 s 30 razredi, spodaj pa model za izviren FoodSeg103 z vsemi 103 razredi.}
                 \label{fig:yolo11-bars}
             \end{figure}
 
@@ -2374,7 +2730,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                 \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg/306_mask.png} \\
                 \end{tabular}
                 % TODO: Oblika - katere slike sodijo skupaj?
-                \caption{Vzorec rezultatov segmentacije z modelom FastSAM in pozivom v obliki točk, ki označijo ospredje. Vrstici z modrimi maskami predstavljata izhod modela.}
+                \caption[Rezultati FastSAM s pozivom točk, ki označujejo ospredje]{Vzorec rezultatov segmentacije z modelom FastSAM in pozivom v obliki točk, ki označijo ospredje. Vrstici z modrimi maskami predstavljata izhod modela.}
                 \label{fig:fastsam-points-fg}
             \end{figure}
 
@@ -2405,7 +2761,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                 \includegraphics[width=0.24\linewidth]{figures/fastsam/points_fg_bg/306_mask.png} \\
                 \end{tabular}
                 % TODO: Oblika - katere slike sodijo skupaj?
-                \caption{Vzorec rezultatov segmentacije z modelom FastSAM in pozivom v obliki točk, ki označijo ospredje (rdeče) in ozadje (modro). Vrstici z modrimi maskami predstavljata izhod modela FastSAM.}
+                \caption[Rezultati FastSAM s pozivom točk, ki označujejo ospredje in ozadje]{Vzorec rezultatov segmentacije z modelom FastSAM in pozivom v obliki točk, ki označijo ospredje (rdeče) in ozadje (modro). Vrstici z modrimi maskami predstavljata izhod modela FastSAM.}
                 \label{fig:fastsam-points-fg-bg}
             \end{figure}
 
@@ -2436,7 +2792,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
                 \includegraphics[width=0.24\linewidth]{figures/fastsam/bbox/306_mask.png} \\
                 \end{tabular}
                 % TODO: Oblika - katere slike sodijo skupaj?
-                \caption{Vzorec rezultatov segmentacije z modelom FastSAM in pozivom v obliki okvirjev, pridobljenih z enostavno pretvorbo iz izvirnih segmentacijskih mask. Vrstici z modrimi maskami predstavljata izhod modela FastSAM.}
+                \caption[Rezultati FastSAM s pozivom v obliki okvirjev]{Vzorec rezultatov segmentacije z modelom FastSAM in pozivom v obliki okvirjev, pridobljenih z enostavno pretvorbo iz izvirnih segmentacijskih mask. Vrstici z modrimi maskami predstavljata izhod modela FastSAM.}
                 \label{fig:fastsam-bbox}
             \end{figure}
     
@@ -2453,7 +2809,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
         Neuravnovešena porazdelitev podatkov je izrazito problematična, saj
         najredkejši razredi vsebujejo le nekaj deset slik, zato zanje težko
         pričakujemo dobre rezultate. Dodatno težavnost prinaša narava problema
-        - za zbirke s sestavinami hrane je značilna visoka varianca znotraj
+        -- za zbirke s sestavinami hrane je značilna visoka varianca znotraj
         razredov in nizka varianca med razredi~\cite{src:wu2021large}. Tudi
         najboljši objavljeni pristopi na tej zbirki praviloma ne presegajo
         50~\% mIoU, kar potrjuje zahtevnost problema in zbirke. V naših
@@ -2728,7 +3084,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             %rezultati.
 
             % --- nova diskusija ---
-            V primerjavi z eksperimenti na izvirni zbirki doseže ta eksperiment
+            V primerjavi z eksperimenti na izvirni zbirki ta doseže
             boljše rezultate. V tem eksperimentu imajo različna uteževanja
             precej manj vpliva na dosežene rezultate: validacijske krivulje na
             grafih~\ref{fig:experiment_simplified_foodseg103_dataset_loss} si
@@ -2817,7 +3173,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
 
             Izbira faktorja zmanjšanja in resolucije vpliva predvsem na
             velikost receptivnega polja za posamezno celico na izhodu modela.
-            Ker na vsaki celici vbistvu ločneno izvajamo klasifikacijo, je
+            Ker na vsaki celici ločeno izvajamo klasifikacijo, je
             pomembno, kolikšen del slike lahko posamezna celica zajame.
             Sklepali bi lahko, da smo z izbrano kombinacijo izbrali receptivno
             polje, ki je dovolj majhno, da pogosto zajame zgolj en razred
@@ -3013,15 +3369,15 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
             % uporabe.
             Arhitekturno je model omejen z majhnim receptivnim poljem in
             nizkoločljivostnim izhodom. Posamezne celice se klasificirajo
-            skoraj neodvisno, zato se model primarno opira na lokalne teksturne
-            in barvne pozive znotraj posamezne celice. To pojasni dobre
+            skoraj neodvisno, zato se model opira predvsem na lokalne teksture
+            in barvo znotraj posamezne celice. To pojasni dobre
             rezultate pri razredih z izrazito teksturo in barvo (npr.\
             \emph{broccoli}) ter težave pri razredih z vizualno podobnimi
             teksturami, kjer je za razlikovanje potrebna informacija o obliki
             (npr.\ \emph{pork} proti \emph{chicken duck}). Kratek izluščevalnik
             značilk dodatno omeji kapaciteto: v našem izrezu ohranimo le
-            4{,}8~\% parametrov in 36{,}6~\% plasti iz izvornega MobileNetV2,
-            kot je opisano v
+            4{,}8~\% parametrov in 36{,}6~\% plasti izvornega MobileNetV2,
+            kot opisano v
             poglavju~\ref{sct:fomo-ekstraktor-znacilk}.
             Prednost tako majhne arhitekture je sicer preprostejše izvajanje na
             robnih napravah, slabost pa je nižja kapaciteta modela. Rezultati
@@ -3125,7 +3481,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
         razredu objekta. Določanje razredov posameznim segmentom bi
         zahtevalo dodatno procesiranje in v nekaterih primerih tudi ročno
         anotiranje. SAM torej ni celotna rešitev za izbrano
-        nalogo, lahko pa poenostavi najzahtevnejši del - risanje mask na
+        nalogo, lahko pa poenostavi najzahtevnejši del, torej risanje mask na
         objekt.
 
         \paragraph{MobileSAM.}
@@ -3176,7 +3532,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
         se kot avtorji zbirke odločili za specifična pravila združevanja, bi
         uporabniki te zbirke lahko pričakovali drugačno razmejitev za njihovo
         specifično aplikacijo. Robustno določitev pravil bi bilo težko doseči
-        brez  vključitve več anotatorjev in namenske evalvacije. To je še eden
+        brez dodatnih anotatorjev in namenske evalvacije. To je še eden
         izmed razlogov, zakaj pristopa SAM v tej fazi ni bilo smiselno
         nadaljevati.
     
@@ -3261,8 +3617,8 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
     \section{Praktične smernice in prihodnje delo}
 
         \paragraph{Formulacija naloge, izbira podatkovne zbirke in nadzor okolja.}
-        Zahtevnost izbrane podatkovne zbirke mogoče ni preveč optimalna za
-        probleme, ki zajemajo izvajanje na robnih napravah. Zbirka FoodSeg103
+        Izbrana podatkovna zbirka je prezahtevna za
+        probleme, ki vključujejo izvajanje na robnih napravah. Zbirka FoodSeg103
         predstavlja odprt problem, kjer je okolje nenadzorovano. V kontekstu
         praktične oz. industrijske uporabe je smiselno vložiti trud tudi v
         nadzorovanje okolja, kar lahko vključuje konstantno osvetlitev,
@@ -3315,7 +3671,7 @@ V odseku \ref{sct:teorija-robnenaprave} obravnavamo pristope izvajanje modelov g
         poenostavitev, saj bi bila prisotnost razreda neposreden izhod modela,
         s tem pa bi se izognili zapleteni, nestandardni naknadni obdelavi
         izhoda FOMO modela. Tak pristop bi bolje sledil cilju naloge, čeprav
-        modela morda ne bi neposredno spodbujal k lokalizaciji na vmesnih plastih.
+        modela morda ne bi neposredno spodbujal k lokalizaciji na vmesnih plasteh.
 
         Alternativno bi lahko namesto FOMO-arhitekture vhodno sliko razdelili
         na dele in vsak del ločeno obdelali s klasifikacijskim modelom. S tem
@@ -3401,6 +3757,7 @@ usmeriti~\cite{src:konstantakopoulos2023review}.
 
 \chapter{Distribucija razredov v FoodSeg103}\label{sct:appendixA}
 
+\thispagestyle{empty}
 \vspace*{\fill}
 \begin{center}
     \makebox[\textwidth][c]{%
